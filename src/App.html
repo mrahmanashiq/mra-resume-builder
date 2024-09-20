@@ -1,10 +1,211 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<main class="container">
+	<div id="resume" class="d-flex">
+		<div class="left-col">
+			<div class="resume-section">
+				<img :src="imageUrl" class="profile-pic" alt="profile picture" />
+				<h4
+					class="section-headline"
+					contenteditable="true"
+					@blur="updateHeadline($event, 0)"
+				>
+					{{ headlines[0] }}
+				</h4>
+				<div contenteditable="true" @blur="updateProperty($event, 'introText')">
+					{{ introText }}
+				</div>
+			</div>
+
+			<div class="resume-section">
+				<h4
+					class="section-headline"
+					contenteditable="true"
+					@blur="updateHeadline($event, 1)"
+				>
+					{{ headlines[1] }}
+				</h4>
+				<ul>
+					<li
+						contenteditable="true"
+						@blur="updateNestedProperty($event, 'contact', 'phone')"
+					>
+						{{ contact.phone }}
+					</li>
+					<li
+						contenteditable="true"
+						@blur="updateNestedProperty($event, 'contact', 'email')"
+					>
+						{{ contact.email }}
+					</li>
+					<li
+						contenteditable="true"
+						@blur="updateNestedProperty($event, 'contact', 'address')"
+					>
+						{{ contact.address }}
+					</li>
+				</ul>
+			</div>
+
+			<div class="resume-section">
+				<h4
+					class="section-headline"
+					contenteditable="true"
+					@blur="updateHeadline($event, 2)"
+				>
+					{{ headlines[2] }}
+				</h4>
+				<ul>
+					<li
+						v-for="(skill, index) in skills"
+						:key="index"
+						@blur="updateNestedProperty($event, 'skills', index)"
+					>
+						{{ skill }}
+					</li>
+				</ul>
+			</div>
+
+			<div class="resume-section">
+				<h4
+					class="section-headline"
+					contenteditable="true"
+					@blur="updateHeadline($event, 3)"
+				>
+					{{ headlines[3] }}
+				</h4>
+				<ul>
+					<li
+						v-for="(certificate, index) in certifications"
+						:key="index"
+						contenteditable="true"
+						@blur="updateNestedProperty($event, 'certifications', index)"
+					>
+						{{ certificate }}
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="right-col">
+			<div
+				class="personal-name"
+				contenteditable="true"
+				@blur="updateProperty($event, 'name')"
+			>
+				{{ name }}
+			</div>
+			<div
+				class="personal-title"
+				contenteditable="true"
+				@blur="updateProperty($event, 'title')"
+			>
+				{{ title }}
+			</div>
+
+			<div class="resume-section">
+				<h4
+					class="section-headline"
+					contenteditable="true"
+					@blur="updateHeadline($event, 4)"
+				>
+					{{ headlines[4] }}
+				</h4>
+				<div
+					v-for="(item, index) in experiences"
+					:key="index"
+					class="inner-section"
+				>
+					<div
+						contenteditable="true"
+						@blur="updateExperience($event, 'title', index)"
+					>
+						{{ item.title }}
+					</div>
+					<div class="d-flex justify-content-between">
+						<div>
+							<span
+								contenteditable="true"
+								@blur="updateExperience($event, 'company', index)"
+								>{{ item.company }}</span
+							>
+							<span
+								contenteditable="true"
+								@blur="updateExperience($event, 'location', index)"
+								>{{ item.location }}</span
+							>
+						</div>
+						<div
+							contenteditable="true"
+							@blur="updateExperience($event, 'date', index)"
+						>
+							{{ item.date }}
+						</div>
+					</div>
+					<ul>
+						<li
+							v-for="(responsibility, innerIndex) in item.responsibilities"
+							:key="innerIndex"
+							contenteditable="true"
+							@blur="updateResponsibility($event, index, innerIndex)"
+						>
+							{{ responsibility }}
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="resumes-section">
+				<h4
+					class="section-headline"
+					contenteditable="true"
+					@blur="updateHeadline($event, 5)"
+				>
+					{{ headlines[5] }}
+				</h4>
+				<div
+					v-for="(item, index) in educations"
+					:key="index"
+					class="inner-section"
+				>
+					<div
+						contenteditable="true"
+						@blur="updateEducation($event, 'degree', index)"
+					>
+						{{ item.degree }}
+					</div>
+					<div class="d-flex justify-content-between">
+						<div>
+							<span
+								contenteditable="true"
+								@blur="updateEducation($event, 'institution', index)"
+							>
+								{{ item.institution }}
+							</span>
+							<span
+								contenteditable="true"
+								@blur="updateEducation($event, 'location', index)"
+							>
+								{{ item.location }}
+							</span>
+						</div>
+						<div
+							contenteditable="true"
+							@blur="updateEducation($event, 'date', index)"
+						>
+							{{ item.duration }}
+						</div>
+					</div>
+					<ul>
+						<li
+							v-for="(desc, innerIndex) in item.description"
+							:key="innerIndex"
+							contenteditable="true"
+							@blur="updateEducationDescription($event, index, innerIndex)"
+						>
+							{{ desc }}
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
