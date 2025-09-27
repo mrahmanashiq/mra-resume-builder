@@ -101,7 +101,14 @@
 
         <!-- Section Editor -->
         <div v-if="!resumeStore.ui.sidebarCollapsed" class="flex-1 overflow-y-auto p-4">
-          <component :is="currentSectionComponent" />
+          <Suspense>
+            <component :is="currentSectionComponent" />
+            <template #fallback>
+              <div class="flex items-center justify-center p-8">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+              </div>
+            </template>
+          </Suspense>
         </div>
       </aside>
 
@@ -111,7 +118,17 @@
           <div class="max-w-4xl mx-auto">
             <!-- Resume Preview -->
             <div id="resume-preview" class="bg-white shadow-lg">
-              <ResumeTemplate />
+              <Suspense>
+                <ResumeTemplate />
+                <template #fallback>
+                  <div class="flex items-center justify-center p-16">
+                    <div class="text-center">
+                      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+                      <p class="text-gray-600">Loading template...</p>
+                    </div>
+                  </div>
+                </template>
+              </Suspense>
             </div>
           </div>
         </div>
@@ -139,10 +156,10 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue'
 import { useResumeStore } from '../stores/resume'
 import { useToast } from 'vue-toastification'
-import html2canvas from 'html2canvas'
-import jsPDF from 'jspdf'
+import { exportToPDF } from '../utils/pdfExport'
 import { saveAs } from 'file-saver'
 
 // Icons
@@ -167,18 +184,18 @@ import {
   CogIcon
 } from '@heroicons/vue/24/outline'
 
-// Section Components
-import PersonalInfoEditor from '../components/sections/PersonalInfoEditor.vue'
-import ExperienceEditor from '../components/sections/ExperienceEditor.vue'
-import EducationEditor from '../components/sections/EducationEditor.vue'
-import SkillsEditor from '../components/sections/SkillsEditor.vue'
-import ProjectsEditor from '../components/sections/ProjectsEditor.vue'
-import CertificationsEditor from '../components/sections/CertificationsEditor.vue'
-import LanguagesEditor from '../components/sections/LanguagesEditor.vue'
-import SettingsEditor from '../components/sections/SettingsEditor.vue'
+// Lazy load section components for better code splitting
+const PersonalInfoEditor = defineAsyncComponent(() => import('../components/sections/PersonalInfoEditor.vue'))
+const ExperienceEditor = defineAsyncComponent(() => import('../components/sections/ExperienceEditor.vue'))
+const EducationEditor = defineAsyncComponent(() => import('../components/sections/EducationEditor.vue'))
+const SkillsEditor = defineAsyncComponent(() => import('../components/sections/SkillsEditor.vue'))
+const ProjectsEditor = defineAsyncComponent(() => import('../components/sections/ProjectsEditor.vue'))
+const CertificationsEditor = defineAsyncComponent(() => import('../components/sections/CertificationsEditor.vue'))
+const LanguagesEditor = defineAsyncComponent(() => import('../components/sections/LanguagesEditor.vue'))
+const SettingsEditor = defineAsyncComponent(() => import('../components/sections/SettingsEditor.vue'))
 
 // Resume Template
-import ResumeTemplate from '../components/templates/ResumeTemplate.vue'
+const ResumeTemplate = defineAsyncComponent(() => import('../components/templates/ResumeTemplate.vue'))
 
 export default {
   name: 'Editor',
@@ -264,33 +281,9 @@ export default {
     
     async exportToPDF() {
       try {
-        const element = document.getElementById('resume-preview')
-        const canvas = await html2canvas(element, {
-          scale: 2,
-          useCORS: true,
-          allowTaint: true
-        })
-        
-        const imgData = canvas.toDataURL('image/png')
-        const pdf = new jsPDF('p', 'mm', 'a4')
-        const imgWidth = 210
-        const pageHeight = 295
-        const imgHeight = (canvas.height * imgWidth) / canvas.width
-        let heightLeft = imgHeight
-        
-        let position = 0
-        
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
-        heightLeft -= pageHeight
-        
-        while (heightLeft >= 0) {
-          position = heightLeft - imgHeight
-          pdf.addPage()
-          pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
-          heightLeft -= pageHeight
-        }
-        
-        pdf.save(`${this.resumeStore.fullName}_Resume.pdf`)
+        this.toast.info('Generating PDF... Please wait')
+        const filename = `${this.resumeStore.fullName}_Resume.pdf`
+        await exportToPDF('resume-preview', filename)
         this.toast.success('Resume exported as PDF successfully!')
       } catch (error) {
         console.error('Error exporting PDF:', error)

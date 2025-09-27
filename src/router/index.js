@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import Editor from '../views/Editor.vue'
-import Templates from '../views/Templates.vue'
-import Settings from '../views/Settings.vue'
+
+// Lazy load views for better code splitting
+const Home = () => import('../views/Home.vue')
+const Editor = () => import('../views/Editor.vue')
+const Templates = () => import('../views/Templates.vue')
+const Settings = () => import('../views/Settings.vue')
 
 const router = createRouter({
   history: createWebHistory(),

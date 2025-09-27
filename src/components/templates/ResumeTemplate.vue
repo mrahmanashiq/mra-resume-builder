@@ -241,6 +241,7 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue'
 import { useResumeStore } from '../../stores/resume'
 import { format, parseISO } from 'date-fns'
 import { 
@@ -250,11 +251,11 @@ import {
   GlobeAltIcon 
 } from '@heroicons/vue/24/outline'
 
-// Import all template components
-import ModernTemplate from './ModernTemplate.vue'
-import ClassicTemplate from './ClassicTemplate.vue'
-import CreativeTemplate from './CreativeTemplate.vue'
-import MinimalistTemplate from './MinimalistTemplate.vue'
+// Dynamic imports for code splitting
+const ModernTemplate = defineAsyncComponent(() => import('./ModernTemplate.vue'))
+const ClassicTemplate = defineAsyncComponent(() => import('./ClassicTemplate.vue'))
+const CreativeTemplate = defineAsyncComponent(() => import('./CreativeTemplate.vue'))
+const MinimalistTemplate = defineAsyncComponent(() => import('./MinimalistTemplate.vue'))
 
 export default {
   name: 'ResumeTemplate',

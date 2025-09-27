@@ -1,0 +1,61 @@
+// PDF utilities with dynamic loading
+let html2canvas = null
+let jsPDF = null
+
+export const loadPDFLibraries = async () => {
+  if (!html2canvas || !jsPDF) {
+    const [html2canvasModule, jsPDFModule] = await Promise.all([
+      import('html2canvas'),
+      import('jspdf')
+    ])
+    
+    html2canvas = html2canvasModule.default
+    jsPDF = jsPDFModule.default
+  }
+  
+  return { html2canvas, jsPDF }
+}
+
+export const exportToPDF = async (elementId, filename = 'resume.pdf') => {
+  const { html2canvas, jsPDF } = await loadPDFLibraries()
+  
+  const element = document.getElementById(elementId)
+  if (!element) {
+    throw new Error('Element not found')
+  }
+
+  try {
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff'
+    })
+
+    const imgData = canvas.toDataURL('image/png')
+    const pdf = new jsPDF('p', 'mm', 'a4')
+    
+    const imgWidth = 210
+    const pageHeight = 295
+    const imgHeight = (canvas.height * imgWidth) / canvas.width
+    let heightLeft = imgHeight
+
+    let position = 0
+
+    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
+    heightLeft -= pageHeight
+
+    while (heightLeft >= 0) {
+      position = heightLeft - imgHeight
+      pdf.addPage()
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight)
+      heightLeft -= pageHeight
+    }
+
+    pdf.save(filename)
+    return true
+  } catch (error) {
+    console.error('PDF export error:', error)
+    throw error
+  }
+}
