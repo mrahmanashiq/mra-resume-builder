@@ -200,7 +200,7 @@ Please use the [GitHub Issues](https://github.com/mrahmanashiq/mra-resume-builde
 
 ## 📞 Support
 
-- **Email**: mrahmanashiq@gmail.com
+- **Email**: mizanur.r.ashiq@gmail.com
 - **GitHub**: [@mrahmanashiq](https://github.com/mrahmanashiq)
 
 ## 🙏 Acknowledgments
@@ -231,21 +231,30 @@ npm run build
 # Deploy dist folder to Netlify
 ```
 
-### Vercel
+### Vercel (Recommended)
 ```bash
-npm run build
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy to Vercel
+vercel
+
+# For production deployment
 vercel --prod
 ```
 
-### GitHub Pages
-This project is automatically deployed to GitHub Pages on every push to the master branch.
+Or simply connect your GitHub repository to Vercel dashboard for automatic deployments.
 
-**Live Demo**: [https://mrahmanashiq.github.io/mra-resume-builder/](https://mrahmanashiq.github.io/mra-resume-builder/)
+### Vercel
+This project is optimized for deployment on Vercel with automatic builds and deployments.
 
-The deployment is handled by GitHub Actions workflow (`.github/workflows/deploy.yml`) which:
-- Builds the project using `npm run build`
-- Deploys to GitHub Pages automatically
-- Updates the live site within minutes of pushing changes
+**Deploy to Vercel**: Simply connect your GitHub repository to Vercel for automatic deployments.
+
+The project includes:
+- `vercel.json` configuration for SPA routing
+- Optimized build settings
+- Security headers and caching configuration
+- Automatic deployments on git push
 
 ## 📈 Roadmap
 

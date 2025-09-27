@@ -13,7 +13,6 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  base: '/mra-resume-builder/', // GitHub Pages base path
   build: {
     outDir: 'dist',
     assetsDir: 'assets',

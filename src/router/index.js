@@ -5,7 +5,7 @@ import Templates from '../views/Templates.vue'
 import Settings from '../views/Settings.vue'
 
 const router = createRouter({
-  history: createWebHistory('/mra-resume-builder/'),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
