@@ -2,8 +2,6 @@
 
 A modern, feature-rich resume builder application built with Vue 3, Vite, and Tailwind CSS. Create professional, ATS-friendly resumes with ease using our intuitive drag-and-drop interface and customizable templates.
 
-![MRA Resume Builder](public/profile_pic.png)
-
 ## ✨ Features
 
 ### 🏗️ Core Features
