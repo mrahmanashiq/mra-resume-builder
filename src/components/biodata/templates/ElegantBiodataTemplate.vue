@@ -481,10 +481,16 @@ export default {
 }
 
 /* During PDF export only: html2canvas draws text lower than the browser, so
-   shift the padding to keep the bar text vertically centered in the PDF. */
+   shift the padding to keep text vertically centered in the PDF. */
 .pdf-export .section-bar {
   padding-top: 4px;
   padding-bottom: 17px;
+}
+
+.pdf-export .edu-table th,
+.pdf-export .edu-table td {
+  padding-top: 0;
+  padding-bottom: 16px;
 }
 
 .info-grid {
