@@ -5,6 +5,19 @@
     </div>
 
     <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Blood Group</label>
+      <select :value="biodataStore.preferences.preferredBloodGroup"
+              @change="update('preferredBloodGroup', $event.target.value)"
+              class="input-field">
+        <option value="">No preference</option>
+        <option v-for="bg in bloodGroups" :key="bg" :value="bg">{{ bg }}</option>
+      </select>
+      <p class="text-xs text-gray-500 mt-1">
+        Optional. Some families consider blood group / Rh (+/−) compatibility.
+      </p>
+    </div>
+
+    <div>
       <label class="block text-sm font-medium text-gray-700 mb-2">Expectations</label>
       <textarea :value="biodataStore.preferences.expectations"
                 @input="update('expectations', $event.target.value)"
@@ -26,6 +39,11 @@ export default {
   setup() {
     const biodataStore = useBiodataStore()
     return { biodataStore }
+  },
+  data() {
+    return {
+      bloodGroups: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
+    }
   },
   methods: {
     update(field, value) {
