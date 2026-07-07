@@ -16,7 +16,7 @@ export const useBiodataStore = defineStore('biodata', {
       fullName: 'Your Full Name',
       dateOfBirth: '2000-01-01',
       height: `5'6"`,
-      weight: '60 kg',
+      weight: '60',
       complexion: 'Fair',
       bloodGroup: 'B+',
       religion: 'Islam',

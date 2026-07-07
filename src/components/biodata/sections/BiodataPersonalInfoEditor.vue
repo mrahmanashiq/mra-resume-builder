@@ -65,11 +65,14 @@
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Weight</label>
-        <input type="text"
-               :value="biodataStore.personalInfo.weight"
-               @input="update('weight', $event.target.value)"
-               class="input-field"
-               placeholder="68 kg">
+        <div class="relative">
+          <input type="number"
+                 :value="biodataStore.personalInfo.weight"
+                 @input="update('weight', $event.target.value)"
+                 class="input-field pr-10"
+                 placeholder="60">
+          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm pointer-events-none">kg</span>
+        </div>
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Complexion</label>
@@ -127,11 +130,12 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Marital Status</label>
-          <input type="text"
-                 :value="biodataStore.personalInfo.maritalStatus"
-                 @input="update('maritalStatus', $event.target.value)"
-                 class="input-field"
-                 placeholder="Unmarried">
+          <select :value="biodataStore.personalInfo.maritalStatus"
+                  @change="update('maritalStatus', $event.target.value)"
+                  class="input-field">
+            <option value="">Select</option>
+            <option v-for="m in maritalStatuses" :key="m" :value="m">{{ m }}</option>
+          </select>
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Nationality</label>
@@ -151,11 +155,12 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Sect / Madhab</label>
-          <input type="text"
-                 :value="biodataStore.personalInfo.sect"
-                 @input="update('sect', $event.target.value)"
-                 class="input-field"
-                 placeholder="Sunni">
+          <select :value="biodataStore.personalInfo.sect"
+                  @change="update('sect', $event.target.value)"
+                  class="input-field">
+            <option value="">Select</option>
+            <option v-for="s in sects" :key="s" :value="s">{{ s }}</option>
+          </select>
         </div>
       </div>
     </div>
@@ -181,7 +186,9 @@ export default {
   data() {
     return {
       bloodGroups: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
-      complexions: ['Fair', 'Very Fair', 'Wheatish', 'Medium', 'Dark']
+      complexions: ['Fair', 'Very Fair', 'Wheatish', 'Medium', 'Dark'],
+      maritalStatuses: ['Unmarried', 'Married', 'Divorced', 'Widowed'],
+      sects: ['Sunni', 'Shia', 'Hanafi', 'Maliki', "Shafi'i", 'Hanbali', 'Ahle Hadith']
     }
   },
   methods: {

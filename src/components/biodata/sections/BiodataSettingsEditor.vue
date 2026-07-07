@@ -30,7 +30,7 @@
           <p class="text-xs text-gray-600">Display a photo at the top of the biodata.</p>
         </div>
         <button @click="toggleShowPhoto"
-                :class="['w-12 h-6 rounded-full transition-colors duration-200',
+                :class="['w-12 h-6 rounded-full flex items-center flex-shrink-0 transition-colors duration-200',
                          biodataStore.settings.showPhoto ? 'bg-primary-600' : 'bg-gray-300']">
           <div :class="['w-4 h-4 bg-white rounded-full shadow transition-transform duration-200',
                         biodataStore.settings.showPhoto ? 'translate-x-7' : 'translate-x-1']"></div>
@@ -117,7 +117,7 @@
              class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
           <span class="font-medium">{{ section.name }}</span>
           <button @click="toggleSection(section.id)"
-                  :class="['w-12 h-6 rounded-full transition-colors duration-200',
+                  :class="['w-12 h-6 rounded-full flex items-center flex-shrink-0 transition-colors duration-200',
                            biodataStore.settings.sectionsEnabled[section.id]
                              ? 'bg-primary-600' : 'bg-gray-300']">
             <div :class="['w-4 h-4 bg-white rounded-full shadow transition-transform duration-200',
@@ -138,7 +138,7 @@
              class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
           <span class="font-medium text-sm">{{ field.name }}</span>
           <button @click="toggleField(field.id)"
-                  :class="['w-12 h-6 rounded-full transition-colors duration-200',
+                  :class="['w-12 h-6 rounded-full flex items-center flex-shrink-0 transition-colors duration-200',
                            biodataStore.settings.fieldsEnabled[field.id]
                              ? 'bg-primary-600' : 'bg-gray-300']">
             <div :class="['w-4 h-4 bg-white rounded-full shadow transition-transform duration-200',

@@ -21,7 +21,7 @@
               <span class="hidden sm:inline">{{ store.ui.previewMode ? 'Edit' : 'Preview' }}</span>
             </button>
 
-            <div class="relative">
+            <div class="relative export-menu-wrap">
               <button @click="showExportMenu = !showExportMenu"
                       class="btn-primary flex items-center space-x-2">
                 <CloudArrowDownIcon class="w-4 h-4" />
@@ -68,8 +68,9 @@
     <div class="flex h-[calc(100vh-4rem)]">
       <!-- Sidebar -->
       <aside v-if="!store.ui.previewMode"
-             :class="['bg-white border-r border-gray-200 transition-all duration-300 no-print',
-                      store.ui.sidebarCollapsed ? 'w-16' : 'w-80']">
+             :class="['relative flex-shrink-0 bg-white border-r border-gray-200 no-print',
+                      resizing ? '' : 'transition-[width] duration-300']"
+             :style="{ width: store.ui.sidebarCollapsed ? '4rem' : sidebarWidth + 'px' }">
 
         <!-- Sidebar Toggle -->
         <div class="p-4 border-b border-gray-200">
@@ -110,6 +111,13 @@
             </template>
           </Suspense>
         </div>
+
+        <!-- Resize handle -->
+        <div v-if="!store.ui.sidebarCollapsed"
+             @mousedown.prevent="startResize"
+             @dblclick="resetSidebarWidth"
+             class="absolute top-0 right-0 h-full w-1.5 cursor-col-resize bg-transparent hover:bg-primary-300 active:bg-primary-400 transition-colors"
+             title="Drag to resize · double-click to reset"></div>
       </aside>
 
       <!-- Main Content -->
@@ -208,7 +216,11 @@ export default {
     return {
       showExportMenu: false,
       showImportModal: false,
-      importJsonData: ''
+      importJsonData: '',
+      sidebarWidth: 320,
+      minSidebarWidth: 256,
+      maxSidebarWidth: 640,
+      resizing: false
     }
   },
   computed: {
@@ -216,6 +228,9 @@ export default {
       const sections = this.config.navSections
       const active = sections.find(section => section.id === this.store.ui.currentSection)
       return active ? active.editor : sections[0].editor
+    },
+    widthKey() {
+      return `mra-${this.config.type}-sidebar-width`
     }
   },
   methods: {
@@ -264,16 +279,80 @@ export default {
     },
 
     handleOutsideClick(event) {
-      if (!event.target.closest('.relative')) {
+      if (!event.target.closest('.export-menu-wrap')) {
         this.showExportMenu = false
+      }
+    },
+
+    effectiveMaxWidth() {
+      // Cap width to the viewport so the preview always has room (responsive).
+      return Math.max(this.minSidebarWidth, Math.min(this.maxSidebarWidth, window.innerWidth - 360))
+    },
+
+    clampToViewport() {
+      const max = this.effectiveMaxWidth()
+      this.sidebarWidth = Math.min(Math.max(this.sidebarWidth, this.minSidebarWidth), max)
+    },
+
+    startResize(event) {
+      this.resizing = true
+      this._startX = event.clientX
+      this._startWidth = this.sidebarWidth
+      document.addEventListener('mousemove', this.onResize)
+      document.addEventListener('mouseup', this.stopResize)
+      document.body.style.userSelect = 'none'
+      document.body.style.cursor = 'col-resize'
+    },
+
+    onResize(event) {
+      if (!this.resizing) return
+      const delta = event.clientX - this._startX
+      const max = this.effectiveMaxWidth()
+      this.sidebarWidth = Math.min(Math.max(this._startWidth + delta, this.minSidebarWidth), max)
+    },
+
+    stopResize() {
+      if (!this.resizing) return
+      this.resizing = false
+      document.removeEventListener('mousemove', this.onResize)
+      document.removeEventListener('mouseup', this.stopResize)
+      document.body.style.userSelect = ''
+      document.body.style.cursor = ''
+      try {
+        localStorage.setItem(this.widthKey, String(this.sidebarWidth))
+      } catch (error) {
+        /* localStorage unavailable — ignore */
+      }
+    },
+
+    resetSidebarWidth() {
+      this.sidebarWidth = 320
+      this.clampToViewport()
+      try {
+        localStorage.setItem(this.widthKey, String(this.sidebarWidth))
+      } catch (error) {
+        /* localStorage unavailable — ignore */
       }
     }
   },
   mounted() {
     document.addEventListener('click', this.handleOutsideClick)
+    window.addEventListener('resize', this.clampToViewport)
+    try {
+      const saved = parseInt(localStorage.getItem(this.widthKey), 10)
+      if (!Number.isNaN(saved)) {
+        this.sidebarWidth = saved
+      }
+    } catch (error) {
+      /* localStorage unavailable — ignore */
+    }
+    this.clampToViewport()
   },
   beforeUnmount() {
     document.removeEventListener('click', this.handleOutsideClick)
+    window.removeEventListener('resize', this.clampToViewport)
+    document.removeEventListener('mousemove', this.onResize)
+    document.removeEventListener('mouseup', this.stopResize)
   }
 }
 </script>

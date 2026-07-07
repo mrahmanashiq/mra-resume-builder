@@ -5,14 +5,26 @@
       <h1 class="biodata-title">MARRIAGE BIODATA</h1>
     </div>
 
-    <!-- Optional photo -->
-    <div v-if="settings.showPhoto && personalInfo.photo" class="biodata-photo-wrap">
-      <img :src="personalInfo.photo" alt="Photo" class="biodata-photo">
+    <!-- Top-right side: photo + contact -->
+    <div v-if="hasSide" class="biodata-side">
+      <div v-if="settings.showPhoto && personalInfo.photo" class="biodata-photo-wrap">
+        <img :src="personalInfo.photo" alt="Photo" class="biodata-photo">
+      </div>
+      <div v-if="showContactCard" class="contact-card">
+        <div class="contact-card-label">Contact Number</div>
+        <div class="contact-card-number">{{ contact.phone }}</div>
+        <div v-if="settings.fieldsEnabled.guardianPhone && contact.guardianPhone" class="contact-card-line">
+          <span class="contact-card-key">Guardian:</span> {{ contact.guardianPhone }}
+        </div>
+        <div v-if="settings.fieldsEnabled.email && contact.email" class="contact-card-line">
+          <span class="contact-card-key">Email:</span> {{ contact.email }}
+        </div>
+      </div>
     </div>
 
     <template v-for="sectionId in orderedSections" :key="sectionId">
       <!-- Personal Information -->
-      <section v-if="sectionId === 'personalInfo'" class="biodata-section print-avoid-break">
+      <section v-if="sectionId === 'personalInfo'" :class="['biodata-section print-avoid-break', hasSide ? 'pad-for-side' : '']">
         <div class="section-bar">Personal Information</div>
         <div class="info-grid">
           <template v-for="row in personalRows" :key="row.label">
@@ -143,21 +155,7 @@
         </div>
       </section>
 
-      <!-- Contact -->
-      <section v-else-if="sectionId === 'contact'" class="biodata-section print-avoid-break">
-        <div class="contact-row">
-          <span class="contact-label">Contact Number:</span>
-          <span class="contact-number">{{ contact.phone }}</span>
-        </div>
-        <div v-if="settings.fieldsEnabled.guardianPhone && contact.guardianPhone" class="contact-row-sm">
-          <span class="info-label">Guardian's Contact:</span>
-          <span class="info-value">{{ contact.guardianPhone }}</span>
-        </div>
-        <div v-if="settings.fieldsEnabled.email && contact.email" class="contact-row-sm">
-          <span class="info-label">Email:</span>
-          <span class="info-value">{{ contact.email }}</span>
-        </div>
-      </section>
+      <!-- Contact is rendered in the top-right side column (see .biodata-side) -->
 
       <!-- Partner Preferences -->
       <section v-else-if="sectionId === 'preferences' && preferences.expectations" class="biodata-section print-avoid-break">
@@ -196,6 +194,12 @@ export default {
     orderedSections() {
       return this.settings.sectionsOrder.filter(id => this.settings.sectionsEnabled[id])
     },
+    showContactCard() {
+      return this.settings.sectionsEnabled.contact && !!this.contact.phone
+    },
+    hasSide() {
+      return (this.settings.showPhoto && !!this.personalInfo.photo) || this.showContactCard
+    },
     hasProfessional() {
       const p = this.professional
       return p.profession || p.company || p.experience ||
@@ -204,7 +208,10 @@ export default {
     personalRows() {
       const info = this.personalInfo
       const fields = this.settings.fieldsEnabled
-      const heightWeight = [info.height, info.weight].filter(Boolean).join(' | ')
+      const rawWeight = (info.weight || '').toString().trim()
+      // Append "kg" only when the value is a bare number, so pre-filled "68 kg" won't become "68 kg kg".
+      const weightText = rawWeight ? (/^[\d.]+$/.test(rawWeight) ? `${rawWeight} kg` : rawWeight) : ''
+      const heightWeight = [info.height, weightText].filter(Boolean).join(' | ')
       const rows = [
         { label: 'Full Name', value: info.fullName },
         { label: 'Date of Birth', value: info.dateOfBirth },
@@ -234,6 +241,7 @@ export default {
   --text: #1f2937;
   --background: #ffffff;
 
+  position: relative;
   max-width: 210mm;
   min-height: 297mm;
   margin: 0 auto;
@@ -257,18 +265,68 @@ export default {
   letter-spacing: 3px;
 }
 
+.biodata-side {
+  position: absolute;
+  top: 100px;
+  right: 40px;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  z-index: 1;
+}
+
 .biodata-photo-wrap {
-  text-align: center;
-  margin-bottom: 20px;
+  margin: 0;
 }
 
 .biodata-photo {
-  width: 120px;
-  height: 150px;
+  width: 130px;
+  height: 160px;
   object-fit: cover;
   border: 3px solid var(--primary);
   border-radius: 4px;
-  display: inline-block;
+  display: block;
+}
+
+.contact-card {
+  width: 100%;
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.contact-card-label {
+  font-weight: 700;
+  color: #4b5563;
+  font-size: 0.78em;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.contact-card-number {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 1.05em;
+  letter-spacing: 0.5px;
+  margin-top: 3px;
+}
+
+.contact-card-line {
+  font-size: 0.78em;
+  color: #4b5563;
+  margin-top: 5px;
+  word-break: break-word;
+}
+
+.contact-card-key {
+  font-weight: 600;
+}
+
+.pad-for-side {
+  padding-right: 200px;
 }
 
 .biodata-section {
@@ -362,33 +420,6 @@ export default {
   padding-left: 8px;
 }
 
-.contact-row {
-  border-top: 2px solid #6b7280;
-  padding-top: 16px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.contact-label {
-  font-weight: 700;
-  color: #374151;
-}
-
-.contact-number {
-  font-weight: 800;
-  font-size: 1.3em;
-  color: var(--primary);
-  letter-spacing: 1px;
-}
-
-.contact-row-sm {
-  margin-top: 8px;
-  display: flex;
-  gap: 12px;
-  padding-left: 2px;
-}
-
 .pref-text {
   padding-left: 8px;
   line-height: 1.6;
@@ -411,6 +442,24 @@ export default {
     max-width: 100%;
     padding: 20px;
     box-shadow: none;
+  }
+
+  .biodata-side {
+    position: static;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .contact-card {
+    width: auto;
+    min-width: 180px;
+  }
+
+  .pad-for-side {
+    padding-right: 0;
   }
 
   .info-grid {
