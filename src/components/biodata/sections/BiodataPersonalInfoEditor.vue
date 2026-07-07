@@ -26,6 +26,12 @@
       Photo is hidden. Enable "Show Photo" in Settings to add one.
     </p>
 
+    <ImageCropperModal
+      v-if="showCropper"
+      :image-src="cropSrc"
+      @apply="onCropApply"
+      @cancel="onCropCancel" />
+
     <!-- Full Name -->
     <div>
       <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
@@ -189,12 +195,14 @@
 import { useBiodataStore } from '../../../stores/biodata'
 import { useToast } from 'vue-toastification'
 import { CameraIcon, UserIcon } from '@heroicons/vue/24/outline'
+import ImageCropperModal from '../../ImageCropperModal.vue'
 
 export default {
   name: 'BiodataPersonalInfoEditor',
   components: {
     CameraIcon,
-    UserIcon
+    UserIcon,
+    ImageCropperModal
   },
   setup() {
     const biodataStore = useBiodataStore()
@@ -209,7 +217,9 @@ export default {
       sects: ['Sunni', 'Shia', 'Hanafi', 'Maliki', "Shafi'i", 'Hanbali', 'Ahle Hadith'],
       nationalities: ['Bangladeshi', 'Indian', 'Pakistani', 'Nepali', 'Saudi Arabian', 'American', 'British', 'Canadian', 'Australian', 'Other'],
       motherTongues: ['Bengali', 'English', 'Urdu', 'Hindi', 'Arabic', 'Tamil', 'Other'],
-      otherFlags: { nationality: false, motherTongue: false }
+      otherFlags: { nationality: false, motherTongue: false },
+      showCropper: false,
+      cropSrc: ''
     }
   },
   created() {
@@ -240,16 +250,28 @@ export default {
     handlePhotoUpload(event) {
       const file = event.target.files[0]
       if (!file) return
-      if (file.size > 5 * 1024 * 1024) {
-        this.toast.error('Image size must be less than 5MB')
+      if (file.size > 8 * 1024 * 1024) {
+        this.toast.error('Image size must be less than 8MB')
+        event.target.value = ''
         return
       }
       const reader = new FileReader()
       reader.onload = (e) => {
-        this.update('photo', e.target.result)
-        this.toast.success('Photo updated!')
+        this.cropSrc = e.target.result
+        this.showCropper = true
       }
       reader.readAsDataURL(file)
+      event.target.value = '' // allow re-selecting the same file
+    },
+    onCropApply(dataUrl) {
+      this.update('photo', dataUrl)
+      this.showCropper = false
+      this.cropSrc = ''
+      this.toast.success('Photo updated!')
+    },
+    onCropCancel() {
+      this.showCropper = false
+      this.cropSrc = ''
     }
   }
 }

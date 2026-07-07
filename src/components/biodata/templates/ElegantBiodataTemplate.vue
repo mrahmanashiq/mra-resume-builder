@@ -14,10 +14,7 @@
     <!-- Top-right side: photo + contact -->
     <div v-if="hasSide" class="biodata-side">
       <div v-if="settings.showPhoto && personalInfo.photo" class="biodata-photo-wrap">
-        <div class="biodata-photo"
-             role="img"
-             aria-label="Photo"
-             :style="{ backgroundImage: `url(${personalInfo.photo})` }"></div>
+        <img class="biodata-photo" :src="personalInfo.photo" alt="Photo">
       </div>
       <div v-if="showContactCard" class="contact-card">
         <div class="contact-card-title">Contact Information</div>
@@ -430,16 +427,17 @@ export default {
 }
 
 .biodata-photo {
-  width: 100%;
-  height: 175px;
-  /* background-size: cover renders consistently in the browser AND html2canvas/PDF,
-     unlike object-fit which html2canvas ignores. */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  display: block;
+  /* The uploaded image is already cropped to the desired frame, so show it at its
+     natural aspect (scaled to the column). Plain <img> scaling renders identically
+     in the browser and html2canvas/PDF (unlike object-fit). */
+  max-width: 100%;
+  max-height: 300px;
+  width: auto;
+  height: auto;
+  margin: 0 auto;
   border: 2px solid var(--primary);
   border-radius: 6px;
-  box-sizing: border-box;
 }
 
 .contact-card {
@@ -716,8 +714,8 @@ export default {
   }
 
   .biodata-photo {
-    width: 150px;
-    height: 160px;
+    max-width: 200px;
+    max-height: 240px;
   }
 
   .pad-for-side {
