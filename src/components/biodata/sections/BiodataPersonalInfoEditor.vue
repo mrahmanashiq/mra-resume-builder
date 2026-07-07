@@ -139,19 +139,33 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Nationality</label>
-          <input type="text"
+          <select :value="selectValue('nationality', nationalities)"
+                  @change="onSelectWithOther('nationality', $event.target.value)"
+                  class="input-field">
+            <option value="">Select</option>
+            <option v-for="n in nationalities" :key="n" :value="n">{{ n }}</option>
+          </select>
+          <input v-if="otherFlags.nationality"
+                 type="text"
                  :value="biodataStore.personalInfo.nationality"
                  @input="update('nationality', $event.target.value)"
-                 class="input-field"
-                 placeholder="Bangladeshi">
+                 class="input-field mt-2"
+                 placeholder="Enter nationality">
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Mother Tongue</label>
-          <input type="text"
+          <select :value="selectValue('motherTongue', motherTongues)"
+                  @change="onSelectWithOther('motherTongue', $event.target.value)"
+                  class="input-field">
+            <option value="">Select</option>
+            <option v-for="mt in motherTongues" :key="mt" :value="mt">{{ mt }}</option>
+          </select>
+          <input v-if="otherFlags.motherTongue"
+                 type="text"
                  :value="biodataStore.personalInfo.motherTongue"
                  @input="update('motherTongue', $event.target.value)"
-                 class="input-field"
-                 placeholder="Bengali">
+                 class="input-field mt-2"
+                 placeholder="Enter mother tongue">
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Sect / Madhab</label>
@@ -188,12 +202,36 @@ export default {
       bloodGroups: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
       complexions: ['Fair', 'Very Fair', 'Wheatish', 'Medium', 'Dark'],
       maritalStatuses: ['Unmarried', 'Married', 'Divorced', 'Widowed'],
-      sects: ['Sunni', 'Shia', 'Hanafi', 'Maliki', "Shafi'i", 'Hanbali', 'Ahle Hadith']
+      sects: ['Sunni', 'Shia', 'Hanafi', 'Maliki', "Shafi'i", 'Hanbali', 'Ahle Hadith'],
+      nationalities: ['Bangladeshi', 'Indian', 'Pakistani', 'Nepali', 'Saudi Arabian', 'American', 'British', 'Canadian', 'Australian', 'Other'],
+      motherTongues: ['Bengali', 'English', 'Urdu', 'Hindi', 'Arabic', 'Tamil', 'Other'],
+      otherFlags: { nationality: false, motherTongue: false }
     }
+  },
+  created() {
+    // If a stored value isn't one of the presets, treat it as a custom "Other" entry.
+    const nat = this.biodataStore.personalInfo.nationality
+    const mt = this.biodataStore.personalInfo.motherTongue
+    this.otherFlags.nationality = !!nat && !this.nationalities.includes(nat)
+    this.otherFlags.motherTongue = !!mt && !this.motherTongues.includes(mt)
   },
   methods: {
     update(field, value) {
       this.biodataStore.updatePersonalInfo(field, value)
+    },
+    selectValue(field, options) {
+      if (this.otherFlags[field]) return 'Other'
+      const value = this.biodataStore.personalInfo[field]
+      return options.includes(value) ? value : ''
+    },
+    onSelectWithOther(field, value) {
+      if (value === 'Other') {
+        this.otherFlags[field] = true
+        this.update(field, '')
+      } else {
+        this.otherFlags[field] = false
+        this.update(field, value)
+      }
     },
     handlePhotoUpload(event) {
       const file = event.target.files[0]
