@@ -108,24 +108,28 @@
       </div>
     </div>
 
-    <!-- Section Visibility -->
+    <!-- Section Visibility & Order -->
     <div class="card">
-      <h4 class="font-medium text-gray-900 mb-4">Sections</h4>
-      <div class="space-y-3">
-        <div v-for="section in sectionsConfig"
-             :key="section.id"
-             class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-          <span class="font-medium">{{ section.name }}</span>
-          <button @click="toggleSection(section.id)"
-                  :class="['w-12 h-6 rounded-full flex items-center flex-shrink-0 transition-colors duration-200',
-                           biodataStore.settings.sectionsEnabled[section.id]
-                             ? 'bg-primary-600' : 'bg-gray-300']">
-            <div :class="['w-4 h-4 bg-white rounded-full shadow transition-transform duration-200',
-                          biodataStore.settings.sectionsEnabled[section.id]
-                            ? 'translate-x-7' : 'translate-x-1']"></div>
-          </button>
-        </div>
-      </div>
+      <h4 class="font-medium text-gray-900 mb-1">Sections</h4>
+      <p class="text-xs text-gray-600 mb-4">Drag <span class="font-medium">⠿</span> to reorder · toggle to show/hide.</p>
+      <draggable v-model="orderedSections" item-key="id" handle=".drag-handle" class="space-y-3">
+        <template #item="{ element }">
+          <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div class="flex items-center space-x-3 min-w-0">
+              <Bars3Icon class="drag-handle w-5 h-5 text-gray-400 cursor-move flex-shrink-0" />
+              <span class="font-medium truncate">{{ element.name }}</span>
+            </div>
+            <button @click="toggleSection(element.id)"
+                    :class="['w-12 h-6 rounded-full flex items-center flex-shrink-0 transition-colors duration-200',
+                             biodataStore.settings.sectionsEnabled[element.id]
+                               ? 'bg-primary-600' : 'bg-gray-300']">
+              <div :class="['w-4 h-4 bg-white rounded-full shadow transition-transform duration-200',
+                            biodataStore.settings.sectionsEnabled[element.id]
+                              ? 'translate-x-7' : 'translate-x-1']"></div>
+            </button>
+          </div>
+        </template>
+      </draggable>
     </div>
 
     <!-- Optional Fields -->
@@ -159,9 +163,15 @@
 <script>
 import { useBiodataStore } from '../../../stores/biodata'
 import { useToast } from 'vue-toastification'
+import draggable from 'vuedraggable'
+import { Bars3Icon } from '@heroicons/vue/24/outline'
 
 export default {
   name: 'BiodataSettingsEditor',
+  components: {
+    draggable,
+    Bars3Icon
+  },
   setup() {
     const biodataStore = useBiodataStore()
     const toast = useToast()
@@ -208,6 +218,17 @@ export default {
         { id: 'instagram', name: 'Instagram' },
         { id: 'linkedin', name: 'LinkedIn' }
       ]
+    }
+  },
+  computed: {
+    orderedSections: {
+      get() {
+        const nameById = Object.fromEntries(this.sectionsConfig.map(s => [s.id, s.name]))
+        return this.biodataStore.settings.sectionsOrder.map(id => ({ id, name: nameById[id] || id }))
+      },
+      set(list) {
+        this.biodataStore.reorderSections(list.map(s => s.id))
+      }
     }
   },
   methods: {
