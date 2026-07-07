@@ -1,0 +1,284 @@
+import { defineStore } from 'pinia'
+import { v4 as uuidv4 } from 'uuid'
+
+/**
+ * Marriage Biodata store. Fully independent from the résumé store — shares no
+ * state and imports nothing from it. Exposes the same UI interface the shared
+ * DocumentEditorShell relies on (ui.* + setCurrentSection/togglePreviewMode/
+ * toggleSidebar + exportData/importData).
+ *
+ * Sample values are neutral placeholders that mirror the reference PDF's format.
+ */
+export const useBiodataStore = defineStore('biodata', {
+  state: () => ({
+    // Personal Information
+    personalInfo: {
+      fullName: 'Md. Rahman Ahmed',
+      dateOfBirth: '2000-04-07',
+      height: `5'8"`,
+      weight: '68 kg',
+      complexion: 'Fair',
+      bloodGroup: 'O+',
+      religion: 'Islam',
+      hobby: 'Reading, Travelling',
+      presentAddress: 'Mohammadpur, Dhaka - 1207',
+      permanentAddress: 'Village: Rampur, District: Comilla',
+      nationality: 'Bangladeshi',
+      motherTongue: 'Bengali',
+      sect: 'Sunni',
+      maritalStatus: 'Unmarried',
+      photo: ''
+    },
+
+    // Educational Qualification (table rows)
+    education: [
+      { id: uuidv4(), degree: 'BSc in Software Engineering', year: '2023', institute: 'Daffodil International University', result: '3.82' },
+      { id: uuidv4(), degree: 'HSC', year: '2018', institute: 'Dhaka College', result: '5.00' }
+    ],
+
+    // Professional Details
+    professional: {
+      profession: 'Software Engineer',
+      company: 'WebAlive',
+      experience: '2 years',
+      income: ''
+    },
+
+    // Family Information
+    family: {
+      father: { name: 'Abdul Karim', profession: 'Business', education: 'SSC' },
+      mother: { name: 'Ayesha Begum', profession: 'Housewife', education: 'HSC' },
+      siblings: [
+        { id: uuidv4(), name: 'Karima Akter', relation: 'Sister', occupation: 'Student', maritalStatus: 'Unmarried' }
+      ],
+      // Chacha
+      paternalUncles: [
+        { id: uuidv4(), name: 'Abdur Rahim', occupation: 'Business' }
+      ],
+      // Mama
+      maternalUncles: [
+        { id: uuidv4(), name: 'Harun or Rashid', occupation: 'Business' }
+      ],
+      homeDistrict: 'Comilla'
+    },
+
+    // Contact
+    contact: {
+      phone: '01XXXXXXXXX',
+      guardianPhone: '',
+      email: ''
+    },
+
+    // Partner Preferences (optional section)
+    preferences: {
+      expectations: ''
+    },
+
+    // Biodata Settings
+    settings: {
+      template: 'elegant',
+      colorScheme: {
+        primary: '#a61c3c',
+        secondary: '#7a142c',
+        accent: '#d4a017',
+        text: '#1f2937',
+        background: '#ffffff'
+      },
+      font: 'Inter',
+      fontSize: 14,
+      showPhoto: false,
+      sectionsOrder: [
+        'personalInfo',
+        'education',
+        'professional',
+        'family',
+        'contact',
+        'preferences'
+      ],
+      sectionsEnabled: {
+        personalInfo: true,
+        education: true,
+        professional: true,
+        family: true,
+        contact: true,
+        preferences: false
+      },
+      // Toggleable optional fields (extras beyond the core PDF format)
+      fieldsEnabled: {
+        nationality: false,
+        motherTongue: false,
+        sect: false,
+        maritalStatus: true,
+        income: false,
+        siblings: true,
+        homeDistrict: false,
+        guardianPhone: false,
+        email: false
+      }
+    },
+
+    // UI State (interface required by DocumentEditorShell)
+    ui: {
+      currentSection: 'personalInfo',
+      previewMode: false,
+      sidebarCollapsed: false,
+      theme: 'light'
+    }
+  }),
+
+  getters: {
+    fullName: (state) => state.personalInfo.fullName || 'Biodata'
+  },
+
+  actions: {
+    // Personal Info
+    updatePersonalInfo(field, value) {
+      this.personalInfo[field] = value
+    },
+
+    // Education (table rows)
+    addEducation(row) {
+      this.education.push({ id: uuidv4(), degree: '', year: '', institute: '', result: '', ...row })
+    },
+    updateEducation(id, updates) {
+      const index = this.education.findIndex(row => row.id === id)
+      if (index !== -1) {
+        this.education[index] = { ...this.education[index], ...updates }
+      }
+    },
+    removeEducation(id) {
+      this.education = this.education.filter(row => row.id !== id)
+    },
+
+    // Professional
+    updateProfessional(field, value) {
+      this.professional[field] = value
+    },
+
+    // Family — parents
+    updateParent(parent, field, value) {
+      if (this.family[parent]) {
+        this.family[parent][field] = value
+      }
+    },
+    updateFamilyField(field, value) {
+      this.family[field] = value
+    },
+
+    // Family — siblings
+    addSibling(sibling) {
+      this.family.siblings.push({ id: uuidv4(), name: '', relation: 'Brother', occupation: '', maritalStatus: '', ...sibling })
+    },
+    updateSibling(id, updates) {
+      const index = this.family.siblings.findIndex(item => item.id === id)
+      if (index !== -1) {
+        this.family.siblings[index] = { ...this.family.siblings[index], ...updates }
+      }
+    },
+    removeSibling(id) {
+      this.family.siblings = this.family.siblings.filter(item => item.id !== id)
+    },
+
+    // Family — paternal uncles (Chacha)
+    addPaternalUncle(uncle) {
+      this.family.paternalUncles.push({ id: uuidv4(), name: '', occupation: '', ...uncle })
+    },
+    updatePaternalUncle(id, updates) {
+      const index = this.family.paternalUncles.findIndex(item => item.id === id)
+      if (index !== -1) {
+        this.family.paternalUncles[index] = { ...this.family.paternalUncles[index], ...updates }
+      }
+    },
+    removePaternalUncle(id) {
+      this.family.paternalUncles = this.family.paternalUncles.filter(item => item.id !== id)
+    },
+
+    // Family — maternal uncles (Mama)
+    addMaternalUncle(uncle) {
+      this.family.maternalUncles.push({ id: uuidv4(), name: '', occupation: '', ...uncle })
+    },
+    updateMaternalUncle(id, updates) {
+      const index = this.family.maternalUncles.findIndex(item => item.id === id)
+      if (index !== -1) {
+        this.family.maternalUncles[index] = { ...this.family.maternalUncles[index], ...updates }
+      }
+    },
+    removeMaternalUncle(id) {
+      this.family.maternalUncles = this.family.maternalUncles.filter(item => item.id !== id)
+    },
+
+    // Contact
+    updateContact(field, value) {
+      this.contact[field] = value
+    },
+
+    // Preferences
+    updatePreferences(field, value) {
+      this.preferences[field] = value
+    },
+
+    // Settings
+    updateSettings(updates) {
+      this.settings = { ...this.settings, ...updates }
+    },
+    updateColorScheme(colors) {
+      this.settings.colorScheme = { ...this.settings.colorScheme, ...colors }
+    },
+    reorderSections(newOrder) {
+      this.settings.sectionsOrder = newOrder
+    },
+    toggleSection(section) {
+      this.settings.sectionsEnabled[section] = !this.settings.sectionsEnabled[section]
+    },
+    toggleField(field) {
+      this.settings.fieldsEnabled[field] = !this.settings.fieldsEnabled[field]
+    },
+
+    // UI (interface required by DocumentEditorShell)
+    setCurrentSection(section) {
+      this.ui.currentSection = section
+    },
+    togglePreviewMode() {
+      this.ui.previewMode = !this.ui.previewMode
+    },
+    toggleSidebar() {
+      this.ui.sidebarCollapsed = !this.ui.sidebarCollapsed
+    },
+    setTheme(theme) {
+      this.ui.theme = theme
+    },
+
+    // Import / Export
+    exportData() {
+      return JSON.stringify({
+        personalInfo: this.personalInfo,
+        education: this.education,
+        professional: this.professional,
+        family: this.family,
+        contact: this.contact,
+        preferences: this.preferences,
+        settings: this.settings
+      }, null, 2)
+    },
+    importData(jsonData) {
+      try {
+        const data = JSON.parse(jsonData)
+        if (data.personalInfo) this.personalInfo = data.personalInfo
+        if (data.education) this.education = data.education
+        if (data.professional) this.professional = data.professional
+        if (data.family) this.family = data.family
+        if (data.contact) this.contact = data.contact
+        if (data.preferences) this.preferences = data.preferences
+        if (data.settings) this.settings = { ...this.settings, ...data.settings }
+        return true
+      } catch (error) {
+        console.error('Error importing biodata:', error)
+        return false
+      }
+    },
+
+    resetToDefaults() {
+      this.$reset()
+    }
+  }
+})

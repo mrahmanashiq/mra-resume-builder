@@ -1,23 +1,23 @@
 <template>
-  <DocumentEditorShell :config="resumeConfig" />
+  <DocumentEditorShell :config="biodataConfig" />
 </template>
 
 <script>
 import { defineAsyncComponent } from 'vue'
-import { resumeConfig } from '../documents/resume.config'
+import { biodataConfig } from '../documents/biodata.config'
 
 const DocumentEditorShell = defineAsyncComponent(() =>
   import('../components/editor/DocumentEditorShell.vue')
 )
 
 export default {
-  name: 'Editor',
+  name: 'BiodataEditor',
   components: {
     DocumentEditorShell
   },
   data() {
     return {
-      resumeConfig
+      biodataConfig
     }
   }
 }

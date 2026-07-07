@@ -13,9 +13,9 @@
             <router-link to="/templates" class="btn-outline">
               Templates
             </router-link>
-            <router-link to="/editor" class="btn-primary">
+            <a href="#choose" class="btn-primary">
               Get Started
-            </router-link>
+            </a>
           </div>
         </div>
       </div>
@@ -35,13 +35,48 @@
             Choose from professional templates and customize everything to match your style.
           </p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center animate-bounce-in">
-            <router-link to="/editor" class="btn-primary text-lg px-8 py-3">
+            <a href="#choose" class="btn-primary text-lg px-8 py-3">
               Start Building Now
-            </router-link>
+            </a>
             <router-link to="/templates" class="btn-outline text-lg px-8 py-3">
               Browse Templates
             </router-link>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Document Type Launcher -->
+    <section id="choose" class="py-16 bg-white border-t border-gray-100">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4">What do you want to build?</h2>
+          <p class="text-lg text-gray-600">
+            One builder for résumés, marriage biodata, and more — coming step by step.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <component :is="doc.available ? 'router-link' : 'div'"
+                     v-for="doc in documentCatalog"
+                     :key="doc.type"
+                     :to="doc.available ? doc.route : undefined"
+                     :class="['relative rounded-xl shadow-sm border overflow-hidden transition-all duration-300',
+                              doc.available
+                                ? 'border-gray-200 hover:shadow-lg cursor-pointer'
+                                : 'border-gray-200 opacity-70 cursor-not-allowed']">
+            <div class="h-32 bg-gradient-to-br" :class="doc.gradient"></div>
+            <div class="p-6">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-xl font-semibold text-gray-900">{{ doc.name }}</h3>
+                <span v-if="!doc.available"
+                      class="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                  Coming soon
+                </span>
+              </div>
+              <p class="text-gray-600">{{ doc.description }}</p>
+            </div>
+          </component>
         </div>
       </div>
     </section>
@@ -153,6 +188,7 @@
 
 <script>
 import { PaintBrushIcon, DocumentTextIcon, CloudArrowDownIcon, ShareIcon, EyeIcon, PrinterIcon } from '@heroicons/vue/24/outline'
+import { documentCatalog } from '../documents/registry'
 
 export default {
   name: 'Home',
@@ -166,6 +202,7 @@ export default {
   },
   data() {
     return {
+      documentCatalog,
       features: [
         {
           id: 1,
