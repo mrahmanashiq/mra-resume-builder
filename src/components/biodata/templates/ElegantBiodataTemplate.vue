@@ -472,7 +472,9 @@ export default {
   background: var(--primary);
   color: #ffffff;
   font-weight: 700;
-  padding: 9px 48px 9px 18px;
+  height: 34px;
+  line-height: 34px;
+  padding: 0 48px 0 18px;
   border-radius: 6px 24px 24px 6px;
   margin-bottom: 16px;
   display: inline-block;
