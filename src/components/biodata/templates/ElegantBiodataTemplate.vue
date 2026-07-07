@@ -11,13 +11,18 @@
         <img :src="personalInfo.photo" alt="Photo" class="biodata-photo">
       </div>
       <div v-if="showContactCard" class="contact-card">
-        <div class="contact-card-label">Contact Number</div>
-        <div class="contact-card-number">{{ contact.phone }}</div>
+        <div class="contact-card-title">Contact Information</div>
+        <div v-if="contact.phone" class="contact-card-line">
+          <span class="contact-card-key">Phone</span>
+          <span class="contact-card-val contact-card-phone">{{ contact.phone }}</span>
+        </div>
         <div v-if="settings.fieldsEnabled.guardianPhone && contact.guardianPhone" class="contact-card-line">
-          <span class="contact-card-key">Guardian:</span> {{ contact.guardianPhone }}
+          <span class="contact-card-key">Guardian</span>
+          <span class="contact-card-val">{{ contact.guardianPhone }}</span>
         </div>
         <div v-if="settings.fieldsEnabled.email && contact.email" class="contact-card-line">
-          <span class="contact-card-key">Email:</span> {{ contact.email }}
+          <span class="contact-card-key">Email</span>
+          <span class="contact-card-val">{{ contact.email }}</span>
         </div>
       </div>
     </div>
@@ -84,34 +89,42 @@
       <section v-else-if="sectionId === 'family'" class="biodata-section print-avoid-break">
         <div class="section-bar">Family Information</div>
 
-        <div class="info-grid">
-          <template v-if="family.father.name">
-            <div class="info-label">Father</div>
-            <div class="info-value info-strong">{{ family.father.name }}</div>
-          </template>
-          <template v-if="family.father.profession">
-            <div class="info-label">Profession</div>
-            <div class="info-value">{{ family.father.profession }}</div>
-          </template>
-          <template v-if="family.father.education">
-            <div class="info-label">Education</div>
-            <div class="info-value">{{ family.father.education }}</div>
-          </template>
-        </div>
+        <div class="parents-grid">
+          <div class="parent-block">
+            <div class="parent-heading">Father</div>
+            <div class="parent-grid">
+              <template v-if="family.father.name">
+                <div class="info-label">Name</div>
+                <div class="info-value info-strong">{{ family.father.name }}</div>
+              </template>
+              <template v-if="family.father.profession">
+                <div class="info-label">Profession</div>
+                <div class="info-value">{{ family.father.profession }}</div>
+              </template>
+              <template v-if="family.father.education">
+                <div class="info-label">Education</div>
+                <div class="info-value">{{ family.father.education }}</div>
+              </template>
+            </div>
+          </div>
 
-        <div class="info-grid family-gap">
-          <template v-if="family.mother.name">
-            <div class="info-label">Mother</div>
-            <div class="info-value info-strong">{{ family.mother.name }}</div>
-          </template>
-          <template v-if="family.mother.profession">
-            <div class="info-label">Profession</div>
-            <div class="info-value">{{ family.mother.profession }}</div>
-          </template>
-          <template v-if="family.mother.education">
-            <div class="info-label">Education</div>
-            <div class="info-value">{{ family.mother.education }}</div>
-          </template>
+          <div class="parent-block">
+            <div class="parent-heading">Mother</div>
+            <div class="parent-grid">
+              <template v-if="family.mother.name">
+                <div class="info-label">Name</div>
+                <div class="info-value info-strong">{{ family.mother.name }}</div>
+              </template>
+              <template v-if="family.mother.profession">
+                <div class="info-label">Profession</div>
+                <div class="info-value">{{ family.mother.profession }}</div>
+              </template>
+              <template v-if="family.mother.education">
+                <div class="info-label">Education</div>
+                <div class="info-value">{{ family.mother.education }}</div>
+              </template>
+            </div>
+          </div>
         </div>
 
         <!-- Siblings -->
@@ -295,34 +308,45 @@ export default {
   border: 2px solid var(--primary);
   border-radius: 8px;
   padding: 10px 12px;
-  text-align: center;
+  text-align: left;
 }
 
-.contact-card-label {
-  font-weight: 700;
-  color: #4b5563;
-  font-size: 0.78em;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.contact-card-number {
+.contact-card-title {
   font-weight: 700;
   color: var(--primary);
-  font-size: 1.05em;
+  font-size: 0.8em;
+  text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-top: 3px;
+  text-align: center;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .contact-card-line {
-  font-size: 0.78em;
-  color: #4b5563;
-  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 6px;
   word-break: break-word;
 }
 
 .contact-card-key {
   font-weight: 600;
+  color: #6b7280;
+  font-size: 0.72em;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.contact-card-val {
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.9em;
+}
+
+.contact-card-phone {
+  color: var(--primary);
+  letter-spacing: 0.5px;
 }
 
 .pad-for-side {
@@ -367,6 +391,28 @@ export default {
 
 .family-gap {
   margin-top: 16px;
+}
+
+.parents-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding-left: 8px;
+}
+
+.parent-heading {
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.parent-grid {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  row-gap: 8px;
+  column-gap: 10px;
 }
 
 .edu-table {
@@ -464,6 +510,11 @@ export default {
 
   .info-grid {
     grid-template-columns: 140px 1fr;
+  }
+
+  .parents-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 
   .uncles-grid {
