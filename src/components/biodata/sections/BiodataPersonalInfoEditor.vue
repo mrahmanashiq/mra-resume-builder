@@ -57,11 +57,24 @@
     <div class="grid grid-cols-2 gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Height</label>
-        <input type="text"
-               :value="biodataStore.personalInfo.height"
-               @input="update('height', $event.target.value)"
-               class="input-field"
-               placeholder="5'8&quot;">
+        <div class="flex gap-2">
+          <div class="relative flex-1 min-w-0">
+            <input type="number" min="0" max="8"
+                   :value="biodataStore.personalInfo.heightFeet"
+                   @input="update('heightFeet', $event.target.value)"
+                   class="input-field pr-7"
+                   placeholder="5">
+            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none">ft</span>
+          </div>
+          <div class="relative flex-1 min-w-0">
+            <input type="number" min="0" max="11"
+                   :value="biodataStore.personalInfo.heightInches"
+                   @input="update('heightInches', $event.target.value)"
+                   class="input-field pr-7"
+                   placeholder="8">
+            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none">in</span>
+          </div>
+        </div>
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Weight</label>

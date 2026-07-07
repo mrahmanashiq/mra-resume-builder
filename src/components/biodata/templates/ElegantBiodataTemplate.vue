@@ -308,7 +308,10 @@ export default {
       const rawWeight = (info.weight || '').toString().trim()
       // Append "kg" only when the value is a bare number, so pre-filled "68 kg" won't become "68 kg kg".
       const weightText = rawWeight ? (/^[\d.]+$/.test(rawWeight) ? `${rawWeight} kg` : rawWeight) : ''
-      const heightWeight = [info.height, weightText].filter(Boolean).join(' | ')
+      const ft = (info.heightFeet ?? '').toString().trim()
+      const inch = (info.heightInches ?? '').toString().trim()
+      const heightText = ft ? `${ft}'${inch || 0}"` : (inch ? `${inch}"` : '')
+      const heightWeight = [heightText, weightText].filter(Boolean).join(' | ')
       const rows = [
         { label: 'Full Name', value: info.fullName },
         { label: 'Date of Birth', value: info.dateOfBirth },
