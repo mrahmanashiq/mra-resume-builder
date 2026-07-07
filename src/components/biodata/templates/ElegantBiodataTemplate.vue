@@ -83,11 +83,11 @@
         <div class="section-bar">Professional Details</div>
         <ul class="exp-list">
           <li v-for="exp in professionalExperiences" :key="exp.id" class="exp-line">
-            <span class="exp-company">{{ exp.company }}</span>
-            <template v-if="exp.position"><span class="exp-sep"> — </span><span class="exp-position">{{ exp.position }}</span></template>
-            <span v-if="exp.location" class="exp-dates"> · {{ exp.location }}</span>
-            <span v-if="exp.type" class="exp-dates"> · {{ exp.type }}</span>
-            <span v-if="expDates(exp)" class="exp-dates"> · {{ expDates(exp) }}</span>
+            <div class="exp-main">
+              <span class="exp-company">{{ exp.company }}</span>
+              <template v-if="exp.position"><span class="exp-sep"> — </span><span class="exp-position">{{ exp.position }}</span></template>
+            </div>
+            <div v-if="expMeta(exp)" class="exp-meta">{{ expMeta(exp) }}</div>
           </li>
         </ul>
         <div v-if="settings.fieldsEnabled.income && professional.income" class="info-grid income-row">
@@ -281,6 +281,9 @@ export default {
       const end = exp.current ? 'Present' : this.formatMonth(exp.endDate)
       if (start && end) return `${start} – ${end}`
       return start || end || ''
+    },
+    expMeta(exp) {
+      return [exp.location, exp.type, this.expDates(exp)].filter(Boolean).join(' · ')
     }
   }
 }
@@ -438,8 +441,16 @@ export default {
 }
 
 .exp-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
   padding: 3px 0;
   line-height: 1.45;
+}
+
+.exp-main {
+  min-width: 0;
 }
 
 .exp-company {
@@ -455,9 +466,12 @@ export default {
   color: #4b5563;
 }
 
-.exp-dates {
+.exp-meta {
   color: #6b7280;
   font-size: 0.9em;
+  text-align: right;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .income-row {
@@ -603,6 +617,16 @@ export default {
 
   .uncles-grid {
     grid-template-columns: 1fr;
+  }
+
+  .exp-line {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .exp-meta {
+    text-align: left;
+    white-space: normal;
   }
 }
 </style>
