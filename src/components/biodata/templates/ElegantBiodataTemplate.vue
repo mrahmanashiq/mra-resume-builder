@@ -141,6 +141,10 @@
                 <div class="info-label">Education</div>
                 <div class="info-value">{{ family.father.education }}</div>
               </template>
+              <template v-if="family.father.phone">
+                <div class="info-label">Contact Number</div>
+                <div class="info-value">{{ family.father.phone }}</div>
+              </template>
             </div>
           </div>
 
@@ -159,6 +163,10 @@
                 <div class="info-label">Education</div>
                 <div class="info-value">{{ family.mother.education }}</div>
               </template>
+              <template v-if="family.mother.phone">
+                <div class="info-label">Contact Number</div>
+                <div class="info-value">{{ family.mother.phone }}</div>
+              </template>
             </div>
           </div>
         </div>
@@ -168,6 +176,7 @@
           <div class="family-heading">Siblings</div>
           <ul v-if="family.siblings.length" class="family-list">
             <li v-for="sib in family.siblings" :key="sib.id">
+              <span class="fam-bullet">•</span>
               <span class="family-name">{{ sib.name }}</span>
               <span v-if="sib.relation" class="family-meta"> — {{ sib.relation }}</span>
               <span v-if="sib.occupation" class="family-meta">, {{ sib.occupation }}</span>
@@ -183,6 +192,7 @@
             <div class="family-heading">Uncles (Chacha)</div>
             <ul class="family-list">
               <li v-for="u in family.paternalUncles" :key="u.id">
+                <span class="fam-bullet">•</span>
                 <span class="family-name">{{ u.name }}</span>
                 <span v-if="u.occupation" class="family-meta"> - {{ u.occupation }}</span>
               </li>
@@ -192,6 +202,7 @@
             <div class="family-heading">Uncles (Mama)</div>
             <ul class="family-list">
               <li v-for="u in family.maternalUncles" :key="u.id">
+                <span class="fam-bullet">•</span>
                 <span class="family-name">{{ u.name }}</span>
                 <span v-if="u.occupation" class="family-meta"> - {{ u.occupation }}</span>
               </li>
@@ -199,16 +210,9 @@
           </div>
         </div>
 
-        <div v-if="(settings.fieldsEnabled.homeDistrict && family.homeDistrict) || family.phone"
-             class="info-grid family-gap">
-          <template v-if="settings.fieldsEnabled.homeDistrict && family.homeDistrict">
-            <div class="info-label">Home District</div>
-            <div class="info-value">{{ family.homeDistrict }}</div>
-          </template>
-          <template v-if="family.phone">
-            <div class="info-label">Contact Number</div>
-            <div class="info-value">{{ family.phone }}</div>
-          </template>
+        <div v-if="settings.fieldsEnabled.homeDistrict && family.homeDistrict" class="info-grid family-gap">
+          <div class="info-label">Home District</div>
+          <div class="info-value">{{ family.homeDistrict }}</div>
         </div>
       </section>
 
@@ -595,7 +599,7 @@ export default {
 
 .parent-grid {
   display: grid;
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: 120px 1fr;
   row-gap: 8px;
   column-gap: 10px;
 }
@@ -631,8 +635,13 @@ export default {
 }
 
 .family-list {
-  list-style: disc;
-  padding-left: 20px;
+  list-style: none;
+  padding-left: 8px;
+}
+
+.fam-bullet {
+  color: var(--primary);
+  margin-right: 7px;
 }
 
 .family-name {

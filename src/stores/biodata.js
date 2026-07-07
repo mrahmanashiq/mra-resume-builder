@@ -53,8 +53,8 @@ export const useBiodataStore = defineStore('biodata', {
 
     // Family Information
     family: {
-      father: { name: "Father's Name", profession: 'Profession', education: 'Education' },
-      mother: { name: "Mother's Name", profession: 'Homemaker', education: 'Education' },
+      father: { name: "Father's Name", profession: 'Profession', education: 'Education', phone: '01XXX-XXXXXX' },
+      mother: { name: "Mother's Name", profession: 'Homemaker', education: 'Education', phone: '' },
       siblings: [
         { id: uuidv4(), name: "Sibling's Name", relation: 'Brother / Sister', occupation: 'Occupation', maritalStatus: 'Unmarried' }
       ],
@@ -66,8 +66,7 @@ export const useBiodataStore = defineStore('biodata', {
       maternalUncles: [
         { id: uuidv4(), name: "Uncle's Name", occupation: 'Occupation' }
       ],
-      homeDistrict: 'District Name',
-      phone: '01XXX-XXXXXX'
+      homeDistrict: 'District Name'
     },
 
     // Contact
