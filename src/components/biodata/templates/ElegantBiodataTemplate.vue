@@ -24,6 +24,22 @@
           <span class="contact-card-key">Email</span>
           <span class="contact-card-val">{{ contact.email }}</span>
         </div>
+        <div v-if="settings.fieldsEnabled.website && contact.website" class="contact-card-line">
+          <span class="contact-card-key">Website</span>
+          <span class="contact-card-val">{{ contact.website }}</span>
+        </div>
+        <div v-if="settings.fieldsEnabled.facebook && contact.facebook" class="contact-card-line">
+          <span class="contact-card-key">Facebook</span>
+          <span class="contact-card-val">{{ contact.facebook }}</span>
+        </div>
+        <div v-if="settings.fieldsEnabled.instagram && contact.instagram" class="contact-card-line">
+          <span class="contact-card-key">Instagram</span>
+          <span class="contact-card-val">{{ contact.instagram }}</span>
+        </div>
+        <div v-if="settings.fieldsEnabled.linkedin && contact.linkedin" class="contact-card-line">
+          <span class="contact-card-key">LinkedIn</span>
+          <span class="contact-card-val">{{ contact.linkedin }}</span>
+        </div>
       </div>
     </div>
 
@@ -208,7 +224,17 @@ export default {
       return this.settings.sectionsOrder.filter(id => this.settings.sectionsEnabled[id])
     },
     showContactCard() {
-      return this.settings.sectionsEnabled.contact && !!this.contact.phone
+      const c = this.contact
+      const f = this.settings.fieldsEnabled
+      return this.settings.sectionsEnabled.contact && !!(
+        c.phone ||
+        (f.guardianPhone && c.guardianPhone) ||
+        (f.email && c.email) ||
+        (f.website && c.website) ||
+        (f.facebook && c.facebook) ||
+        (f.instagram && c.instagram) ||
+        (f.linkedin && c.linkedin)
+      )
     },
     hasSide() {
       return (this.settings.showPhoto && !!this.personalInfo.photo) || this.showContactCard
@@ -291,24 +317,27 @@ export default {
 }
 
 .biodata-photo-wrap {
+  width: 100%;
   margin: 0;
 }
 
 .biodata-photo {
-  width: 130px;
-  height: 160px;
+  width: 100%;
+  height: 175px;
   object-fit: cover;
-  border: 3px solid var(--primary);
-  border-radius: 4px;
+  border: 2px solid var(--primary);
+  border-radius: 6px;
   display: block;
+  box-sizing: border-box;
 }
 
 .contact-card {
   width: 100%;
   border: 2px solid var(--primary);
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 10px 12px;
   text-align: left;
+  box-sizing: border-box;
 }
 
 .contact-card-title {
@@ -502,6 +531,15 @@ export default {
   .contact-card {
     width: auto;
     min-width: 180px;
+  }
+
+  .biodata-photo-wrap {
+    width: auto;
+  }
+
+  .biodata-photo {
+    width: 150px;
+    height: 160px;
   }
 
   .pad-for-side {

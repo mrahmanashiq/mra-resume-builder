@@ -201,7 +201,11 @@ export default {
         { id: 'siblings', name: 'Siblings' },
         { id: 'homeDistrict', name: 'Home District' },
         { id: 'guardianPhone', name: "Guardian's Contact" },
-        { id: 'email', name: 'Email' }
+        { id: 'email', name: 'Email' },
+        { id: 'website', name: 'Website' },
+        { id: 'facebook', name: 'Facebook' },
+        { id: 'instagram', name: 'Instagram' },
+        { id: 'linkedin', name: 'LinkedIn' }
       ]
     }
   },

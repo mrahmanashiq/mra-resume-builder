@@ -65,7 +65,11 @@ export const useBiodataStore = defineStore('biodata', {
     contact: {
       phone: '01XXX-XXXXXX',
       guardianPhone: '',
-      email: ''
+      email: '',
+      website: '',
+      facebook: '',
+      instagram: '',
+      linkedin: ''
     },
 
     // Partner Preferences (optional section)
@@ -112,7 +116,11 @@ export const useBiodataStore = defineStore('biodata', {
         siblings: true,
         homeDistrict: false,
         guardianPhone: false,
-        email: false
+        email: false,
+        website: false,
+        facebook: false,
+        instagram: false,
+        linkedin: false
       }
     },
 
