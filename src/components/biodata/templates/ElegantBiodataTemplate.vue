@@ -473,13 +473,18 @@ export default {
   color: #ffffff;
   font-weight: 700;
   line-height: 1;
-  /* Asymmetric padding: html2canvas draws text lower than the browser, so a
-     smaller top / larger bottom padding centers the text in the exported PDF. */
-  padding: 4px 48px 17px 18px;
+  padding: 11px 48px 11px 18px;
   border-radius: 6px 24px 24px 6px;
   margin-bottom: 16px;
   display: inline-block;
   min-width: 260px;
+}
+
+/* During PDF export only: html2canvas draws text lower than the browser, so
+   shift the padding to keep the bar text vertically centered in the PDF. */
+.pdf-export .section-bar {
+  padding-top: 4px;
+  padding-bottom: 17px;
 }
 
 .info-grid {
