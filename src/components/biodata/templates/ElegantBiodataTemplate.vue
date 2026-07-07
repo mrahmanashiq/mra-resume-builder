@@ -198,6 +198,7 @@
                 <span class="fam-bullet">•</span>
                 <span class="family-name">{{ u.name }}</span>
                 <span v-if="u.occupation" class="family-meta"> - {{ u.occupation }}</span>
+                <span v-if="u.location" class="family-meta"> - {{ u.location }}</span>
               </li>
             </ul>
           </div>
@@ -208,6 +209,7 @@
                 <span class="fam-bullet">•</span>
                 <span class="family-name">{{ u.name }}</span>
                 <span v-if="u.occupation" class="family-meta"> - {{ u.occupation }}</span>
+                <span v-if="u.location" class="family-meta"> - {{ u.location }}</span>
               </li>
             </ul>
           </div>

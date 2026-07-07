@@ -60,11 +60,11 @@ export const useBiodataStore = defineStore('biodata', {
       ],
       // Chacha
       paternalUncles: [
-        { id: uuidv4(), name: "Uncle's Name", occupation: 'Occupation' }
+        { id: uuidv4(), name: "Uncle's Name", occupation: 'Occupation', location: '' }
       ],
       // Mama
       maternalUncles: [
-        { id: uuidv4(), name: "Uncle's Name", occupation: 'Occupation' }
+        { id: uuidv4(), name: "Uncle's Name", occupation: 'Occupation', location: '' }
       ],
       homeDistrict: 'District Name'
     },
@@ -219,7 +219,7 @@ export const useBiodataStore = defineStore('biodata', {
 
     // Family — paternal uncles (Chacha)
     addPaternalUncle(uncle) {
-      this.family.paternalUncles.push({ id: uuidv4(), name: '', occupation: '', ...uncle })
+      this.family.paternalUncles.push({ id: uuidv4(), name: '', occupation: '', location: '', ...uncle })
     },
     updatePaternalUncle(id, updates) {
       const index = this.family.paternalUncles.findIndex(item => item.id === id)
@@ -233,7 +233,7 @@ export const useBiodataStore = defineStore('biodata', {
 
     // Family — maternal uncles (Mama)
     addMaternalUncle(uncle) {
-      this.family.maternalUncles.push({ id: uuidv4(), name: '', occupation: '', ...uncle })
+      this.family.maternalUncles.push({ id: uuidv4(), name: '', occupation: '', location: '', ...uncle })
     },
     updateMaternalUncle(id, updates) {
       const index = this.family.maternalUncles.findIndex(item => item.id === id)

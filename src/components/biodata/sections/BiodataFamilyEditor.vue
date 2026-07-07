@@ -155,6 +155,11 @@
                  @input="updatePaternalUncle(uncle.id, 'occupation', $event.target.value)"
                  class="input-field"
                  placeholder="Occupation">
+          <input type="text"
+                 :value="uncle.location"
+                 @input="updatePaternalUncle(uncle.id, 'location', $event.target.value)"
+                 class="input-field"
+                 placeholder="Location (optional)">
         </div>
       </div>
     </div>
@@ -187,6 +192,11 @@
                  @input="updateMaternalUncle(uncle.id, 'occupation', $event.target.value)"
                  class="input-field"
                  placeholder="Occupation">
+          <input type="text"
+                 :value="uncle.location"
+                 @input="updateMaternalUncle(uncle.id, 'location', $event.target.value)"
+                 class="input-field"
+                 placeholder="Location (optional)">
         </div>
       </div>
     </div>
