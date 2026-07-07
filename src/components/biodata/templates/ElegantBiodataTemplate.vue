@@ -85,6 +85,8 @@
           <li v-for="exp in professionalExperiences" :key="exp.id" class="exp-line">
             <span class="exp-company">{{ exp.company }}</span>
             <template v-if="exp.position"><span class="exp-sep"> — </span><span class="exp-position">{{ exp.position }}</span></template>
+            <span v-if="exp.location" class="exp-dates"> · {{ exp.location }}</span>
+            <span v-if="exp.type" class="exp-dates"> · {{ exp.type }}</span>
             <span v-if="expDates(exp)" class="exp-dates"> · {{ expDates(exp) }}</span>
           </li>
         </ul>

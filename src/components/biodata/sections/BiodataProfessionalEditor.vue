@@ -19,7 +19,7 @@
           </button>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Company / Organization</label>
             <input type="text"
@@ -36,32 +36,47 @@
                    class="input-field"
                    placeholder="Software Engineer">
           </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">From</label>
-            <input type="month"
-                   :value="exp.startDate"
-                   @input="update(exp.id, 'startDate', $event.target.value)"
-                   class="input-field">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+            <input type="text"
+                   :value="exp.location"
+                   @input="update(exp.id, 'location', $event.target.value)"
+                   class="input-field"
+                   placeholder="Dhaka, Bangladesh">
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">To</label>
-            <input type="month"
-                   :value="exp.endDate"
-                   @input="update(exp.id, 'endDate', $event.target.value)"
-                   :disabled="exp.current"
-                   class="input-field disabled:bg-gray-100 disabled:text-gray-400">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Type</label>
+            <select :value="exp.type"
+                    @change="update(exp.id, 'type', $event.target.value)"
+                    class="input-field">
+              <option value="">Select</option>
+              <option v-for="t in workTypes" :key="t" :value="t">{{ t }}</option>
+            </select>
           </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">From</label>
+              <input type="month"
+                     :value="exp.startDate"
+                     @input="update(exp.id, 'startDate', $event.target.value)"
+                     class="input-field">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">To</label>
+              <input type="month"
+                     :value="exp.endDate"
+                     @input="update(exp.id, 'endDate', $event.target.value)"
+                     :disabled="exp.current"
+                     class="input-field disabled:bg-gray-100 disabled:text-gray-400">
+            </div>
+          </div>
+          <label class="flex items-center space-x-2 text-sm text-gray-700">
+            <input type="checkbox"
+                   :checked="exp.current"
+                   @change="update(exp.id, 'current', $event.target.checked)">
+            <span>Currently working here</span>
+          </label>
         </div>
-
-        <label class="flex items-center space-x-2 mt-3 text-sm text-gray-700">
-          <input type="checkbox"
-                 :checked="exp.current"
-                 @change="update(exp.id, 'current', $event.target.checked)">
-          <span>Currently working here</span>
-        </label>
       </div>
     </div>
 
@@ -103,6 +118,11 @@ export default {
     const biodataStore = useBiodataStore()
     const toast = useToast()
     return { biodataStore, toast }
+  },
+  data() {
+    return {
+      workTypes: ['On-site', 'Remote', 'Hybrid']
+    }
   },
   methods: {
     addExperience() {
