@@ -57,40 +57,38 @@
         <!-- Left Column -->
         <div class="lg:col-span-2 space-y-10">
           
-          <!-- Experience -->
-          <section v-if="resumeStore.settings.sectionsEnabled.experience && resumeStore.experience.length" 
+          <!-- Experience (compact) -->
+          <section v-if="resumeStore.settings.sectionsEnabled.experience && resumeStore.experience.length"
                    class="resume-section">
-            <h3 class="section-title text-2xl font-bold text-blue-600 mb-6 border-b-2 border-blue-600 pb-2">
+            <h3 class="section-title text-xl font-bold text-blue-600 mb-4 border-b-2 border-blue-600 pb-1">
               Professional Experience
             </h3>
-            <div class="space-y-8">
-              <div v-for="exp in resumeStore.sortedExperience" 
-                   :key="exp.id" 
-                   class="relative pl-8 border-l-4 border-blue-200">
-                <div class="absolute -left-2 top-0 w-4 h-4 bg-blue-600 rounded-full"></div>
-                <div class="flex flex-col md:flex-row md:justify-between md:items-start mb-3">
-                  <div>
-                    <h4 class="text-xl font-bold text-gray-900">{{ exp.title }}</h4>
-                    <div class="text-blue-600 font-semibold text-lg">
-                      {{ exp.company }}
-                      <span v-if="exp.location" class="text-gray-600 font-normal"> • {{ exp.location }}</span>
-                    </div>
-                  </div>
-                  <div class="text-gray-600 font-medium mt-1 md:mt-0">
+            <div class="space-y-4">
+              <div v-for="exp in resumeStore.sortedExperience"
+                   :key="exp.id"
+                   class="relative pl-5 border-l-2 border-blue-200 print-avoid-break">
+                <div class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 bg-blue-600 rounded-full"></div>
+                <div class="flex flex-col md:flex-row md:justify-between md:items-baseline gap-x-3">
+                  <h4 class="font-bold text-gray-900 leading-snug">
+                    {{ exp.title }}
+                    <span class="text-blue-600 font-semibold">· {{ exp.company }}</span>
+                    <span v-if="exp.location" class="text-gray-500 font-normal text-sm"> · {{ exp.location }}</span>
+                  </h4>
+                  <div class="text-gray-500 text-sm whitespace-nowrap flex-shrink-0">
                     {{ formatDateRange(exp.startDate, exp.endDate, exp.current) }}
                   </div>
                 </div>
-                
-                <p v-if="exp.description" class="text-gray-700 mb-4 text-lg">{{ exp.description }}</p>
-                
-                <ul v-if="exp.achievements && exp.achievements.length" 
-                    class="space-y-2 text-gray-700">
-                  <li v-for="achievement in exp.achievements" 
-                      :key="achievement" 
+
+                <p v-if="exp.description" class="text-gray-700 text-sm mt-1">{{ exp.description }}</p>
+
+                <ul v-if="exp.achievements && exp.achievements.length"
+                    class="mt-1 space-y-0.5 text-sm text-gray-700">
+                  <li v-for="achievement in exp.achievements"
+                      :key="achievement"
                       v-show="achievement.trim()"
                       class="flex items-start">
-                    <span class="text-blue-500 mr-3 mt-1">▸</span>
-                    <span>{{ achievement }}</span>
+                    <span class="text-blue-500 mr-2 leading-snug">▸</span>
+                    <span class="leading-snug">{{ achievement }}</span>
                   </li>
                 </ul>
               </div>
