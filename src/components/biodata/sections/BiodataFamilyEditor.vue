@@ -175,17 +175,27 @@
       </div>
     </div>
 
-    <!-- Home District -->
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Home District</label>
-      <input type="text"
-             :value="biodataStore.family.homeDistrict"
-             @input="updateFamilyField('homeDistrict', $event.target.value)"
-             class="input-field"
-             placeholder="Comilla">
-      <p class="text-xs text-gray-500 mt-1">
-        Appears on the biodata only when enabled in Settings → Optional Fields.
-      </p>
+    <!-- Home District + Family Contact -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Home District</label>
+        <input type="text"
+               :value="biodataStore.family.homeDistrict"
+               @input="updateFamilyField('homeDistrict', $event.target.value)"
+               class="input-field"
+               placeholder="Comilla">
+        <p class="text-xs text-gray-500 mt-1">
+          Appears only when enabled in Settings → Optional Fields.
+        </p>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Contact Number</label>
+        <input type="tel"
+               :value="biodataStore.family.phone"
+               @input="updateFamilyField('phone', $event.target.value)"
+               class="input-field"
+               placeholder="01XXXXXXXXX">
+      </div>
     </div>
   </div>
 </template>

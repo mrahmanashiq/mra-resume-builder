@@ -164,9 +164,9 @@
         </div>
 
         <!-- Siblings -->
-        <div v-if="settings.fieldsEnabled.siblings && family.siblings.length" class="family-block">
+        <div v-if="settings.fieldsEnabled.siblings" class="family-block">
           <div class="family-heading">Siblings</div>
-          <ul class="family-list">
+          <ul v-if="family.siblings.length" class="family-list">
             <li v-for="sib in family.siblings" :key="sib.id">
               <span class="family-name">{{ sib.name }}</span>
               <span v-if="sib.relation" class="family-meta"> — {{ sib.relation }}</span>
@@ -174,6 +174,7 @@
               <span v-if="sib.maritalStatus" class="family-meta"> ({{ sib.maritalStatus }})</span>
             </li>
           </ul>
+          <div v-else class="sibling-none">None</div>
         </div>
 
         <!-- Uncles -->
@@ -198,18 +199,29 @@
           </div>
         </div>
 
-        <div v-if="settings.fieldsEnabled.homeDistrict && family.homeDistrict" class="info-grid family-gap">
-          <div class="info-label">Home District</div>
-          <div class="info-value">{{ family.homeDistrict }}</div>
+        <div v-if="(settings.fieldsEnabled.homeDistrict && family.homeDistrict) || family.phone"
+             class="info-grid family-gap">
+          <template v-if="settings.fieldsEnabled.homeDistrict && family.homeDistrict">
+            <div class="info-label">Home District</div>
+            <div class="info-value">{{ family.homeDistrict }}</div>
+          </template>
+          <template v-if="family.phone">
+            <div class="info-label">Contact Number</div>
+            <div class="info-value">{{ family.phone }}</div>
+          </template>
         </div>
       </section>
 
       <!-- Contact is rendered in the top-right side column (see .biodata-side) -->
 
       <!-- Partner Preferences -->
-      <section v-else-if="sectionId === 'preferences' && preferences.expectations" class="biodata-section print-avoid-break">
+      <section v-else-if="sectionId === 'preferences' && (preferences.expectations || preferences.preferredBloodGroup)" class="biodata-section print-avoid-break">
         <div class="section-bar">Partner Preferences</div>
-        <p class="pref-text">{{ preferences.expectations }}</p>
+        <div v-if="preferences.preferredBloodGroup" class="info-grid">
+          <div class="info-label">Preferred Blood Group</div>
+          <div class="info-value">{{ preferences.preferredBloodGroup }}</div>
+        </div>
+        <p v-if="preferences.expectations" class="pref-text" :class="{ 'family-gap': preferences.preferredBloodGroup }">{{ preferences.expectations }}</p>
       </section>
     </template>
     </div>
@@ -303,11 +315,13 @@ export default {
         { label: 'Height / Weight', value: heightWeight },
         { label: 'Complexion', value: info.complexion },
         { label: 'Blood Group', value: info.bloodGroup },
-        { label: 'Religion', value: info.religion },
-        { label: 'Present Address', value: info.presentAddress },
-        { label: 'Permanent Address', value: info.permanentAddress }
+        { label: 'Religion', value: info.religion }
       ]
       if (fields.maritalStatus) rows.push({ label: 'Marital Status', value: info.maritalStatus })
+      rows.push(
+        { label: 'Present Address', value: info.presentAddress },
+        { label: 'Permanent Address', value: info.permanentAddress }
+      )
       if (fields.nationality) rows.push({ label: 'Nationality', value: info.nationality })
       if (fields.motherTongue) rows.push({ label: 'Mother Tongue', value: info.motherTongue })
       if (fields.sect) rows.push({ label: 'Sect / Madhab', value: info.sect })
@@ -624,6 +638,11 @@ export default {
 
 .family-meta {
   color: #4b5563;
+}
+
+.sibling-none {
+  color: #4b5563;
+  padding-left: 8px;
 }
 
 .uncles-grid {

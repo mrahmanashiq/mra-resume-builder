@@ -5,8 +5,8 @@
       <div class="w-full px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
           <div class="flex items-center space-x-4">
-            <router-link to="/" class="text-xl font-bold text-primary-600">
-              {{ config.headerTitle }}
+            <router-link to="/" class="flex items-center">
+              <AppLogo :title="config.headerTitle" />
             </router-link>
             <div class="hidden md:flex items-center space-x-2 text-sm text-gray-500">
               <span>Auto-saved</span>
@@ -166,6 +166,7 @@
 <script>
 import { useToast } from 'vue-toastification'
 import { useDocumentExport } from '../../composables/useDocumentExport'
+import AppLogo from '../AppLogo.vue'
 
 import {
   EyeIcon,
@@ -183,6 +184,7 @@ import {
 export default {
   name: 'DocumentEditorShell',
   components: {
+    AppLogo,
     EyeIcon,
     CloudArrowDownIcon,
     ChevronDownIcon,

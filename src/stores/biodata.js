@@ -65,7 +65,8 @@ export const useBiodataStore = defineStore('biodata', {
       maternalUncles: [
         { id: uuidv4(), name: "Uncle's Name", occupation: 'Occupation' }
       ],
-      homeDistrict: 'District Name'
+      homeDistrict: 'District Name',
+      phone: '01XXX-XXXXXX'
     },
 
     // Contact
@@ -81,6 +82,7 @@ export const useBiodataStore = defineStore('biodata', {
 
     // Partner Preferences (optional section)
     preferences: {
+      preferredBloodGroup: '',
       expectations: ''
     },
 

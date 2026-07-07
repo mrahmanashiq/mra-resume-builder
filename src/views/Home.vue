@@ -5,9 +5,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
           <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <h1 class="text-xl font-bold text-primary-600">MRA Resume Builder</h1>
-            </div>
+            <AppLogo title="MRA Builder" />
           </div>
           <div class="flex items-center space-x-4">
             <router-link to="/templates" class="btn-outline">
@@ -189,10 +187,12 @@
 <script>
 import { PaintBrushIcon, DocumentTextIcon, CloudArrowDownIcon, ShareIcon, EyeIcon, PrinterIcon } from '@heroicons/vue/24/outline'
 import { documentCatalog } from '../documents/registry'
+import AppLogo from '../components/AppLogo.vue'
 
 export default {
   name: 'Home',
   components: {
+    AppLogo,
     PaintBrushIcon,
     DocumentTextIcon,
     CloudArrowDownIcon,
