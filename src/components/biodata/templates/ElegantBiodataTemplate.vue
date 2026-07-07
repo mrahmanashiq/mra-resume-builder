@@ -303,11 +303,13 @@ export default {
         { label: 'Height / Weight', value: heightWeight },
         { label: 'Complexion', value: info.complexion },
         { label: 'Blood Group', value: info.bloodGroup },
-        { label: 'Religion', value: info.religion },
-        { label: 'Present Address', value: info.presentAddress },
-        { label: 'Permanent Address', value: info.permanentAddress }
+        { label: 'Religion', value: info.religion }
       ]
       if (fields.maritalStatus) rows.push({ label: 'Marital Status', value: info.maritalStatus })
+      rows.push(
+        { label: 'Present Address', value: info.presentAddress },
+        { label: 'Permanent Address', value: info.permanentAddress }
+      )
       if (fields.nationality) rows.push({ label: 'Nationality', value: info.nationality })
       if (fields.motherTongue) rows.push({ label: 'Mother Tongue', value: info.motherTongue })
       if (fields.sect) rows.push({ label: 'Sect / Madhab', value: info.sect })
