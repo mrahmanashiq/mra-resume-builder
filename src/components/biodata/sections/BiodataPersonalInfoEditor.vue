@@ -21,6 +21,7 @@
         </label>
       </div>
       <p class="text-sm text-gray-600">Click the camera icon to upload a photo</p>
+      <p class="text-xs text-gray-400 mt-1">Recommended: a clear portrait, at least 600 × 800 px. You'll crop it next.</p>
     </div>
     <p v-else class="text-xs text-gray-500">
       Photo is hidden. Enable "Show Photo" in Settings to add one.

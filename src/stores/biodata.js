@@ -92,6 +92,7 @@ export const useBiodataStore = defineStore('biodata', {
       title: 'Marriage Biodata',
       showBismillah: false,
       bismillahStyle: 'bengali',
+      bloodGroupVe: false,
       colorScheme: {
         primary: '#a61c3c',
         secondary: '#7a142c',

@@ -225,7 +225,7 @@
         <div class="section-bar">Partner Preferences</div>
         <div v-if="preferences.preferredBloodGroup" class="info-grid">
           <div class="info-label">Preferred Blood Group</div>
-          <div class="info-value">{{ preferences.preferredBloodGroup }}</div>
+          <div class="info-value">{{ formatBloodGroup(preferences.preferredBloodGroup) }}</div>
         </div>
         <p v-if="preferences.expectations" class="pref-text" :class="{ 'family-gap': preferences.preferredBloodGroup }">{{ preferences.expectations }}</p>
       </section>
@@ -323,7 +323,7 @@ export default {
         { label: 'Date of Birth', value: info.dateOfBirth },
         { label: 'Height / Weight', value: heightWeight },
         { label: 'Complexion', value: info.complexion },
-        { label: 'Blood Group', value: info.bloodGroup },
+        { label: 'Blood Group', value: this.formatBloodGroup(info.bloodGroup) },
         { label: 'Religion', value: info.religion }
       ]
       if (fields.maritalStatus) rows.push({ label: 'Marital Status', value: info.maritalStatus })
@@ -354,6 +354,11 @@ export default {
     },
     expMeta(exp) {
       return [exp.location, exp.type, this.expDates(exp)].filter(Boolean).join(' · ')
+    },
+    formatBloodGroup(bg) {
+      if (!bg) return ''
+      if (!this.settings.bloodGroupVe) return bg
+      return bg.replace(/\+$/, ' (+ve)').replace(/-$/, ' (-ve)')
     }
   }
 }

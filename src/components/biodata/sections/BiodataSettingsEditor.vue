@@ -82,6 +82,18 @@
                         biodataStore.settings.showPhoto ? 'translate-x-7' : 'translate-x-1']"></div>
         </button>
       </div>
+      <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+        <div>
+          <h4 class="font-medium text-gray-900">Blood Group as (+ve) / (-ve)</h4>
+          <p class="text-xs text-gray-600">Show "O+" as "O (+ve)".</p>
+        </div>
+        <button @click="toggleBloodGroupVe"
+                :class="['w-12 h-6 rounded-full flex items-center flex-shrink-0 transition-colors duration-200',
+                         biodataStore.settings.bloodGroupVe ? 'bg-primary-600' : 'bg-gray-300']">
+          <div :class="['w-4 h-4 bg-white rounded-full shadow transition-transform duration-200',
+                        biodataStore.settings.bloodGroupVe ? 'translate-x-7' : 'translate-x-1']"></div>
+        </button>
+      </div>
     </div>
 
     <!-- Colors -->
@@ -297,6 +309,9 @@ export default {
     },
     toggleShowPhoto() {
       this.biodataStore.updateSettings({ showPhoto: !this.biodataStore.settings.showPhoto })
+    },
+    toggleBloodGroupVe() {
+      this.biodataStore.updateSettings({ bloodGroupVe: !this.biodataStore.settings.bloodGroupVe })
     },
     updateColor(type, value) {
       this.biodataStore.updateColorScheme({ [type]: value })
