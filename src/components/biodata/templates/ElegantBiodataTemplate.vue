@@ -10,6 +10,7 @@
       <h1 class="biodata-title">{{ displayTitle }}</h1>
     </div>
 
+    <div class="biodata-body">
     <!-- Top-right side: photo + contact -->
     <div v-if="hasSide" class="biodata-side">
       <div v-if="settings.showPhoto && personalInfo.photo" class="biodata-photo-wrap">
@@ -211,6 +212,7 @@
         <p class="pref-text">{{ preferences.expectations }}</p>
       </section>
     </template>
+    </div>
   </div>
 </template>
 
@@ -380,10 +382,14 @@ export default {
   text-transform: uppercase;
 }
 
+.biodata-body {
+  position: relative;
+}
+
 .biodata-side {
   position: absolute;
-  top: 100px;
-  right: 40px;
+  top: 0;
+  right: 0;
   width: 180px;
   display: flex;
   flex-direction: column;
