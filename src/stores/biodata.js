@@ -35,11 +35,12 @@ export const useBiodataStore = defineStore('biodata', {
       { id: uuidv4(), degree: 'Degree / Exam Name', year: '2020', institute: 'Institute / University Name', result: 'GPA / CGPA' }
     ],
 
-    // Professional Details
+    // Professional Details — list of work experiences
     professional: {
-      profession: 'Your Profession',
-      company: 'Company / Organization',
-      experience: '2 years',
+      experiences: [
+        { id: uuidv4(), company: 'Company Name', position: 'Position', startDate: '2022-01', endDate: '', current: true },
+        { id: uuidv4(), company: 'Previous Company', position: 'Junior Position', startDate: '2020-01', endDate: '2021-12', current: false }
+      ],
       income: ''
     },
 
@@ -160,6 +161,18 @@ export const useBiodataStore = defineStore('biodata', {
     // Professional
     updateProfessional(field, value) {
       this.professional[field] = value
+    },
+    addProExperience(entry) {
+      this.professional.experiences.push({ id: uuidv4(), company: '', position: '', startDate: '', endDate: '', current: false, ...entry })
+    },
+    updateProExperience(id, updates) {
+      const index = this.professional.experiences.findIndex(item => item.id === id)
+      if (index !== -1) {
+        this.professional.experiences[index] = { ...this.professional.experiences[index], ...updates }
+      }
+    },
+    removeProExperience(id) {
+      this.professional.experiences = this.professional.experiences.filter(item => item.id !== id)
     },
 
     // Family — parents

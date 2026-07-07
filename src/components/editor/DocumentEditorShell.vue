@@ -68,7 +68,7 @@
     <div class="flex h-[calc(100vh-4rem)]">
       <!-- Sidebar -->
       <aside v-if="!store.ui.previewMode"
-             :class="['relative flex-shrink-0 bg-white border-r border-gray-200 no-print',
+             :class="['relative flex-shrink-0 flex flex-col overflow-hidden bg-white border-r border-gray-200 no-print',
                       resizing ? '' : 'transition-[width] duration-300']"
              :style="{ width: store.ui.sidebarCollapsed ? '4rem' : sidebarWidth + 'px' }">
 
@@ -101,7 +101,7 @@
         </nav>
 
         <!-- Section Editor -->
-        <div v-if="!store.ui.sidebarCollapsed" class="flex-1 overflow-y-auto p-4">
+        <div v-if="!store.ui.sidebarCollapsed" class="flex-1 min-h-0 overflow-y-auto p-4">
           <Suspense>
             <component :is="currentSectionComponent" />
             <template #fallback>

@@ -81,23 +81,16 @@
       <!-- Professional Details -->
       <section v-else-if="sectionId === 'professional' && hasProfessional" class="biodata-section print-avoid-break">
         <div class="section-bar">Professional Details</div>
-        <div class="info-grid">
-          <template v-if="professional.profession">
-            <div class="info-label">Current Profession</div>
-            <div class="info-value info-strong">{{ professional.profession }}</div>
-          </template>
-          <template v-if="professional.company">
-            <div class="info-label">Company / Organization</div>
-            <div class="info-value">{{ professional.company }}</div>
-          </template>
-          <template v-if="professional.experience">
-            <div class="info-label">Experience</div>
-            <div class="info-value">{{ professional.experience }}</div>
-          </template>
-          <template v-if="settings.fieldsEnabled.income && professional.income">
-            <div class="info-label">Monthly Income</div>
-            <div class="info-value">{{ professional.income }}</div>
-          </template>
+        <ul class="exp-list">
+          <li v-for="exp in professionalExperiences" :key="exp.id" class="exp-line">
+            <span class="exp-company">{{ exp.company }}</span>
+            <template v-if="exp.position"><span class="exp-sep"> — </span><span class="exp-position">{{ exp.position }}</span></template>
+            <span v-if="expDates(exp)" class="exp-dates"> · {{ expDates(exp) }}</span>
+          </li>
+        </ul>
+        <div v-if="settings.fieldsEnabled.income && professional.income" class="info-grid income-row">
+          <div class="info-label">Monthly Income</div>
+          <div class="info-value">{{ professional.income }}</div>
         </div>
       </section>
 
@@ -198,6 +191,7 @@
 <script>
 import { useBiodataStore } from '../../../stores/biodata'
 import { storeToRefs } from 'pinia'
+import { format, parseISO } from 'date-fns'
 
 export default {
   name: 'ElegantBiodataTemplate',
@@ -239,10 +233,12 @@ export default {
     hasSide() {
       return (this.settings.showPhoto && !!this.personalInfo.photo) || this.showContactCard
     },
+    professionalExperiences() {
+      return this.professional.experiences.filter(e => e.company || e.position)
+    },
     hasProfessional() {
-      const p = this.professional
-      return p.profession || p.company || p.experience ||
-        (this.settings.fieldsEnabled.income && p.income)
+      return this.professionalExperiences.length > 0 ||
+        (this.settings.fieldsEnabled.income && this.professional.income)
     },
     personalRows() {
       const info = this.personalInfo
@@ -267,6 +263,22 @@ export default {
       if (fields.motherTongue) rows.push({ label: 'Mother Tongue', value: info.motherTongue })
       if (fields.sect) rows.push({ label: 'Sect / Madhab', value: info.sect })
       return rows
+    }
+  },
+  methods: {
+    formatMonth(value) {
+      if (!value) return ''
+      try {
+        return format(parseISO(value + '-01'), 'MMM yyyy')
+      } catch {
+        return value
+      }
+    },
+    expDates(exp) {
+      const start = this.formatMonth(exp.startDate)
+      const end = exp.current ? 'Present' : this.formatMonth(exp.endDate)
+      if (start && end) return `${start} – ${end}`
+      return start || end || ''
     }
   }
 }
@@ -416,6 +428,38 @@ export default {
 
 .info-strong {
   font-weight: 700;
+}
+
+.exp-list {
+  list-style: none;
+  padding-left: 8px;
+}
+
+.exp-line {
+  padding: 3px 0;
+  line-height: 1.45;
+}
+
+.exp-company {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.exp-sep {
+  color: #9ca3af;
+}
+
+.exp-position {
+  color: #4b5563;
+}
+
+.exp-dates {
+  color: #6b7280;
+  font-size: 0.9em;
+}
+
+.income-row {
+  margin-top: 12px;
 }
 
 .family-gap {
