@@ -276,26 +276,14 @@ export default {
 }
 
 .section-bar {
-  position: relative;
   background: var(--primary);
   color: #ffffff;
   font-weight: 700;
   padding: 9px 48px 9px 18px;
   border-radius: 6px 24px 24px 6px;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   display: inline-block;
   min-width: 260px;
-}
-
-.section-bar::after {
-  content: '';
-  position: absolute;
-  left: 2px;
-  bottom: -7px;
-  width: 46px;
-  height: 3px;
-  border-radius: 2px;
-  background: var(--primary);
 }
 
 .info-grid {
