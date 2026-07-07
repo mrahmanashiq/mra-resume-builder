@@ -83,11 +83,11 @@
           </div>
           <div v-if="pairPreferencesInline">
             <div class="section-bar">Partner Preferences</div>
-            <div v-if="preferences.preferredBloodGroup" class="info-grid compact-grid">
+            <div v-if="preferredBloodGroupsText" class="info-grid compact-grid">
               <div class="info-label">Preferred Blood Group</div>
-              <div class="info-value">{{ formatBloodGroup(preferences.preferredBloodGroup) }}</div>
+              <div class="info-value">{{ preferredBloodGroupsText }}</div>
             </div>
-            <p v-if="preferences.expectations" class="pref-text" :class="{ 'family-gap': preferences.preferredBloodGroup }">{{ preferences.expectations }}</p>
+            <p v-if="preferences.expectations" class="pref-text" :class="{ 'family-gap': preferredBloodGroupsText }">{{ preferences.expectations }}</p>
           </div>
         </div>
       </section>
@@ -122,7 +122,7 @@
           <li v-for="exp in professionalExperiences" :key="exp.id" class="exp-line">
             <div class="exp-main">
               <span class="exp-company">{{ exp.company }}</span>
-              <template v-if="exp.position"><span class="exp-sep"> — </span><span class="exp-position">{{ exp.position }}</span></template>
+              <template v-if="exp.position"><span class="exp-sep"> - </span><span class="exp-position">{{ exp.position }}</span></template>
             </div>
             <div v-if="expMeta(exp)" class="exp-meta">{{ expMeta(exp) }}</div>
           </li>
@@ -190,7 +190,7 @@
             <li v-for="sib in family.siblings" :key="sib.id">
               <span class="fam-bullet">•</span>
               <span class="family-name">{{ sib.name }}</span>
-              <span v-if="sib.relation" class="family-meta"> — {{ sib.relation }}</span>
+              <span v-if="sib.relation" class="family-meta"> - {{ sib.relation }}</span>
               <span v-if="sib.occupation" class="family-meta">, {{ sib.occupation }}</span>
               <span v-if="sib.maritalStatus" class="family-meta"> ({{ sib.maritalStatus }})</span>
             </li>
@@ -235,11 +235,11 @@
       <!-- Partner Preferences (standalone — only when not paired beside Hobbies & Habits) -->
       <section v-else-if="sectionId === 'preferences' && hasPreferences && !pairPreferencesInline" class="biodata-section print-avoid-break">
         <div class="section-bar">Partner Preferences</div>
-        <div v-if="preferences.preferredBloodGroup" class="info-grid">
+        <div v-if="preferredBloodGroupsText" class="info-grid">
           <div class="info-label">Preferred Blood Group</div>
-          <div class="info-value">{{ formatBloodGroup(preferences.preferredBloodGroup) }}</div>
+          <div class="info-value">{{ preferredBloodGroupsText }}</div>
         </div>
-        <p v-if="preferences.expectations" class="pref-text" :class="{ 'family-gap': preferences.preferredBloodGroup }">{{ preferences.expectations }}</p>
+        <p v-if="preferences.expectations" class="pref-text" :class="{ 'family-gap': preferredBloodGroupsText }">{{ preferences.expectations }}</p>
       </section>
     </template>
     </div>
@@ -321,7 +321,12 @@ export default {
       return !!(l.hobby || l.smoking || l.drinking)
     },
     hasPreferences() {
-      return !!(this.preferences.expectations || this.preferences.preferredBloodGroup)
+      return !!(this.preferences.expectations || this.preferredBloodGroupsText)
+    },
+    preferredBloodGroupsText() {
+      return (this.preferences.preferredBloodGroups || [])
+        .map(bg => this.formatBloodGroup(bg))
+        .join(', ')
     },
     pairPreferencesInline() {
       // Render Partner Preferences beside Hobbies & Habits when both are shown.

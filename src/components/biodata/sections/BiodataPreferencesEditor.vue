@@ -5,15 +5,40 @@
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Blood Group</label>
-      <select :value="biodataStore.preferences.preferredBloodGroup"
-              @change="update('preferredBloodGroup', $event.target.value)"
-              class="input-field">
-        <option value="">No preference</option>
-        <option v-for="bg in bloodGroups" :key="bg" :value="bg">{{ bg }}</option>
-      </select>
-      <p class="text-xs text-gray-500 mt-1">
-        Optional. Some families consider blood group / Rh (+/−) compatibility.
+      <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Blood Group(s)</label>
+      <div class="flex flex-wrap gap-2">
+        <button v-for="bg in bloodGroups"
+                :key="bg"
+                type="button"
+                @click="toggleBloodGroup(bg)"
+                :class="['px-3 py-1 text-sm rounded-full border transition-colors',
+                         isSelected(bg)
+                           ? 'border-primary-500 text-primary-600 bg-primary-50 font-medium'
+                           : 'border-gray-300 text-gray-700 hover:border-gray-400']">
+          {{ bg }}
+        </button>
+      </div>
+
+      <!-- Rh-factor suggestion -->
+      <div class="mt-3 flex items-center gap-3 flex-wrap">
+        <button type="button"
+                @click="suggestByRhFactor"
+                class="btn-secondary text-sm py-1.5">
+          Suggest by Rh factor
+        </button>
+        <span v-if="ownBloodGroup" class="text-xs text-gray-500">
+          Your blood group: <span class="font-medium text-gray-700">{{ ownBloodGroup }}</span>
+        </span>
+        <span v-else class="text-xs text-amber-600">
+          Set your blood group in Personal Info to use this.
+        </span>
+      </div>
+
+      <p class="text-xs text-gray-500 mt-2">
+        Optional. Select any number of acceptable groups (or none for no preference).
+        <span class="font-medium">Suggest by Rh factor</span> picks all groups with the same
+        Rh sign as your blood group (e.g., O+ → all “+” groups), since Rh incompatibility mainly
+        concerns an Rh-negative mother carrying an Rh-positive baby. This is a general guide, not medical advice.
       </p>
     </div>
 
@@ -33,21 +58,55 @@
 
 <script>
 import { useBiodataStore } from '../../../stores/biodata'
+import { useToast } from 'vue-toastification'
 
 export default {
   name: 'BiodataPreferencesEditor',
   setup() {
     const biodataStore = useBiodataStore()
-    return { biodataStore }
+    const toast = useToast()
+    return { biodataStore, toast }
   },
   data() {
     return {
       bloodGroups: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
     }
   },
+  computed: {
+    ownBloodGroup() {
+      return this.biodataStore.personalInfo.bloodGroup || ''
+    }
+  },
   methods: {
     update(field, value) {
       this.biodataStore.updatePreferences(field, value)
+    },
+    suggestByRhFactor() {
+      const bg = (this.ownBloodGroup || '').trim()
+      if (!bg) {
+        this.toast.info('Add your blood group in Personal Info first')
+        return
+      }
+      const positive = bg.endsWith('+')
+      const sign = positive ? '+' : '-'
+      const suggested = this.bloodGroups.filter(g => g.endsWith(sign))
+      this.update('preferredBloodGroups', suggested)
+      this.toast.success(`Selected ${positive ? 'Rh-positive' : 'Rh-negative'} groups based on ${bg}`)
+    },
+    isSelected(bg) {
+      return (this.biodataStore.preferences.preferredBloodGroups || []).includes(bg)
+    },
+    toggleBloodGroup(bg) {
+      const current = [...(this.biodataStore.preferences.preferredBloodGroups || [])]
+      const idx = current.indexOf(bg)
+      if (idx === -1) {
+        current.push(bg)
+      } else {
+        current.splice(idx, 1)
+      }
+      // Keep a stable, canonical order regardless of click order.
+      current.sort((a, b) => this.bloodGroups.indexOf(a) - this.bloodGroups.indexOf(b))
+      this.update('preferredBloodGroups', current)
     }
   }
 }

@@ -82,7 +82,7 @@ export const useBiodataStore = defineStore('biodata', {
 
     // Partner Preferences (optional section)
     preferences: {
-      preferredBloodGroup: '',
+      preferredBloodGroups: [],
       expectations: ''
     },
 
@@ -309,7 +309,17 @@ export const useBiodataStore = defineStore('biodata', {
         if (data.professional) this.professional = data.professional
         if (data.family) this.family = data.family
         if (data.contact) this.contact = data.contact
-        if (data.preferences) this.preferences = data.preferences
+        if (data.preferences) {
+          const p = data.preferences
+          // Backward-compat: older exports stored a single preferredBloodGroup string.
+          const groups = Array.isArray(p.preferredBloodGroups)
+            ? p.preferredBloodGroups
+            : (p.preferredBloodGroup ? [p.preferredBloodGroup] : [])
+          this.preferences = {
+            preferredBloodGroups: groups,
+            expectations: p.expectations || ''
+          }
+        }
         if (data.settings) this.settings = { ...this.settings, ...data.settings }
         return true
       } catch (error) {
