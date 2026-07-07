@@ -13,16 +13,16 @@ export const useBiodataStore = defineStore('biodata', {
   state: () => ({
     // Personal Information
     personalInfo: {
-      fullName: 'Md. Rahman Ahmed',
-      dateOfBirth: '2000-04-07',
-      height: `5'8"`,
-      weight: '68 kg',
+      fullName: 'Your Full Name',
+      dateOfBirth: '2000-01-01',
+      height: `5'6"`,
+      weight: '60 kg',
       complexion: 'Fair',
-      bloodGroup: 'O+',
+      bloodGroup: 'B+',
       religion: 'Islam',
       hobby: 'Reading, Travelling',
-      presentAddress: 'Mohammadpur, Dhaka - 1207',
-      permanentAddress: 'Village: Rampur, District: Comilla',
+      presentAddress: 'House, Road, Area, City',
+      permanentAddress: 'Village, Post Office, District',
       nationality: 'Bangladeshi',
       motherTongue: 'Bengali',
       sect: 'Sunni',
@@ -32,39 +32,38 @@ export const useBiodataStore = defineStore('biodata', {
 
     // Educational Qualification (table rows)
     education: [
-      { id: uuidv4(), degree: 'BSc in Software Engineering', year: '2023', institute: 'Daffodil International University', result: '3.82' },
-      { id: uuidv4(), degree: 'HSC', year: '2018', institute: 'Dhaka College', result: '5.00' }
+      { id: uuidv4(), degree: 'Degree / Exam Name', year: '2020', institute: 'Institute / University Name', result: 'GPA / CGPA' }
     ],
 
     // Professional Details
     professional: {
-      profession: 'Software Engineer',
-      company: 'WebAlive',
+      profession: 'Your Profession',
+      company: 'Company / Organization',
       experience: '2 years',
       income: ''
     },
 
     // Family Information
     family: {
-      father: { name: 'Abdul Karim', profession: 'Business', education: 'SSC' },
-      mother: { name: 'Ayesha Begum', profession: 'Housewife', education: 'HSC' },
+      father: { name: "Father's Name", profession: 'Profession', education: 'Education' },
+      mother: { name: "Mother's Name", profession: 'Homemaker', education: 'Education' },
       siblings: [
-        { id: uuidv4(), name: 'Karima Akter', relation: 'Sister', occupation: 'Student', maritalStatus: 'Unmarried' }
+        { id: uuidv4(), name: "Sibling's Name", relation: 'Brother / Sister', occupation: 'Occupation', maritalStatus: 'Unmarried' }
       ],
       // Chacha
       paternalUncles: [
-        { id: uuidv4(), name: 'Abdur Rahim', occupation: 'Business' }
+        { id: uuidv4(), name: "Uncle's Name", occupation: 'Occupation' }
       ],
       // Mama
       maternalUncles: [
-        { id: uuidv4(), name: 'Harun or Rashid', occupation: 'Business' }
+        { id: uuidv4(), name: "Uncle's Name", occupation: 'Occupation' }
       ],
-      homeDistrict: 'Comilla'
+      homeDistrict: 'District Name'
     },
 
     // Contact
     contact: {
-      phone: '01XXXXXXXXX',
+      phone: '01XXX-XXXXXX',
       guardianPhone: '',
       email: ''
     },

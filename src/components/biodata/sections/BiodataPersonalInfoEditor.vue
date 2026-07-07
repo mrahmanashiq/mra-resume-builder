@@ -54,7 +54,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Height</label>
         <input type="text"
@@ -73,19 +73,21 @@
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Complexion</label>
-        <input type="text"
-               :value="biodataStore.personalInfo.complexion"
-               @input="update('complexion', $event.target.value)"
-               class="input-field"
-               placeholder="Fair">
+        <select :value="biodataStore.personalInfo.complexion"
+                @change="update('complexion', $event.target.value)"
+                class="input-field">
+          <option value="">Select</option>
+          <option v-for="c in complexions" :key="c" :value="c">{{ c }}</option>
+        </select>
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Blood Group</label>
-        <input type="text"
-               :value="biodataStore.personalInfo.bloodGroup"
-               @input="update('bloodGroup', $event.target.value)"
-               class="input-field"
-               placeholder="O+">
+        <select :value="biodataStore.personalInfo.bloodGroup"
+                @change="update('bloodGroup', $event.target.value)"
+                class="input-field">
+          <option value="">Select</option>
+          <option v-for="bg in bloodGroups" :key="bg" :value="bg">{{ bg }}</option>
+        </select>
       </div>
     </div>
 
@@ -175,6 +177,12 @@ export default {
     const biodataStore = useBiodataStore()
     const toast = useToast()
     return { biodataStore, toast }
+  },
+  data() {
+    return {
+      bloodGroups: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+      complexions: ['Fair', 'Very Fair', 'Wheatish', 'Medium', 'Dark']
+    }
   },
   methods: {
     update(field, value) {
