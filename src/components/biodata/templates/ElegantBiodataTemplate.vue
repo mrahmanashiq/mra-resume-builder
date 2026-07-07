@@ -61,22 +61,34 @@
         </div>
       </section>
 
-      <!-- Hobbies & Habits -->
+      <!-- Hobbies & Habits (+ Partner Preferences beside it when both are shown) -->
       <section v-else-if="sectionId === 'lifestyle' && hasLifestyle" class="biodata-section print-avoid-break">
-        <div class="section-bar">Hobbies &amp; Habits</div>
-        <div class="info-grid">
-          <template v-if="lifestyle.hobby">
-            <div class="info-label">Hobby / Interests</div>
-            <div class="info-value">{{ lifestyle.hobby }}</div>
-          </template>
-          <template v-if="lifestyle.smoking">
-            <div class="info-label">Smoking</div>
-            <div class="info-value">{{ lifestyle.smoking }}</div>
-          </template>
-          <template v-if="lifestyle.drinking">
-            <div class="info-label">Drinking</div>
-            <div class="info-value">{{ lifestyle.drinking }}</div>
-          </template>
+        <div :class="{ 'two-col-sections': pairPreferencesInline }">
+          <div>
+            <div class="section-bar">Hobbies &amp; Habits</div>
+            <div class="info-grid" :class="{ 'compact-grid': pairPreferencesInline }">
+              <template v-if="lifestyle.hobby">
+                <div class="info-label">Hobby / Interests</div>
+                <div class="info-value">{{ lifestyle.hobby }}</div>
+              </template>
+              <template v-if="lifestyle.smoking">
+                <div class="info-label">Smoking</div>
+                <div class="info-value">{{ lifestyle.smoking }}</div>
+              </template>
+              <template v-if="lifestyle.drinking">
+                <div class="info-label">Drinking</div>
+                <div class="info-value">{{ lifestyle.drinking }}</div>
+              </template>
+            </div>
+          </div>
+          <div v-if="pairPreferencesInline">
+            <div class="section-bar">Partner Preferences</div>
+            <div v-if="preferences.preferredBloodGroup" class="info-grid compact-grid">
+              <div class="info-label">Preferred Blood Group</div>
+              <div class="info-value">{{ formatBloodGroup(preferences.preferredBloodGroup) }}</div>
+            </div>
+            <p v-if="preferences.expectations" class="pref-text" :class="{ 'family-gap': preferences.preferredBloodGroup }">{{ preferences.expectations }}</p>
+          </div>
         </div>
       </section>
 
@@ -220,8 +232,8 @@
 
       <!-- Contact is rendered in the top-right side column (see .biodata-side) -->
 
-      <!-- Partner Preferences -->
-      <section v-else-if="sectionId === 'preferences' && (preferences.expectations || preferences.preferredBloodGroup)" class="biodata-section print-avoid-break">
+      <!-- Partner Preferences (standalone — only when not paired beside Hobbies & Habits) -->
+      <section v-else-if="sectionId === 'preferences' && hasPreferences && !pairPreferencesInline" class="biodata-section print-avoid-break">
         <div class="section-bar">Partner Preferences</div>
         <div v-if="preferences.preferredBloodGroup" class="info-grid">
           <div class="info-label">Preferred Blood Group</div>
@@ -307,6 +319,14 @@ export default {
     hasLifestyle() {
       const l = this.lifestyle
       return !!(l.hobby || l.smoking || l.drinking)
+    },
+    hasPreferences() {
+      return !!(this.preferences.expectations || this.preferences.preferredBloodGroup)
+    },
+    pairPreferencesInline() {
+      // Render Partner Preferences beside Hobbies & Habits when both are shown.
+      return this.settings.sectionsEnabled.lifestyle && this.hasLifestyle &&
+        this.settings.sectionsEnabled.preferences && this.hasPreferences
     },
     personalRows() {
       const info = this.personalInfo
@@ -533,6 +553,18 @@ export default {
   padding-left: 8px;
 }
 
+.two-col-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* narrower label column when a section sits in a half-width column */
+.info-grid.compact-grid {
+  grid-template-columns: 130px 1fr;
+}
+
 .info-label {
   font-weight: 600;
   color: #4b5563;
@@ -734,6 +766,15 @@ export default {
   .parents-grid {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+
+  .two-col-sections {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .info-grid.compact-grid {
+    grid-template-columns: 140px 1fr;
   }
 
   .uncles-grid {

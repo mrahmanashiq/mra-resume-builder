@@ -22,30 +22,65 @@
             </button>
 
             <div class="relative export-menu-wrap">
-              <button @click="showExportMenu = !showExportMenu"
+              <button @click="toggleExportMenu"
                       class="btn-primary flex items-center space-x-2">
                 <CloudArrowDownIcon class="w-4 h-4" />
-                <span class="hidden sm:inline">Export</span>
-                <ChevronDownIcon class="w-4 h-4" />
+                <span class="hidden sm:inline">Download</span>
+                <ChevronDownIcon class="w-4 h-4" :class="{ 'rotate-180': showExportMenu }" />
               </button>
 
               <!-- Export Menu -->
               <div v-if="showExportMenu"
-                   class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10">
-                <button @click="handleDownloadPDF"
-                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2">
-                  <DocumentArrowDownIcon class="w-4 h-4" />
-                  <span>Download PDF</span>
-                </button>
+                   class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10">
+                <!-- Canva-style file-type picker -->
+                <div class="px-4 pt-1 pb-3">
+                  <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-2">File type</p>
+                  <div class="relative">
+                    <button type="button"
+                            @click="showFormatList = !showFormatList"
+                            class="w-full flex items-center justify-between px-3 py-2 border border-gray-300 rounded-lg hover:border-gray-400 transition-colors">
+                      <span class="flex items-center space-x-2">
+                        <component :is="currentFormat.icon" class="w-4 h-4 text-gray-600" />
+                        <span class="font-medium text-gray-800">{{ currentFormat.label }}</span>
+                      </span>
+                      <ChevronDownIcon class="w-4 h-4 text-gray-500 transition-transform" :class="{ 'rotate-180': showFormatList }" />
+                    </button>
+
+                    <!-- Format options -->
+                    <div v-if="showFormatList"
+                         class="absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-20">
+                      <button v-for="f in formats" :key="f.id" type="button"
+                              @click="selectFormat(f.id)"
+                              class="w-full text-left px-3 py-2 hover:bg-gray-50 flex items-center space-x-2">
+                        <component :is="f.icon" class="w-4 h-4 text-gray-600 flex-shrink-0" />
+                        <span class="flex-1 min-w-0">
+                          <span class="block font-medium text-gray-800">{{ f.label }}</span>
+                          <span class="block text-xs text-gray-500">{{ f.desc }}</span>
+                        </span>
+                        <CheckIcon v-if="selectedFormat === f.id" class="w-4 h-4 text-primary-600 flex-shrink-0" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <button type="button"
+                          @click="handleDownloadSelected"
+                          class="btn-primary w-full mt-3 flex items-center justify-center space-x-2">
+                    <CloudArrowDownIcon class="w-4 h-4" />
+                    <span>Download</span>
+                  </button>
+                </div>
+
+                <hr class="my-1">
                 <button @click="handlePrint"
                         class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2">
                   <PrinterIcon class="w-4 h-4" />
                   <span>Print</span>
                 </button>
                 <button @click="handleShare"
-                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2">
+                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2 text-gray-400 cursor-not-allowed">
                   <ShareIcon class="w-4 h-4" />
                   <span>Share Link</span>
+                  <span class="ml-auto text-[10px] font-semibold uppercase tracking-wide bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">Soon</span>
                 </button>
                 <hr class="my-2">
                 <button @click="handleExportData"
@@ -173,13 +208,22 @@ import {
   CloudArrowDownIcon,
   ChevronDownIcon,
   DocumentArrowDownIcon,
+  PhotoIcon,
   PrinterIcon,
   ShareIcon,
   DocumentTextIcon,
   ArrowUpTrayIcon,
   Bars3Icon,
-  ChevronLeftIcon
+  ChevronLeftIcon,
+  CheckIcon
 } from '@heroicons/vue/24/outline'
+
+// File-type options for the Canva-style download picker.
+const DOWNLOAD_FORMATS = [
+  { id: 'pdf', label: 'PDF', desc: 'Best for printing & sharing', icon: DocumentArrowDownIcon },
+  { id: 'png', label: 'PNG', desc: 'High-quality image', icon: PhotoIcon },
+  { id: 'jpg', label: 'JPG', desc: 'Smaller image file', icon: PhotoIcon }
+]
 
 export default {
   name: 'DocumentEditorShell',
@@ -189,12 +233,14 @@ export default {
     CloudArrowDownIcon,
     ChevronDownIcon,
     DocumentArrowDownIcon,
+    PhotoIcon,
     PrinterIcon,
     ShareIcon,
     DocumentTextIcon,
     ArrowUpTrayIcon,
     Bars3Icon,
-    ChevronLeftIcon
+    ChevronLeftIcon,
+    CheckIcon
   },
   props: {
     config: {
@@ -217,6 +263,9 @@ export default {
   data() {
     return {
       showExportMenu: false,
+      showFormatList: false,
+      selectedFormat: 'pdf',
+      formats: DOWNLOAD_FORMATS,
       showImportModal: false,
       importJsonData: '',
       sidebarWidth: 320,
@@ -230,6 +279,9 @@ export default {
       const sections = this.config.navSections
       const active = sections.find(section => section.id === this.store.ui.currentSection)
       return active ? active.editor : sections[0].editor
+    },
+    currentFormat() {
+      return this.formats.find(f => f.id === this.selectedFormat) || this.formats[0]
     },
     widthKey() {
       return `mra-${this.config.type}-sidebar-width`
@@ -248,9 +300,24 @@ export default {
       this.store.setCurrentSection(section)
     },
 
-    async handleDownloadPDF() {
+    toggleExportMenu() {
+      this.showExportMenu = !this.showExportMenu
+      this.showFormatList = false
+    },
+
+    selectFormat(format) {
+      this.selectedFormat = format
+      this.showFormatList = false
+    },
+
+    async handleDownloadSelected() {
       this.showExportMenu = false
-      await this.exporter.downloadPDF()
+      this.showFormatList = false
+      if (this.selectedFormat === 'pdf') {
+        await this.exporter.downloadPDF()
+      } else {
+        await this.exporter.downloadImage(this.selectedFormat)
+      }
     },
 
     handlePrint() {
@@ -260,7 +327,7 @@ export default {
 
     handleShare() {
       this.showExportMenu = false
-      this.exporter.shareDocument()
+      this.toast.info('Link sharing is coming soon')
     },
 
     handleExportData() {
@@ -283,6 +350,7 @@ export default {
     handleOutsideClick(event) {
       if (!event.target.closest('.export-menu-wrap')) {
         this.showExportMenu = false
+        this.showFormatList = false
       }
     },
 
