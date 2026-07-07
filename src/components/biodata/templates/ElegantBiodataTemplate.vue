@@ -472,9 +472,10 @@ export default {
   background: var(--primary);
   color: #ffffff;
   font-weight: 700;
-  height: 34px;
-  line-height: 34px;
-  padding: 0 48px 0 18px;
+  line-height: 1;
+  /* Asymmetric padding: html2canvas draws text lower than the browser, so a
+     smaller top / larger bottom padding centers the text in the exported PDF. */
+  padding: 4px 48px 17px 18px;
   border-radius: 6px 24px 24px 6px;
   margin-bottom: 16px;
   display: inline-block;
