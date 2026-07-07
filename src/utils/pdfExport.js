@@ -24,6 +24,10 @@ export const exportToPDF = async (elementId, filename = 'resume.pdf') => {
     throw new Error('Element not found')
   }
 
+  // html2canvas positions text by baseline (lower than the browser), so templates
+  // can use `.pdf-export` overrides to compensate only while capturing.
+  element.classList.add('pdf-export')
+
   try {
     const canvas = await html2canvas(element, {
       scale: 2,
@@ -57,5 +61,7 @@ export const exportToPDF = async (elementId, filename = 'resume.pdf') => {
   } catch (error) {
     console.error('PDF export error:', error)
     throw error
+  } finally {
+    element.classList.remove('pdf-export')
   }
 }
