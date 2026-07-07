@@ -14,7 +14,7 @@
     <!-- Top-right side: photo + contact -->
     <div v-if="hasSide" class="biodata-side">
       <div v-if="settings.showPhoto && personalInfo.photo" class="biodata-photo-wrap">
-        <img :src="personalInfo.photo" alt="Photo" class="biodata-photo">
+        <img class="biodata-photo" :src="personalInfo.photo" alt="Photo">
       </div>
       <div v-if="showContactCard" class="contact-card">
         <div class="contact-card-title">Contact Information</div>
@@ -141,6 +141,10 @@
                 <div class="info-label">Education</div>
                 <div class="info-value">{{ family.father.education }}</div>
               </template>
+              <template v-if="family.father.phone">
+                <div class="info-label">Contact Number</div>
+                <div class="info-value">{{ family.father.phone }}</div>
+              </template>
             </div>
           </div>
 
@@ -159,6 +163,10 @@
                 <div class="info-label">Education</div>
                 <div class="info-value">{{ family.mother.education }}</div>
               </template>
+              <template v-if="family.mother.phone">
+                <div class="info-label">Contact Number</div>
+                <div class="info-value">{{ family.mother.phone }}</div>
+              </template>
             </div>
           </div>
         </div>
@@ -168,6 +176,7 @@
           <div class="family-heading">Siblings</div>
           <ul v-if="family.siblings.length" class="family-list">
             <li v-for="sib in family.siblings" :key="sib.id">
+              <span class="fam-bullet">•</span>
               <span class="family-name">{{ sib.name }}</span>
               <span v-if="sib.relation" class="family-meta"> — {{ sib.relation }}</span>
               <span v-if="sib.occupation" class="family-meta">, {{ sib.occupation }}</span>
@@ -183,8 +192,10 @@
             <div class="family-heading">Uncles (Chacha)</div>
             <ul class="family-list">
               <li v-for="u in family.paternalUncles" :key="u.id">
+                <span class="fam-bullet">•</span>
                 <span class="family-name">{{ u.name }}</span>
                 <span v-if="u.occupation" class="family-meta"> - {{ u.occupation }}</span>
+                <span v-if="u.location" class="family-meta"> - {{ u.location }}</span>
               </li>
             </ul>
           </div>
@@ -192,23 +203,18 @@
             <div class="family-heading">Uncles (Mama)</div>
             <ul class="family-list">
               <li v-for="u in family.maternalUncles" :key="u.id">
+                <span class="fam-bullet">•</span>
                 <span class="family-name">{{ u.name }}</span>
                 <span v-if="u.occupation" class="family-meta"> - {{ u.occupation }}</span>
+                <span v-if="u.location" class="family-meta"> - {{ u.location }}</span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div v-if="(settings.fieldsEnabled.homeDistrict && family.homeDistrict) || family.phone"
-             class="info-grid family-gap">
-          <template v-if="settings.fieldsEnabled.homeDistrict && family.homeDistrict">
-            <div class="info-label">Home District</div>
-            <div class="info-value">{{ family.homeDistrict }}</div>
-          </template>
-          <template v-if="family.phone">
-            <div class="info-label">Contact Number</div>
-            <div class="info-value">{{ family.phone }}</div>
-          </template>
+        <div v-if="settings.fieldsEnabled.homeDistrict && family.homeDistrict" class="info-grid family-gap">
+          <div class="info-label">Home District</div>
+          <div class="info-value">{{ family.homeDistrict }}</div>
         </div>
       </section>
 
@@ -219,7 +225,7 @@
         <div class="section-bar">Partner Preferences</div>
         <div v-if="preferences.preferredBloodGroup" class="info-grid">
           <div class="info-label">Preferred Blood Group</div>
-          <div class="info-value">{{ preferences.preferredBloodGroup }}</div>
+          <div class="info-value">{{ formatBloodGroup(preferences.preferredBloodGroup) }}</div>
         </div>
         <p v-if="preferences.expectations" class="pref-text" :class="{ 'family-gap': preferences.preferredBloodGroup }">{{ preferences.expectations }}</p>
       </section>
@@ -308,13 +314,16 @@ export default {
       const rawWeight = (info.weight || '').toString().trim()
       // Append "kg" only when the value is a bare number, so pre-filled "68 kg" won't become "68 kg kg".
       const weightText = rawWeight ? (/^[\d.]+$/.test(rawWeight) ? `${rawWeight} kg` : rawWeight) : ''
-      const heightWeight = [info.height, weightText].filter(Boolean).join(' | ')
+      const ft = (info.heightFeet ?? '').toString().trim()
+      const inch = (info.heightInches ?? '').toString().trim()
+      const heightText = ft ? `${ft}'${inch || 0}"` : (inch ? `${inch}"` : '')
+      const heightWeight = [heightText, weightText].filter(Boolean).join(' | ')
       const rows = [
         { label: 'Full Name', value: info.fullName },
         { label: 'Date of Birth', value: info.dateOfBirth },
         { label: 'Height / Weight', value: heightWeight },
         { label: 'Complexion', value: info.complexion },
-        { label: 'Blood Group', value: info.bloodGroup },
+        { label: 'Blood Group', value: this.formatBloodGroup(info.bloodGroup) },
         { label: 'Religion', value: info.religion }
       ]
       if (fields.maritalStatus) rows.push({ label: 'Marital Status', value: info.maritalStatus })
@@ -345,6 +354,11 @@ export default {
     },
     expMeta(exp) {
       return [exp.location, exp.type, this.expDates(exp)].filter(Boolean).join(' · ')
+    },
+    formatBloodGroup(bg) {
+      if (!bg) return ''
+      if (!this.settings.bloodGroupVe) return bg
+      return bg.replace(/\+$/, ' (+ve)').replace(/-$/, ' (-ve)')
     }
   }
 }
@@ -418,13 +432,17 @@ export default {
 }
 
 .biodata-photo {
-  width: 100%;
-  height: 175px;
-  object-fit: cover;
+  display: block;
+  /* The uploaded image is already cropped to the desired frame, so show it at its
+     natural aspect (scaled to the column). Plain <img> scaling renders identically
+     in the browser and html2canvas/PDF (unlike object-fit). */
+  max-width: 100%;
+  max-height: 300px;
+  width: auto;
+  height: auto;
+  margin: 0 auto;
   border: 2px solid var(--primary);
   border-radius: 6px;
-  display: block;
-  box-sizing: border-box;
 }
 
 .contact-card {
@@ -592,7 +610,7 @@ export default {
 
 .parent-grid {
   display: grid;
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: 120px 1fr;
   row-gap: 8px;
   column-gap: 10px;
 }
@@ -628,8 +646,13 @@ export default {
 }
 
 .family-list {
-  list-style: disc;
-  padding-left: 20px;
+  list-style: none;
+  padding-left: 8px;
+}
+
+.fam-bullet {
+  color: var(--primary);
+  margin-right: 7px;
 }
 
 .family-name {
@@ -696,8 +719,8 @@ export default {
   }
 
   .biodata-photo {
-    width: 150px;
-    height: 160px;
+    max-width: 200px;
+    max-height: 240px;
   }
 
   .pad-for-side {

@@ -15,7 +15,8 @@ export const useBiodataStore = defineStore('biodata', {
     personalInfo: {
       fullName: 'Your Full Name',
       dateOfBirth: '2000-01-01',
-      height: `5'6"`,
+      heightFeet: '5',
+      heightInches: '6',
       weight: '60',
       complexion: 'Fair',
       bloodGroup: 'B+',
@@ -52,21 +53,20 @@ export const useBiodataStore = defineStore('biodata', {
 
     // Family Information
     family: {
-      father: { name: "Father's Name", profession: 'Profession', education: 'Education' },
-      mother: { name: "Mother's Name", profession: 'Homemaker', education: 'Education' },
+      father: { name: "Father's Name", profession: 'Profession', education: 'Education', phone: '01XXX-XXXXXX' },
+      mother: { name: "Mother's Name", profession: 'Homemaker', education: 'Education', phone: '' },
       siblings: [
         { id: uuidv4(), name: "Sibling's Name", relation: 'Brother / Sister', occupation: 'Occupation', maritalStatus: 'Unmarried' }
       ],
       // Chacha
       paternalUncles: [
-        { id: uuidv4(), name: "Uncle's Name", occupation: 'Occupation' }
+        { id: uuidv4(), name: "Uncle's Name", occupation: 'Occupation', location: '' }
       ],
       // Mama
       maternalUncles: [
-        { id: uuidv4(), name: "Uncle's Name", occupation: 'Occupation' }
+        { id: uuidv4(), name: "Uncle's Name", occupation: 'Occupation', location: '' }
       ],
-      homeDistrict: 'District Name',
-      phone: '01XXX-XXXXXX'
+      homeDistrict: 'District Name'
     },
 
     // Contact
@@ -92,6 +92,7 @@ export const useBiodataStore = defineStore('biodata', {
       title: 'Marriage Biodata',
       showBismillah: false,
       bismillahStyle: 'bengali',
+      bloodGroupVe: false,
       colorScheme: {
         primary: '#a61c3c',
         secondary: '#7a142c',
@@ -219,7 +220,7 @@ export const useBiodataStore = defineStore('biodata', {
 
     // Family — paternal uncles (Chacha)
     addPaternalUncle(uncle) {
-      this.family.paternalUncles.push({ id: uuidv4(), name: '', occupation: '', ...uncle })
+      this.family.paternalUncles.push({ id: uuidv4(), name: '', occupation: '', location: '', ...uncle })
     },
     updatePaternalUncle(id, updates) {
       const index = this.family.paternalUncles.findIndex(item => item.id === id)
@@ -233,7 +234,7 @@ export const useBiodataStore = defineStore('biodata', {
 
     // Family — maternal uncles (Mama)
     addMaternalUncle(uncle) {
-      this.family.maternalUncles.push({ id: uuidv4(), name: '', occupation: '', ...uncle })
+      this.family.maternalUncles.push({ id: uuidv4(), name: '', occupation: '', location: '', ...uncle })
     },
     updateMaternalUncle(id, updates) {
       const index = this.family.maternalUncles.findIndex(item => item.id === id)

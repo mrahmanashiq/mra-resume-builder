@@ -21,10 +21,17 @@
         </label>
       </div>
       <p class="text-sm text-gray-600">Click the camera icon to upload a photo</p>
+      <p class="text-xs text-gray-400 mt-1">Recommended: a clear portrait, at least 600 × 800 px. You'll crop it next.</p>
     </div>
     <p v-else class="text-xs text-gray-500">
       Photo is hidden. Enable "Show Photo" in Settings to add one.
     </p>
+
+    <ImageCropperModal
+      v-if="showCropper"
+      :image-src="cropSrc"
+      @apply="onCropApply"
+      @cancel="onCropCancel" />
 
     <!-- Full Name -->
     <div>
@@ -57,11 +64,24 @@
     <div class="grid grid-cols-2 gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Height</label>
-        <input type="text"
-               :value="biodataStore.personalInfo.height"
-               @input="update('height', $event.target.value)"
-               class="input-field"
-               placeholder="5'8&quot;">
+        <div class="flex gap-2">
+          <div class="relative flex-1 min-w-0">
+            <input type="number" min="0" max="8"
+                   :value="biodataStore.personalInfo.heightFeet"
+                   @input="update('heightFeet', $event.target.value)"
+                   class="input-field pr-7"
+                   placeholder="5">
+            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none">ft</span>
+          </div>
+          <div class="relative flex-1 min-w-0">
+            <input type="number" min="0" max="11"
+                   :value="biodataStore.personalInfo.heightInches"
+                   @input="update('heightInches', $event.target.value)"
+                   class="input-field pr-7"
+                   placeholder="8">
+            <span class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none">in</span>
+          </div>
+        </div>
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Weight</label>
@@ -176,12 +196,14 @@
 import { useBiodataStore } from '../../../stores/biodata'
 import { useToast } from 'vue-toastification'
 import { CameraIcon, UserIcon } from '@heroicons/vue/24/outline'
+import ImageCropperModal from '../../ImageCropperModal.vue'
 
 export default {
   name: 'BiodataPersonalInfoEditor',
   components: {
     CameraIcon,
-    UserIcon
+    UserIcon,
+    ImageCropperModal
   },
   setup() {
     const biodataStore = useBiodataStore()
@@ -196,7 +218,9 @@ export default {
       sects: ['Sunni', 'Shia', 'Hanafi', 'Maliki', "Shafi'i", 'Hanbali', 'Ahle Hadith'],
       nationalities: ['Bangladeshi', 'Indian', 'Pakistani', 'Nepali', 'Saudi Arabian', 'American', 'British', 'Canadian', 'Australian', 'Other'],
       motherTongues: ['Bengali', 'English', 'Urdu', 'Hindi', 'Arabic', 'Tamil', 'Other'],
-      otherFlags: { nationality: false, motherTongue: false }
+      otherFlags: { nationality: false, motherTongue: false },
+      showCropper: false,
+      cropSrc: ''
     }
   },
   created() {
@@ -227,16 +251,28 @@ export default {
     handlePhotoUpload(event) {
       const file = event.target.files[0]
       if (!file) return
-      if (file.size > 5 * 1024 * 1024) {
-        this.toast.error('Image size must be less than 5MB')
+      if (file.size > 8 * 1024 * 1024) {
+        this.toast.error('Image size must be less than 8MB')
+        event.target.value = ''
         return
       }
       const reader = new FileReader()
       reader.onload = (e) => {
-        this.update('photo', e.target.result)
-        this.toast.success('Photo updated!')
+        this.cropSrc = e.target.result
+        this.showCropper = true
       }
       reader.readAsDataURL(file)
+      event.target.value = '' // allow re-selecting the same file
+    },
+    onCropApply(dataUrl) {
+      this.update('photo', dataUrl)
+      this.showCropper = false
+      this.cropSrc = ''
+      this.toast.success('Photo updated!')
+    },
+    onCropCancel() {
+      this.showCropper = false
+      this.cropSrc = ''
     }
   }
 }
