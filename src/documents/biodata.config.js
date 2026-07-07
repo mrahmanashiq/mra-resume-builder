@@ -2,6 +2,7 @@ import { defineAsyncComponent } from 'vue'
 import { useBiodataStore } from '../stores/biodata'
 import {
   UserIcon,
+  SparklesIcon,
   AcademicCapIcon,
   BriefcaseIcon,
   UsersIcon,
@@ -26,6 +27,7 @@ export const biodataConfig = {
   template: defineAsyncComponent(() => import('../components/biodata/templates/BiodataTemplate.vue')),
   navSections: [
     { id: 'personalInfo', name: 'Personal Info', icon: UserIcon, editor: defineAsyncComponent(() => import('../components/biodata/sections/BiodataPersonalInfoEditor.vue')) },
+    { id: 'lifestyle', name: 'Hobbies & Habits', icon: SparklesIcon, editor: defineAsyncComponent(() => import('../components/biodata/sections/BiodataLifestyleEditor.vue')) },
     { id: 'education', name: 'Education', icon: AcademicCapIcon, editor: defineAsyncComponent(() => import('../components/biodata/sections/BiodataEducationEditor.vue')) },
     { id: 'professional', name: 'Professional', icon: BriefcaseIcon, editor: defineAsyncComponent(() => import('../components/biodata/sections/BiodataProfessionalEditor.vue')) },
     { id: 'family', name: 'Family', icon: UsersIcon, editor: defineAsyncComponent(() => import('../components/biodata/sections/BiodataFamilyEditor.vue')) },

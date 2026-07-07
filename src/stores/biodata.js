@@ -20,16 +20,20 @@ export const useBiodataStore = defineStore('biodata', {
       complexion: 'Fair',
       bloodGroup: 'B+',
       religion: 'Islam',
-      hobby: 'Reading, Travelling',
       presentAddress: 'House, Road, Area, City',
       permanentAddress: 'Village, Post Office, District',
       nationality: 'Bangladeshi',
       motherTongue: 'Bengali',
       sect: 'Sunni',
       maritalStatus: 'Unmarried',
-      smoking: 'No',
-      drinking: 'No',
       photo: ''
+    },
+
+    // Hobbies & Habits
+    lifestyle: {
+      hobby: 'Reading, Travelling',
+      smoking: 'No',
+      drinking: 'No'
     },
 
     // Educational Qualification (table rows)
@@ -95,6 +99,7 @@ export const useBiodataStore = defineStore('biodata', {
       showPhoto: false,
       sectionsOrder: [
         'personalInfo',
+        'lifestyle',
         'education',
         'professional',
         'family',
@@ -103,6 +108,7 @@ export const useBiodataStore = defineStore('biodata', {
       ],
       sectionsEnabled: {
         personalInfo: true,
+        lifestyle: true,
         education: true,
         professional: true,
         family: true,
@@ -115,8 +121,6 @@ export const useBiodataStore = defineStore('biodata', {
         motherTongue: false,
         sect: false,
         maritalStatus: true,
-        smoking: true,
-        drinking: true,
         income: false,
         siblings: true,
         homeDistrict: false,
@@ -146,6 +150,11 @@ export const useBiodataStore = defineStore('biodata', {
     // Personal Info
     updatePersonalInfo(field, value) {
       this.personalInfo[field] = value
+    },
+
+    // Hobbies & Habits
+    updateLifestyle(field, value) {
+      this.lifestyle[field] = value
     },
 
     // Education (table rows)
@@ -276,6 +285,7 @@ export const useBiodataStore = defineStore('biodata', {
     exportData() {
       return JSON.stringify({
         personalInfo: this.personalInfo,
+        lifestyle: this.lifestyle,
         education: this.education,
         professional: this.professional,
         family: this.family,
@@ -288,6 +298,7 @@ export const useBiodataStore = defineStore('biodata', {
       try {
         const data = JSON.parse(jsonData)
         if (data.personalInfo) this.personalInfo = data.personalInfo
+        if (data.lifestyle) this.lifestyle = data.lifestyle
         if (data.education) this.education = data.education
         if (data.professional) this.professional = data.professional
         if (data.family) this.family = data.family

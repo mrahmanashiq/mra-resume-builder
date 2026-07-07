@@ -95,15 +95,6 @@
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Hobby / Interests</label>
-      <input type="text"
-             :value="biodataStore.personalInfo.hobby"
-             @input="update('hobby', $event.target.value)"
-             class="input-field"
-             placeholder="Reading, Travelling">
-    </div>
-
-    <div>
       <label class="block text-sm font-medium text-gray-700 mb-2">Present Address</label>
       <textarea :value="biodataStore.personalInfo.presentAddress"
                 @input="update('presentAddress', $event.target.value)"
@@ -174,26 +165,6 @@
                   class="input-field">
             <option value="">Select</option>
             <option v-for="s in sects" :key="s" :value="s">{{ s }}</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Smoking</label>
-          <select :value="biodataStore.personalInfo.smoking"
-                  @change="update('smoking', $event.target.value)"
-                  class="input-field">
-            <option value="">Select</option>
-            <option value="No">No</option>
-            <option value="Yes">Yes</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Drinking</label>
-          <select :value="biodataStore.personalInfo.drinking"
-                  @change="update('drinking', $event.target.value)"
-                  class="input-field">
-            <option value="">Select</option>
-            <option value="No">No</option>
-            <option value="Yes">Yes</option>
           </select>
         </div>
       </div>

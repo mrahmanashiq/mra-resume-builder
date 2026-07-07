@@ -55,6 +55,25 @@
         </div>
       </section>
 
+      <!-- Hobbies & Habits -->
+      <section v-else-if="sectionId === 'lifestyle' && hasLifestyle" class="biodata-section print-avoid-break">
+        <div class="section-bar">Hobbies &amp; Habits</div>
+        <div class="info-grid">
+          <template v-if="lifestyle.hobby">
+            <div class="info-label">Hobby / Interests</div>
+            <div class="info-value">{{ lifestyle.hobby }}</div>
+          </template>
+          <template v-if="lifestyle.smoking">
+            <div class="info-label">Smoking</div>
+            <div class="info-value">{{ lifestyle.smoking }}</div>
+          </template>
+          <template v-if="lifestyle.drinking">
+            <div class="info-label">Drinking</div>
+            <div class="info-value">{{ lifestyle.drinking }}</div>
+          </template>
+        </div>
+      </section>
+
       <!-- Educational Qualification -->
       <section v-else-if="sectionId === 'education' && education.length" class="biodata-section print-avoid-break">
         <div class="section-bar">Educational Qualification</div>
@@ -199,9 +218,9 @@ export default {
   name: 'ElegantBiodataTemplate',
   setup() {
     const biodataStore = useBiodataStore()
-    const { personalInfo, education, professional, family, contact, preferences, settings } =
+    const { personalInfo, lifestyle, education, professional, family, contact, preferences, settings } =
       storeToRefs(biodataStore)
-    return { personalInfo, education, professional, family, contact, preferences, settings }
+    return { personalInfo, lifestyle, education, professional, family, contact, preferences, settings }
   },
   computed: {
     templateStyles() {
@@ -242,6 +261,10 @@ export default {
       return this.professionalExperiences.length > 0 ||
         (this.settings.fieldsEnabled.income && this.professional.income)
     },
+    hasLifestyle() {
+      const l = this.lifestyle
+      return !!(l.hobby || l.smoking || l.drinking)
+    },
     personalRows() {
       const info = this.personalInfo
       const fields = this.settings.fieldsEnabled
@@ -256,13 +279,10 @@ export default {
         { label: 'Complexion', value: info.complexion },
         { label: 'Blood Group', value: info.bloodGroup },
         { label: 'Religion', value: info.religion },
-        { label: 'Hobby', value: info.hobby },
         { label: 'Present Address', value: info.presentAddress },
         { label: 'Permanent Address', value: info.permanentAddress }
       ]
       if (fields.maritalStatus) rows.push({ label: 'Marital Status', value: info.maritalStatus })
-      if (fields.smoking) rows.push({ label: 'Smoking', value: info.smoking })
-      if (fields.drinking) rows.push({ label: 'Drinking', value: info.drinking })
       if (fields.nationality) rows.push({ label: 'Nationality', value: info.nationality })
       if (fields.motherTongue) rows.push({ label: 'Mother Tongue', value: info.motherTongue })
       if (fields.sect) rows.push({ label: 'Sect / Madhab', value: info.sect })

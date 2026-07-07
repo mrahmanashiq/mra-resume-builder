@@ -186,6 +186,7 @@ export default {
       ],
       sectionsConfig: [
         { id: 'personalInfo', name: 'Personal Information' },
+        { id: 'lifestyle', name: 'Hobbies & Habits' },
         { id: 'education', name: 'Educational Qualification' },
         { id: 'professional', name: 'Professional Details' },
         { id: 'family', name: 'Family Information' },
@@ -194,8 +195,6 @@ export default {
       ],
       fieldsConfig: [
         { id: 'maritalStatus', name: 'Marital Status' },
-        { id: 'smoking', name: 'Smoking' },
-        { id: 'drinking', name: 'Drinking' },
         { id: 'nationality', name: 'Nationality' },
         { id: 'motherTongue', name: 'Mother Tongue' },
         { id: 'sect', name: 'Sect / Madhab' },
