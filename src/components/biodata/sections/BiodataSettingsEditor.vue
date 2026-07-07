@@ -44,8 +44,8 @@
         <select :value="biodataStore.settings.bismillahStyle"
                 @change="updateBismillahStyle($event.target.value)"
                 class="input-field">
-          <option value="bengali">Bengali — বিসমিল্লাহির রাহমানির রাহিম</option>
-          <option value="arabic">Arabic — بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</option>
+          <option value="bengali">Bengali - বিসমিল্লাহির রাহমানির রাহিম</option>
+          <option value="arabic">Arabic - بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</option>
         </select>
       </div>
     </div>

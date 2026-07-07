@@ -85,7 +85,7 @@
               <div v-for="exp in professionalExperiences" :key="exp.id" class="exp-item">
                 <div class="exp-row">
                   <span class="exp-company">{{ exp.company }}</span>
-                  <template v-if="exp.position"><span class="exp-sep"> — </span><span class="exp-position">{{ exp.position }}</span></template>
+                  <template v-if="exp.position"><span class="exp-sep"> - </span><span class="exp-position">{{ exp.position }}</span></template>
                 </div>
                 <div v-if="expMeta(exp)" class="exp-meta">{{ expMeta(exp) }}</div>
               </div>
@@ -154,7 +154,7 @@
                   <li v-for="sib in family.siblings" :key="sib.id">
                     <span class="fam-bullet">•</span>
                     <span class="family-name">{{ sib.name }}</span>
-                    <span v-if="sib.relation" class="family-meta"> — {{ sib.relation }}</span>
+                    <span v-if="sib.relation" class="family-meta"> - {{ sib.relation }}</span>
                     <span v-if="sib.occupation" class="family-meta">, {{ sib.occupation }}</span>
                     <span v-if="sib.maritalStatus" class="family-meta"> ({{ sib.maritalStatus }})</span>
                   </li>
@@ -214,10 +214,10 @@
           <section v-else-if="sectionId === 'preferences' && hasPreferences" class="classic-section print-avoid-break">
             <h2 class="sec-title">Partner Preferences</h2>
             <div class="sec-body">
-              <div v-if="preferences.preferredBloodGroup" class="c-info">
+              <div v-if="preferredBloodGroupsText" class="c-info">
                 <div class="c-key">Preferred Blood Group</div>
                 <div class="c-colon">:</div>
-                <div class="c-val">{{ formatBloodGroup(preferences.preferredBloodGroup) }}</div>
+                <div class="c-val">{{ preferredBloodGroupsText }}</div>
               </div>
               <p v-if="preferences.expectations" class="pref-text">{{ preferences.expectations }}</p>
             </div>
@@ -304,7 +304,12 @@ export default {
       return !!(l.hobby || l.smoking || l.drinking)
     },
     hasPreferences() {
-      return !!(this.preferences.expectations || this.preferences.preferredBloodGroup)
+      return !!(this.preferences.expectations || this.preferredBloodGroupsText)
+    },
+    preferredBloodGroupsText() {
+      return (this.preferences.preferredBloodGroups || [])
+        .map(bg => this.formatBloodGroup(bg))
+        .join(', ')
     },
     personalRows() {
       const info = this.personalInfo
