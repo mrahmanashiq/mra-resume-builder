@@ -261,6 +261,8 @@ export default {
         { label: 'Permanent Address', value: info.permanentAddress }
       ]
       if (fields.maritalStatus) rows.push({ label: 'Marital Status', value: info.maritalStatus })
+      if (fields.smoking) rows.push({ label: 'Smoking', value: info.smoking })
+      if (fields.drinking) rows.push({ label: 'Drinking', value: info.drinking })
       if (fields.nationality) rows.push({ label: 'Nationality', value: info.nationality })
       if (fields.motherTongue) rows.push({ label: 'Mother Tongue', value: info.motherTongue })
       if (fields.sect) rows.push({ label: 'Sect / Madhab', value: info.sect })

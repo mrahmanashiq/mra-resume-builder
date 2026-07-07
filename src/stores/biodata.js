@@ -27,6 +27,8 @@ export const useBiodataStore = defineStore('biodata', {
       motherTongue: 'Bengali',
       sect: 'Sunni',
       maritalStatus: 'Unmarried',
+      smoking: 'No',
+      drinking: 'No',
       photo: ''
     },
 
@@ -38,8 +40,8 @@ export const useBiodataStore = defineStore('biodata', {
     // Professional Details — list of work experiences
     professional: {
       experiences: [
-        { id: uuidv4(), company: 'Company Name', position: 'Position', location: 'City', type: 'On-site', startDate: '2022-01', endDate: '', current: true },
-        { id: uuidv4(), company: 'Previous Company', position: 'Junior Position', location: 'City', type: 'Remote', startDate: '2020-01', endDate: '2021-12', current: false }
+        { id: uuidv4(), company: 'Company Name', position: 'Designation', location: 'City', type: 'On-site', startDate: '2022-01', endDate: '', current: true },
+        { id: uuidv4(), company: 'Previous Company', position: 'Junior Designation', location: 'City', type: 'Remote', startDate: '2020-01', endDate: '2021-12', current: false }
       ],
       income: ''
     },
@@ -113,6 +115,8 @@ export const useBiodataStore = defineStore('biodata', {
         motherTongue: false,
         sect: false,
         maritalStatus: true,
+        smoking: true,
+        drinking: true,
         income: false,
         siblings: true,
         homeDistrict: false,

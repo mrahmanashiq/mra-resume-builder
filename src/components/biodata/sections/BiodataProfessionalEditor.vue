@@ -29,7 +29,7 @@
                    placeholder="Company Name">
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Position</label>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Designation</label>
             <input type="text"
                    :value="exp.position"
                    @input="update(exp.id, 'position', $event.target.value)"
