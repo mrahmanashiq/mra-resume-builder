@@ -242,8 +242,14 @@ export default {
         {
           id: 'elegant',
           name: 'Elegant',
-          description: 'Formal matrimonial layout',
+          description: 'Colored section bars, photo & contact on the side',
           preview: 'bg-gradient-to-br from-rose-700 to-red-900'
+        },
+        {
+          id: 'classic',
+          name: 'Classic',
+          description: 'Bordered frame, centered title & photo',
+          preview: 'bg-white border-2 border-rose-800'
         }
       ],
       colorPresets: [

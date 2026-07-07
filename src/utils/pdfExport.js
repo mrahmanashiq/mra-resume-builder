@@ -1,4 +1,6 @@
 // PDF utilities with dynamic loading
+import { saveAs } from 'file-saver'
+
 let html2canvas = null
 let jsPDF = null
 
@@ -60,6 +62,40 @@ export const exportToPDF = async (elementId, filename = 'resume.pdf') => {
     return true
   } catch (error) {
     console.error('PDF export error:', error)
+    throw error
+  } finally {
+    element.classList.remove('pdf-export')
+  }
+}
+
+// Export the same rendered element as a PNG or JPG image.
+export const exportToImage = async (elementId, filename, type = 'image/png') => {
+  const { html2canvas } = await loadPDFLibraries()
+
+  const element = document.getElementById(elementId)
+  if (!element) {
+    throw new Error('Element not found')
+  }
+
+  element.classList.add('pdf-export')
+
+  try {
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff'
+    })
+
+    const quality = type === 'image/jpeg' ? 0.92 : undefined
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, type, quality))
+    if (!blob) {
+      throw new Error('Failed to render image')
+    }
+    saveAs(blob, filename)
+    return true
+  } catch (error) {
+    console.error('Image export error:', error)
     throw error
   } finally {
     element.classList.remove('pdf-export')

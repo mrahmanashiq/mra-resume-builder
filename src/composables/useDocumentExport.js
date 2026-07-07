@@ -1,4 +1,4 @@
-import { exportToPDF } from '../utils/pdfExport'
+import { exportToPDF, exportToImage } from '../utils/pdfExport'
 import { saveAs } from 'file-saver'
 
 /**
@@ -30,15 +30,24 @@ export function useDocumentExport({ store, previewElementId, baseName, label, to
     }
   }
 
-  function printDocument() {
-    window.print()
+  async function downloadImage(format = 'png') {
+    const type = format === 'jpg' ? 'image/jpeg' : 'image/png'
+    const ext = format === 'jpg' ? 'jpg' : 'png'
+    const upper = ext.toUpperCase()
+    try {
+      toast.info(`Generating ${upper}... Please wait`)
+      await exportToImage(previewElementId, `${safeBase()}_${label}.${ext}`, type)
+      toast.success(`${label} exported as ${upper} successfully!`)
+      return true
+    } catch (error) {
+      console.error(`Error exporting ${upper}:`, error)
+      toast.error(`Failed to export ${upper}`)
+      return false
+    }
   }
 
-  function shareDocument() {
-    const url = window.location.href
-    navigator.clipboard.writeText(url).then(() => {
-      toast.success(`${label} link copied to clipboard!`)
-    })
+  function printDocument() {
+    window.print()
   }
 
   function downloadData() {
@@ -57,5 +66,5 @@ export function useDocumentExport({ store, previewElementId, baseName, label, to
     return false
   }
 
-  return { downloadPDF, printDocument, shareDocument, downloadData, importData }
+  return { downloadPDF, downloadImage, printDocument, downloadData, importData }
 }

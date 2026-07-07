@@ -17,6 +17,9 @@ coverage
 /cypress/videos/
 /cypress/screenshots/
 
+# Playwright MCP test artifacts
+.playwright-mcp/
+
 # Editor directories and files
 .vscode/*
 .vscode
