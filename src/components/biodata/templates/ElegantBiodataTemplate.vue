@@ -2,7 +2,12 @@
   <div class="biodata-template" :style="templateStyles">
     <!-- Title -->
     <div class="biodata-title-wrap">
-      <h1 class="biodata-title">MARRIAGE BIODATA</h1>
+      <div v-if="settings.showBismillah"
+           class="biodata-bismillah"
+           :class="{ 'bismillah-arabic': settings.bismillahStyle === 'arabic' }">
+        {{ bismillahText }}
+      </div>
+      <h1 class="biodata-title">{{ displayTitle }}</h1>
     </div>
 
     <!-- Top-right side: photo + contact -->
@@ -238,6 +243,24 @@ export default {
     orderedSections() {
       return this.settings.sectionsOrder.filter(id => this.settings.sectionsEnabled[id])
     },
+    bismillahText() {
+      return this.settings.bismillahStyle === 'arabic'
+        ? 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ'
+        : 'বিসমিল্লাহির রাহমানির রাহিম'
+    },
+    displayTitle() {
+      const full = (this.personalInfo.fullName || '').trim()
+      const parts = full.split(/\s+/).filter(Boolean)
+      const firstName = parts[0] || ''
+      const lastName = parts.length > 1 ? parts[parts.length - 1] : ''
+      const rendered = (this.settings.title || 'Marriage Biodata')
+        .replace(/\{firstName\}/gi, firstName)
+        .replace(/\{lastName\}/gi, lastName)
+        .replace(/\{name\}/gi, full)
+        .replace(/\s{2,}/g, ' ')
+        .trim()
+      return rendered || 'Marriage Biodata'
+    },
     showContactCard() {
       const c = this.contact
       const f = this.settings.fieldsEnabled
@@ -336,11 +359,25 @@ export default {
   margin-bottom: 24px;
 }
 
+.biodata-bismillah {
+  color: #6b7280;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.bismillah-arabic {
+  font-size: 1.5rem;
+  direction: rtl;
+  color: var(--primary);
+}
+
 .biodata-title {
   color: var(--primary);
   font-size: 1.9rem;
   font-weight: 800;
   letter-spacing: 3px;
+  text-transform: uppercase;
 }
 
 .biodata-side {

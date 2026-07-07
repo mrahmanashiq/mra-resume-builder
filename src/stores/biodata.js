@@ -87,6 +87,9 @@ export const useBiodataStore = defineStore('biodata', {
     // Biodata Settings
     settings: {
       template: 'elegant',
+      title: 'Marriage Biodata',
+      showBismillah: false,
+      bismillahStyle: 'bengali',
       colorScheme: {
         primary: '#a61c3c',
         secondary: '#7a142c',

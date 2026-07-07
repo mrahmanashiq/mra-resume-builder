@@ -4,6 +4,52 @@
       <h3 class="text-lg font-semibold text-gray-900">Biodata Settings</h3>
     </div>
 
+    <!-- Title -->
+    <div class="card">
+      <h4 class="font-medium text-gray-900 mb-4">Title</h4>
+      <input type="text"
+             :value="biodataStore.settings.title"
+             @input="updateTitle($event.target.value)"
+             class="input-field"
+             placeholder="Marriage Biodata">
+      <p class="text-xs text-gray-500 mt-1">
+        Tip: <span class="font-medium">{name}</span>, <span class="font-medium">{firstName}</span>, <span class="font-medium">{lastName}</span> are replaced with the person's name.
+      </p>
+      <div class="flex flex-wrap gap-2 mt-3">
+        <button v-for="t in titlePresets"
+                :key="t"
+                @click="applyTitlePreset(t)"
+                :class="['px-3 py-1 text-sm rounded-full border transition-colors',
+                         biodataStore.settings.title === t
+                           ? 'border-primary-500 text-primary-600 bg-primary-50'
+                           : 'border-gray-300 text-gray-700 hover:border-gray-400']">
+          {{ t }}
+        </button>
+      </div>
+
+      <div class="flex items-center justify-between mt-5">
+        <div>
+          <h5 class="font-medium text-gray-900 text-sm">Bismillah line</h5>
+          <p class="text-xs text-gray-600">Show a Bismillah above the title.</p>
+        </div>
+        <button @click="toggleBismillah"
+                :class="['w-12 h-6 rounded-full flex items-center flex-shrink-0 transition-colors duration-200',
+                         biodataStore.settings.showBismillah ? 'bg-primary-600' : 'bg-gray-300']">
+          <div :class="['w-4 h-4 bg-white rounded-full shadow transition-transform duration-200',
+                        biodataStore.settings.showBismillah ? 'translate-x-7' : 'translate-x-1']"></div>
+        </button>
+      </div>
+      <div v-if="biodataStore.settings.showBismillah" class="mt-3">
+        <label class="block text-sm text-gray-700 mb-2">Bismillah style</label>
+        <select :value="biodataStore.settings.bismillahStyle"
+                @change="updateBismillahStyle($event.target.value)"
+                class="input-field">
+          <option value="bengali">Bengali — বিসমিল্লাহির রাহমানির রাহিম</option>
+          <option value="arabic">Arabic — بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</option>
+        </select>
+      </div>
+    </div>
+
     <!-- Template Selection -->
     <div class="card">
       <h4 class="font-medium text-gray-900 mb-4">Template</h4>
@@ -179,6 +225,7 @@ export default {
   },
   data() {
     return {
+      titlePresets: ['Marriage Biodata', 'Biodata', "{name}'s Biodata", "{firstName}'s Marriage Biodata", 'বিবাহ বায়োডাটা', 'পাত্রের বায়োডাটা', 'পাত্রীর বায়োডাটা'],
       templates: [
         {
           id: 'elegant',
@@ -232,6 +279,18 @@ export default {
     }
   },
   methods: {
+    updateTitle(value) {
+      this.biodataStore.updateSettings({ title: value })
+    },
+    applyTitlePreset(title) {
+      this.biodataStore.updateSettings({ title })
+    },
+    toggleBismillah() {
+      this.biodataStore.updateSettings({ showBismillah: !this.biodataStore.settings.showBismillah })
+    },
+    updateBismillahStyle(value) {
+      this.biodataStore.updateSettings({ bismillahStyle: value })
+    },
     selectTemplate(id) {
       this.biodataStore.updateSettings({ template: id })
       this.toast.success('Template updated!')
