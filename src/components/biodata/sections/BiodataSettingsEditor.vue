@@ -166,6 +166,34 @@
       </div>
     </div>
 
+    <!-- Naming & Labels -->
+    <div class="card">
+      <h4 class="font-medium text-gray-900 mb-4">Naming &amp; Labels</h4>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm text-gray-700 mb-2">Name Style</label>
+          <select :value="biodataStore.settings.nameStyle"
+                  @change="updateSetting('nameStyle', $event.target.value)"
+                  class="input-field">
+            <option value="normal">Normal</option>
+            <option value="bold">Bold</option>
+            <option value="italic">Italic</option>
+          </select>
+          <p class="text-xs text-gray-500 mt-1">Applies to every name (full name, parents, siblings, uncles).</p>
+        </div>
+        <div>
+          <label class="block text-sm text-gray-700 mb-2">Uncle Labels</label>
+          <select :value="biodataStore.settings.uncleLabelStyle"
+                  @change="updateSetting('uncleLabelStyle', $event.target.value)"
+                  class="input-field">
+            <option value="chacha">Chacha / Mama</option>
+            <option value="english">Paternal / Maternal</option>
+          </select>
+          <p class="text-xs text-gray-500 mt-1">Show / hide each side under Optional Fields.</p>
+        </div>
+      </div>
+    </div>
+
     <!-- Section Visibility & Order -->
     <div class="card">
       <h4 class="font-medium text-gray-900 mb-1">Sections</h4>
@@ -275,6 +303,8 @@ export default {
         { id: 'sect', name: 'Sect / Madhab' },
         { id: 'income', name: 'Monthly Income' },
         { id: 'siblings', name: 'Siblings' },
+        { id: 'paternalUncles', name: 'Uncles (Paternal / Chacha)' },
+        { id: 'maternalUncles', name: 'Uncles (Maternal / Mama)' },
         { id: 'homeDistrict', name: 'Home District' },
         { id: 'guardianPhone', name: "Guardian's Contact" },
         { id: 'email', name: 'Email' },
@@ -325,6 +355,9 @@ export default {
     applyColorPreset(preset) {
       this.biodataStore.updateColorScheme({ primary: preset.primary, secondary: preset.secondary })
       this.toast.success(`${preset.name} colors applied!`)
+    },
+    updateSetting(key, value) {
+      this.biodataStore.updateSettings({ [key]: value })
     },
     updateFont(font) {
       this.biodataStore.updateSettings({ font })

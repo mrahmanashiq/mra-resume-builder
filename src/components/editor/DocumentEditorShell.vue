@@ -31,44 +31,18 @@
 
               <!-- Export Menu -->
               <div v-if="showExportMenu"
-                   class="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10">
-                <!-- Canva-style file-type picker -->
-                <div class="px-4 pt-1 pb-3">
-                  <p class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-2">File type</p>
-                  <div class="relative">
-                    <button type="button"
-                            @click="showFormatList = !showFormatList"
-                            class="w-full flex items-center justify-between px-3 py-2 border border-gray-300 rounded-lg hover:border-gray-400 transition-colors">
-                      <span class="flex items-center space-x-2">
-                        <component :is="currentFormat.icon" class="w-4 h-4 text-gray-600" />
-                        <span class="font-medium text-gray-800">{{ currentFormat.label }}</span>
-                      </span>
-                      <ChevronDownIcon class="w-4 h-4 text-gray-500 transition-transform" :class="{ 'rotate-180': showFormatList }" />
-                    </button>
-
-                    <!-- Format options -->
-                    <div v-if="showFormatList"
-                         class="absolute left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-20">
-                      <button v-for="f in formats" :key="f.id" type="button"
-                              @click="selectFormat(f.id)"
-                              class="w-full text-left px-3 py-2 hover:bg-gray-50 flex items-center space-x-2">
-                        <component :is="f.icon" class="w-4 h-4 text-gray-600 flex-shrink-0" />
-                        <span class="flex-1 min-w-0">
-                          <span class="block font-medium text-gray-800">{{ f.label }}</span>
-                          <span class="block text-xs text-gray-500">{{ f.desc }}</span>
-                        </span>
-                        <CheckIcon v-if="selectedFormat === f.id" class="w-4 h-4 text-primary-600 flex-shrink-0" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <button type="button"
-                          @click="handleDownloadSelected"
-                          class="btn-primary w-full mt-3 flex items-center justify-center space-x-2">
-                    <CloudArrowDownIcon class="w-4 h-4" />
-                    <span>Download</span>
-                  </button>
-                </div>
+                   class="absolute right-0 mt-2 w-60 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10">
+                <!-- Download formats — one click each -->
+                <p class="px-4 pt-1 pb-1 text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Download as</p>
+                <button v-for="f in formats" :key="f.id" type="button"
+                        @click="handleDownloadFormat(f.id)"
+                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3">
+                  <component :is="f.icon" class="w-4 h-4 text-gray-600 flex-shrink-0" />
+                  <span class="flex-1 min-w-0">
+                    <span class="block font-medium text-gray-800">{{ f.label }}</span>
+                    <span class="block text-xs text-gray-500">{{ f.desc }}</span>
+                  </span>
+                </button>
 
                 <hr class="my-1">
                 <button @click="handlePrint"
@@ -100,16 +74,17 @@
       </div>
     </header>
 
-    <div class="flex h-[calc(100vh-4rem)]">
+    <div class="flex flex-col lg:flex-row lg:h-[calc(100vh-4rem)]">
       <!-- Sidebar -->
       <aside v-if="!store.ui.previewMode"
-             :class="['relative flex-shrink-0 flex flex-col overflow-hidden bg-white border-r border-gray-200 no-print',
+             :class="['relative flex-shrink-0 flex flex-col overflow-hidden bg-white border-b lg:border-b-0 lg:border-r border-gray-200 no-print',
                       resizing ? '' : 'transition-[width] duration-300']"
-             :style="{ width: store.ui.sidebarCollapsed ? '4rem' : sidebarWidth + 'px' }">
+             :style="asideStyle">
 
-        <!-- Sidebar Toggle -->
+        <!-- Sidebar Toggle (desktop can collapse; mobile shows a plain title) -->
         <div class="p-4 border-b border-gray-200">
-          <button @click="toggleSidebar"
+          <button v-if="!isMobile"
+                  @click="toggleSidebar"
                   class="w-full flex items-center justify-center p-2 rounded-lg hover:bg-gray-100">
             <Bars3Icon v-if="store.ui.sidebarCollapsed" class="w-5 h-5" />
             <div v-else class="flex items-center justify-between w-full">
@@ -117,10 +92,11 @@
               <ChevronLeftIcon class="w-5 h-5" />
             </div>
           </button>
+          <span v-else class="font-medium text-gray-900">{{ config.sidebarTitle }}</span>
         </div>
 
         <!-- Navigation -->
-        <nav v-if="!store.ui.sidebarCollapsed" class="p-4">
+        <nav v-if="isMobile || !store.ui.sidebarCollapsed" class="p-4">
           <div class="space-y-2">
             <button v-for="section in config.navSections"
                     :key="section.id"
@@ -136,7 +112,7 @@
         </nav>
 
         <!-- Section Editor -->
-        <div v-if="!store.ui.sidebarCollapsed" class="flex-1 min-h-0 overflow-y-auto p-4">
+        <div v-if="isMobile || !store.ui.sidebarCollapsed" class="flex-1 min-h-0 overflow-y-auto p-4">
           <Suspense>
             <component :is="currentSectionComponent" />
             <template #fallback>
@@ -147,17 +123,17 @@
           </Suspense>
         </div>
 
-        <!-- Resize handle -->
-        <div v-if="!store.ui.sidebarCollapsed"
+        <!-- Resize handle (desktop only) -->
+        <div v-if="!store.ui.sidebarCollapsed && !isMobile"
              @mousedown.prevent="startResize"
              @dblclick="resetSidebarWidth"
              class="absolute top-0 right-0 h-full w-1.5 cursor-col-resize bg-transparent hover:bg-primary-300 active:bg-primary-400 transition-colors"
              title="Drag to resize · double-click to reset"></div>
       </aside>
 
-      <!-- Main Content -->
+      <!-- Main Content (stacks below the editor on mobile, side-by-side on desktop) -->
       <main class="flex-1 overflow-hidden bg-gray-100">
-        <div class="h-full overflow-y-auto p-8">
+        <div class="lg:h-full overflow-y-auto overflow-x-auto p-4 sm:p-6 lg:p-8">
           <div class="max-w-4xl mx-auto">
             <!-- Document Preview -->
             <div :id="config.previewElementId" class="document-preview bg-white shadow-lg">
@@ -214,11 +190,10 @@ import {
   DocumentTextIcon,
   ArrowUpTrayIcon,
   Bars3Icon,
-  ChevronLeftIcon,
-  CheckIcon
+  ChevronLeftIcon
 } from '@heroicons/vue/24/outline'
 
-// File-type options for the Canva-style download picker.
+// Download formats — each is a one-click download action.
 const DOWNLOAD_FORMATS = [
   { id: 'pdf', label: 'PDF', desc: 'Best for printing & sharing', icon: DocumentArrowDownIcon },
   { id: 'png', label: 'PNG', desc: 'High-quality image', icon: PhotoIcon },
@@ -239,8 +214,7 @@ export default {
     DocumentTextIcon,
     ArrowUpTrayIcon,
     Bars3Icon,
-    ChevronLeftIcon,
-    CheckIcon
+    ChevronLeftIcon
   },
   props: {
     config: {
@@ -263,15 +237,14 @@ export default {
   data() {
     return {
       showExportMenu: false,
-      showFormatList: false,
-      selectedFormat: 'pdf',
       formats: DOWNLOAD_FORMATS,
       showImportModal: false,
       importJsonData: '',
       sidebarWidth: 320,
       minSidebarWidth: 256,
       maxSidebarWidth: 640,
-      resizing: false
+      resizing: false,
+      windowWidth: typeof window !== 'undefined' ? window.innerWidth : 1280
     }
   },
   computed: {
@@ -280,8 +253,13 @@ export default {
       const active = sections.find(section => section.id === this.store.ui.currentSection)
       return active ? active.editor : sections[0].editor
     },
-    currentFormat() {
-      return this.formats.find(f => f.id === this.selectedFormat) || this.formats[0]
+    isMobile() {
+      return this.windowWidth < 1024
+    },
+    asideStyle() {
+      // On mobile the editor takes the full width (single-panel, toggled by Preview).
+      if (this.isMobile) return { width: '100%' }
+      return { width: this.store.ui.sidebarCollapsed ? '4rem' : this.sidebarWidth + 'px' }
     },
     widthKey() {
       return `mra-${this.config.type}-sidebar-width`
@@ -302,21 +280,14 @@ export default {
 
     toggleExportMenu() {
       this.showExportMenu = !this.showExportMenu
-      this.showFormatList = false
     },
 
-    selectFormat(format) {
-      this.selectedFormat = format
-      this.showFormatList = false
-    },
-
-    async handleDownloadSelected() {
+    async handleDownloadFormat(format) {
       this.showExportMenu = false
-      this.showFormatList = false
-      if (this.selectedFormat === 'pdf') {
+      if (format === 'pdf') {
         await this.exporter.downloadPDF()
       } else {
-        await this.exporter.downloadImage(this.selectedFormat)
+        await this.exporter.downloadImage(format)
       }
     },
 
@@ -350,7 +321,6 @@ export default {
     handleOutsideClick(event) {
       if (!event.target.closest('.export-menu-wrap')) {
         this.showExportMenu = false
-        this.showFormatList = false
       }
     },
 
@@ -360,6 +330,7 @@ export default {
     },
 
     clampToViewport() {
+      this.windowWidth = window.innerWidth
       const max = this.effectiveMaxWidth()
       this.sidebarWidth = Math.min(Math.max(this.sidebarWidth, this.minSidebarWidth), max)
     },

@@ -56,7 +56,7 @@
         <div class="info-grid">
           <template v-for="row in personalRows" :key="row.label">
             <div v-if="row.value" class="info-label">{{ row.label }}</div>
-            <div v-if="row.value" class="info-value">{{ row.value }}</div>
+            <div v-if="row.value" class="info-value" :style="row.label === 'Full Name' ? nameStyle : null">{{ row.value }}</div>
           </template>
         </div>
       </section>
@@ -87,7 +87,11 @@
               <div class="info-label">Preferred Blood Group</div>
               <div class="info-value">{{ preferredBloodGroupsText }}</div>
             </div>
-            <p v-if="preferences.expectations" class="pref-text" :class="{ 'family-gap': preferredBloodGroupsText }">{{ preferences.expectations }}</p>
+            <div v-if="preferredComplexionsText" class="info-grid compact-grid">
+              <div class="info-label">Preferred Complexion</div>
+              <div class="info-value">{{ preferredComplexionsText }}</div>
+            </div>
+            <p v-if="preferences.expectations" class="pref-text" :class="{ 'family-gap': preferredBloodGroupsText || preferredComplexionsText }">{{ preferences.expectations }}</p>
           </div>
         </div>
       </section>
@@ -101,7 +105,7 @@
               <th>Degree</th>
               <th>Year</th>
               <th>Institute</th>
-              <th>Result</th>
+              <th>Result/CGPA</th>
             </tr>
           </thead>
           <tbody>
@@ -143,7 +147,7 @@
             <div class="parent-grid">
               <template v-if="family.father.name">
                 <div class="info-label">Name</div>
-                <div class="info-value info-strong">{{ family.father.name }}</div>
+                <div class="info-value info-strong" :style="nameStyle">{{ family.father.name }}</div>
               </template>
               <template v-if="family.father.profession">
                 <div class="info-label">Profession</div>
@@ -165,7 +169,7 @@
             <div class="parent-grid">
               <template v-if="family.mother.name">
                 <div class="info-label">Name</div>
-                <div class="info-value info-strong">{{ family.mother.name }}</div>
+                <div class="info-value info-strong" :style="nameStyle">{{ family.mother.name }}</div>
               </template>
               <template v-if="family.mother.profession">
                 <div class="info-label">Profession</div>
@@ -189,7 +193,7 @@
           <ul v-if="family.siblings.length" class="family-list">
             <li v-for="sib in family.siblings" :key="sib.id">
               <span class="fam-bullet">•</span>
-              <span class="family-name">{{ sib.name }}</span>
+              <span class="family-name" :style="nameStyle">{{ sib.name }}</span>
               <span v-if="sib.relation" class="family-meta"> - {{ sib.relation }}</span>
               <span v-if="sib.occupation" class="family-meta">, {{ sib.occupation }}</span>
               <span v-if="sib.maritalStatus" class="family-meta"> ({{ sib.maritalStatus }})</span>
@@ -199,24 +203,24 @@
         </div>
 
         <!-- Uncles -->
-        <div v-if="family.paternalUncles.length || family.maternalUncles.length" class="uncles-grid">
-          <div v-if="family.paternalUncles.length">
-            <div class="family-heading">Uncles (Chacha)</div>
+        <div v-if="showPaternalUncles || showMaternalUncles" class="uncles-grid">
+          <div v-if="showPaternalUncles">
+            <div class="family-heading">{{ paternalUncleLabel }}</div>
             <ul class="family-list">
               <li v-for="u in family.paternalUncles" :key="u.id">
                 <span class="fam-bullet">•</span>
-                <span class="family-name">{{ u.name }}</span>
+                <span class="family-name" :style="nameStyle">{{ u.name }}</span>
                 <span v-if="u.occupation" class="family-meta"> - {{ u.occupation }}</span>
                 <span v-if="u.location" class="family-meta"> - {{ u.location }}</span>
               </li>
             </ul>
           </div>
-          <div v-if="family.maternalUncles.length">
-            <div class="family-heading">Uncles (Mama)</div>
+          <div v-if="showMaternalUncles">
+            <div class="family-heading">{{ maternalUncleLabel }}</div>
             <ul class="family-list">
               <li v-for="u in family.maternalUncles" :key="u.id">
                 <span class="fam-bullet">•</span>
-                <span class="family-name">{{ u.name }}</span>
+                <span class="family-name" :style="nameStyle">{{ u.name }}</span>
                 <span v-if="u.occupation" class="family-meta"> - {{ u.occupation }}</span>
                 <span v-if="u.location" class="family-meta"> - {{ u.location }}</span>
               </li>
@@ -239,7 +243,11 @@
           <div class="info-label">Preferred Blood Group</div>
           <div class="info-value">{{ preferredBloodGroupsText }}</div>
         </div>
-        <p v-if="preferences.expectations" class="pref-text" :class="{ 'family-gap': preferredBloodGroupsText }">{{ preferences.expectations }}</p>
+        <div v-if="preferredComplexionsText" class="info-grid">
+          <div class="info-label">Preferred Complexion</div>
+          <div class="info-value">{{ preferredComplexionsText }}</div>
+        </div>
+        <p v-if="preferences.expectations" class="pref-text" :class="{ 'family-gap': preferredBloodGroupsText || preferredComplexionsText }">{{ preferences.expectations }}</p>
       </section>
     </template>
     </div>
@@ -321,12 +329,33 @@ export default {
       return !!(l.hobby || l.smoking || l.drinking)
     },
     hasPreferences() {
-      return !!(this.preferences.expectations || this.preferredBloodGroupsText)
+      return !!(this.preferences.expectations || this.preferredBloodGroupsText || this.preferredComplexionsText)
     },
     preferredBloodGroupsText() {
       return (this.preferences.preferredBloodGroups || [])
         .map(bg => this.formatBloodGroup(bg))
         .join(', ')
+    },
+    preferredComplexionsText() {
+      return (this.preferences.preferredComplexions || []).join(', ')
+    },
+    nameStyle() {
+      const s = this.settings.nameStyle || 'normal'
+      if (s === 'bold') return { fontWeight: 700, fontStyle: 'normal' }
+      if (s === 'italic') return { fontWeight: 400, fontStyle: 'italic' }
+      return { fontWeight: 400, fontStyle: 'normal' }
+    },
+    paternalUncleLabel() {
+      return this.settings.uncleLabelStyle === 'english' ? 'Uncles (Paternal)' : 'Uncles (Chacha)'
+    },
+    maternalUncleLabel() {
+      return this.settings.uncleLabelStyle === 'english' ? 'Uncles (Maternal)' : 'Uncles (Mama)'
+    },
+    showPaternalUncles() {
+      return this.settings.fieldsEnabled.paternalUncles !== false && this.family.paternalUncles.length > 0
+    },
+    showMaternalUncles() {
+      return this.settings.fieldsEnabled.maternalUncles !== false && this.family.maternalUncles.length > 0
     },
     pairPreferencesInline() {
       // Render Partner Preferences beside Hobbies & Habits when both are shown.

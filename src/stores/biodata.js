@@ -83,6 +83,7 @@ export const useBiodataStore = defineStore('biodata', {
     // Partner Preferences (optional section)
     preferences: {
       preferredBloodGroups: [],
+      preferredComplexions: [],
       expectations: ''
     },
 
@@ -93,6 +94,10 @@ export const useBiodataStore = defineStore('biodata', {
       showBismillah: false,
       bismillahStyle: 'bengali',
       bloodGroupVe: false,
+      // Emphasis applied to all name values (normal | bold | italic)
+      nameStyle: 'bold',
+      // Uncle heading style: 'chacha' → Chacha/Mama, 'english' → Paternal/Maternal
+      uncleLabelStyle: 'chacha',
       colorScheme: {
         primary: '#a61c3c',
         secondary: '#7a142c',
@@ -129,6 +134,8 @@ export const useBiodataStore = defineStore('biodata', {
         maritalStatus: true,
         income: false,
         siblings: true,
+        paternalUncles: true,
+        maternalUncles: true,
         homeDistrict: false,
         guardianPhone: false,
         email: false,
@@ -317,10 +324,22 @@ export const useBiodataStore = defineStore('biodata', {
             : (p.preferredBloodGroup ? [p.preferredBloodGroup] : [])
           this.preferences = {
             preferredBloodGroups: groups,
+            preferredComplexions: Array.isArray(p.preferredComplexions) ? p.preferredComplexions : [],
             expectations: p.expectations || ''
           }
         }
-        if (data.settings) this.settings = { ...this.settings, ...data.settings }
+        if (data.settings) {
+          const s = data.settings
+          // Deep-merge nested objects so keys added in newer versions keep their
+          // defaults when importing data exported by an older version.
+          this.settings = {
+            ...this.settings,
+            ...s,
+            colorScheme: { ...this.settings.colorScheme, ...(s.colorScheme || {}) },
+            sectionsEnabled: { ...this.settings.sectionsEnabled, ...(s.sectionsEnabled || {}) },
+            fieldsEnabled: { ...this.settings.fieldsEnabled, ...(s.fieldsEnabled || {}) }
+          }
+        }
         return true
       } catch (error) {
         console.error('Error importing biodata:', error)

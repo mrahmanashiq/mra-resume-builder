@@ -43,6 +43,25 @@
     </div>
 
     <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Complexion(s)</label>
+      <div class="flex flex-wrap gap-2">
+        <button v-for="c in complexions"
+                :key="c"
+                type="button"
+                @click="toggleComplexion(c)"
+                :class="['px-3 py-1 text-sm rounded-full border transition-colors',
+                         isComplexionSelected(c)
+                           ? 'border-primary-500 text-primary-600 bg-primary-50 font-medium'
+                           : 'border-gray-300 text-gray-700 hover:border-gray-400']">
+          {{ c }}
+        </button>
+      </div>
+      <p class="text-xs text-gray-500 mt-1">
+        Optional. Select any number of acceptable complexions (or none for no preference).
+      </p>
+    </div>
+
+    <div>
       <label class="block text-sm font-medium text-gray-700 mb-2">Expectations</label>
       <textarea :value="biodataStore.preferences.expectations"
                 @input="update('expectations', $event.target.value)"
@@ -69,7 +88,8 @@ export default {
   },
   data() {
     return {
-      bloodGroups: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
+      bloodGroups: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+      complexions: ['Fair', 'Very Fair', 'Wheatish', 'Medium', 'Dark']
     }
   },
   computed: {
@@ -107,6 +127,20 @@ export default {
       // Keep a stable, canonical order regardless of click order.
       current.sort((a, b) => this.bloodGroups.indexOf(a) - this.bloodGroups.indexOf(b))
       this.update('preferredBloodGroups', current)
+    },
+    isComplexionSelected(c) {
+      return (this.biodataStore.preferences.preferredComplexions || []).includes(c)
+    },
+    toggleComplexion(c) {
+      const current = [...(this.biodataStore.preferences.preferredComplexions || [])]
+      const idx = current.indexOf(c)
+      if (idx === -1) {
+        current.push(c)
+      } else {
+        current.splice(idx, 1)
+      }
+      current.sort((a, b) => this.complexions.indexOf(a) - this.complexions.indexOf(b))
+      this.update('preferredComplexions', current)
     }
   }
 }
