@@ -46,17 +46,15 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Issue Date</label>
-            <input type="month" 
-                   :value="certification.date"
-                   @input="updateCertification(certification.id, 'date', $event.target.value)"
-                   class="input-field">
+            <BaseDatePicker mode="month"
+                            :model-value="certification.date"
+                            @update:model-value="updateCertification(certification.id, 'date', $event)" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Expiry Date (Optional)</label>
-            <input type="month" 
-                   :value="certification.expiryDate"
-                   @input="updateCertification(certification.id, 'expiryDate', $event.target.value)"
-                   class="input-field">
+            <BaseDatePicker mode="month"
+                            :model-value="certification.expiryDate"
+                            @update:model-value="updateCertification(certification.id, 'expiryDate', $event)" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Credential ID</label>

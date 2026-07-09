@@ -86,7 +86,7 @@
                   :key="achievement" 
                   v-show="achievement.trim()"
                   class="flex items-start">
-                <span class="text-gray-300 mr-4 mt-2">—</span>
+                <span class="text-gray-300 mr-4 mt-2">-</span>
                 <span>{{ achievement }}</span>
               </li>
             </ul>

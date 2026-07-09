@@ -39,7 +39,7 @@ export default {
   components: { Cropper, XMarkIcon },
   props: {
     imageSrc: { type: String, required: true },
-    // longest output side (px) — resizes to keep files small and the PDF light
+    // longest output side (px) - resizes to keep files small and the PDF light
     maxSize: { type: Number, default: 700 },
     quality: { type: Number, default: 0.85 }
   },

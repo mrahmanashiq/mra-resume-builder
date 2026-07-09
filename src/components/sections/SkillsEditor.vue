@@ -36,13 +36,10 @@
                 </div>
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                  <select :value="skill.category"
-                          @change="updateSkill(skill.id, 'category', $event.target.value)"
-                          class="input-field">
-                    <option v-for="cat in skillCategories" :key="cat" :value="cat">
-                      {{ cat }}
-                    </option>
-                  </select>
+                  <BaseSelect
+                    :model-value="skill.category"
+                    @update:model-value="updateSkill(skill.id, 'category', $event)"
+                    :options="skillCategories" />
                 </div>
               </div>
               <button @click="removeSkill(skill.id)" 

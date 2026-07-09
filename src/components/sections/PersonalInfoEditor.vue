@@ -119,6 +119,32 @@
       </div>
     </div>
 
+    <!-- Google Scholar (academic CV) -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Google Scholar (Optional)</label>
+      <input type="text"
+             v-model="resumeStore.personalInfo.scholar"
+             @input="updatePersonalInfo('scholar', $event.target.value)"
+             class="input-field"
+             placeholder="scholar.google.com/citations?user=...">
+      <p class="text-xs text-gray-500 mt-1">
+        Shown in the contact line on the academic CV templates.
+      </p>
+    </div>
+
+    <!-- Research Interests (academic CV) -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-2">Research Interests (Optional)</label>
+      <input type="text"
+             v-model="resumeStore.personalInfo.researchInterests"
+             @input="updatePersonalInfo('researchInterests', $event.target.value)"
+             class="input-field"
+             placeholder="Machine Learning, Computer Vision, Deep Learning">
+      <p class="text-xs text-gray-500 mt-1">
+        Shown as a one-line summary under your name on the academic CV templates.
+      </p>
+    </div>
+
     <!-- Professional Summary -->
     <div>
       <label class="block text-sm font-medium text-gray-700 mb-2">Professional Summary</label>

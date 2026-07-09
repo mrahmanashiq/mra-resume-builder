@@ -1,5 +1,5 @@
 <template>
-  <!-- Template selector — renders the chosen biodata layout -->
+  <!-- Template selector - renders the chosen biodata layout -->
   <component :is="currentTemplate" />
 </template>
 

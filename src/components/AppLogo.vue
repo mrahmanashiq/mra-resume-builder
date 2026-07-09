@@ -58,4 +58,17 @@ export default {
   color: #1d4ed8;
   white-space: nowrap;
 }
+
+@media (max-width: 480px) {
+  .app-logo {
+    gap: 7px;
+  }
+  .app-logo__mark {
+    width: 26px;
+    height: 26px;
+  }
+  .app-logo__text {
+    font-size: 1.05rem;
+  }
+}
 </style>

@@ -13,7 +13,7 @@ import {
 
 /**
  * Marriage Biodata document config. Implements the same shell interface as the
- * résumé config — DocumentEditorShell renders it without any biodata-specific
+ * résumé config - DocumentEditorShell renders it without any biodata-specific
  * knowledge.
  */
 export const biodataConfig = {

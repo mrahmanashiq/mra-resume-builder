@@ -46,10 +46,8 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Date of Birth</label>
-        <input type="date"
-               :value="biodataStore.personalInfo.dateOfBirth"
-               @input="update('dateOfBirth', $event.target.value)"
-               class="input-field">
+        <BaseDatePicker :model-value="biodataStore.personalInfo.dateOfBirth"
+                        @update:model-value="update('dateOfBirth', $event)" />
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Religion</label>
@@ -96,21 +94,15 @@
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Complexion</label>
-        <select :value="biodataStore.personalInfo.complexion"
-                @change="update('complexion', $event.target.value)"
-                class="input-field">
-          <option value="">Select</option>
-          <option v-for="c in complexions" :key="c" :value="c">{{ c }}</option>
-        </select>
+        <BaseSelect :model-value="biodataStore.personalInfo.complexion"
+                    @update:model-value="update('complexion', $event)"
+                    :options="complexions" placeholder="Select" />
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Blood Group</label>
-        <select :value="biodataStore.personalInfo.bloodGroup"
-                @change="update('bloodGroup', $event.target.value)"
-                class="input-field">
-          <option value="">Select</option>
-          <option v-for="bg in bloodGroups" :key="bg" :value="bg">{{ bg }}</option>
-        </select>
+        <BaseSelect :model-value="biodataStore.personalInfo.bloodGroup"
+                    @update:model-value="update('bloodGroup', $event)"
+                    :options="bloodGroups" placeholder="Select" />
       </div>
     </div>
 
@@ -141,21 +133,15 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Marital Status</label>
-          <select :value="biodataStore.personalInfo.maritalStatus"
-                  @change="update('maritalStatus', $event.target.value)"
-                  class="input-field">
-            <option value="">Select</option>
-            <option v-for="m in maritalStatuses" :key="m" :value="m">{{ m }}</option>
-          </select>
+          <BaseSelect :model-value="biodataStore.personalInfo.maritalStatus"
+                      @update:model-value="update('maritalStatus', $event)"
+                      :options="maritalStatuses" placeholder="Select" />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Nationality</label>
-          <select :value="selectValue('nationality', nationalities)"
-                  @change="onSelectWithOther('nationality', $event.target.value)"
-                  class="input-field">
-            <option value="">Select</option>
-            <option v-for="n in nationalities" :key="n" :value="n">{{ n }}</option>
-          </select>
+          <BaseSelect :model-value="selectValue('nationality', nationalities)"
+                      @update:model-value="onSelectWithOther('nationality', $event)"
+                      :options="nationalities" placeholder="Select" />
           <input v-if="otherFlags.nationality"
                  type="text"
                  :value="biodataStore.personalInfo.nationality"
@@ -165,12 +151,9 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Mother Tongue</label>
-          <select :value="selectValue('motherTongue', motherTongues)"
-                  @change="onSelectWithOther('motherTongue', $event.target.value)"
-                  class="input-field">
-            <option value="">Select</option>
-            <option v-for="mt in motherTongues" :key="mt" :value="mt">{{ mt }}</option>
-          </select>
+          <BaseSelect :model-value="selectValue('motherTongue', motherTongues)"
+                      @update:model-value="onSelectWithOther('motherTongue', $event)"
+                      :options="motherTongues" placeholder="Select" />
           <input v-if="otherFlags.motherTongue"
                  type="text"
                  :value="biodataStore.personalInfo.motherTongue"
@@ -180,12 +163,9 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Sect / Madhab</label>
-          <select :value="biodataStore.personalInfo.sect"
-                  @change="update('sect', $event.target.value)"
-                  class="input-field">
-            <option value="">Select</option>
-            <option v-for="s in sects" :key="s" :value="s">{{ s }}</option>
-          </select>
+          <BaseSelect :model-value="biodataStore.personalInfo.sect"
+                      @update:model-value="update('sect', $event)"
+                      :options="sects" placeholder="Select" />
         </div>
       </div>
     </div>

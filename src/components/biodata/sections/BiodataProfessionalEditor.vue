@@ -46,28 +46,23 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Type</label>
-            <select :value="exp.type"
-                    @change="update(exp.id, 'type', $event.target.value)"
-                    class="input-field">
-              <option value="">Select</option>
-              <option v-for="t in workTypes" :key="t" :value="t">{{ t }}</option>
-            </select>
+            <BaseSelect :model-value="exp.type"
+                        @update:model-value="update(exp.id, 'type', $event)"
+                        :options="workTypes" placeholder="Select" />
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">From</label>
-              <input type="month"
-                     :value="exp.startDate"
-                     @input="update(exp.id, 'startDate', $event.target.value)"
-                     class="input-field">
+              <BaseDatePicker mode="month"
+                              :model-value="exp.startDate"
+                              @update:model-value="update(exp.id, 'startDate', $event)" />
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">To</label>
-              <input type="month"
-                     :value="exp.endDate"
-                     @input="update(exp.id, 'endDate', $event.target.value)"
-                     :disabled="exp.current"
-                     class="input-field disabled:bg-gray-100 disabled:text-gray-400">
+              <BaseDatePicker mode="month"
+                              :model-value="exp.endDate"
+                              @update:model-value="update(exp.id, 'endDate', $event)"
+                              :disabled="exp.current" />
             </div>
           </div>
           <label class="flex items-center space-x-2 text-sm text-gray-700">

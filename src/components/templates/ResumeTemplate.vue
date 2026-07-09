@@ -4,7 +4,14 @@
   <ClassicTemplate v-else-if="resumeStore.settings.template === 'classic'" />
   <CreativeTemplate v-else-if="resumeStore.settings.template === 'creative'" />
   <MinimalistTemplate v-else-if="resumeStore.settings.template === 'minimalist'" />
-  
+  <AtsResumeTemplate v-else-if="resumeStore.settings.template === 'ats'" />
+  <SidebarResumeTemplate v-else-if="resumeStore.settings.template === 'sidebar'" />
+  <AcademicResumeTemplate v-else-if="resumeStore.settings.template === 'academic'" />
+  <ColorfulResumeTemplate v-else-if="resumeStore.settings.template === 'colorful'" />
+  <CorporateCvTemplate v-else-if="resumeStore.settings.template === 'corporate'" />
+  <ResearcherCvTemplate v-else-if="resumeStore.settings.template === 'researcher'" />
+  <AcademicPortfolioTemplate v-else-if="resumeStore.settings.template === 'academicPortfolio'" />
+
   <!-- Default Fallback Template -->
   <div v-else class="resume-template" 
        :style="templateStyles"
@@ -256,6 +263,13 @@ const ModernTemplate = defineAsyncComponent(() => import('./ModernTemplate.vue')
 const ClassicTemplate = defineAsyncComponent(() => import('./ClassicTemplate.vue'))
 const CreativeTemplate = defineAsyncComponent(() => import('./CreativeTemplate.vue'))
 const MinimalistTemplate = defineAsyncComponent(() => import('./MinimalistTemplate.vue'))
+const AtsResumeTemplate = defineAsyncComponent(() => import('./AtsResumeTemplate.vue'))
+const SidebarResumeTemplate = defineAsyncComponent(() => import('./SidebarResumeTemplate.vue'))
+const AcademicResumeTemplate = defineAsyncComponent(() => import('./AcademicResumeTemplate.vue'))
+const ColorfulResumeTemplate = defineAsyncComponent(() => import('./ColorfulResumeTemplate.vue'))
+const CorporateCvTemplate = defineAsyncComponent(() => import('./CorporateCvTemplate.vue'))
+const ResearcherCvTemplate = defineAsyncComponent(() => import('./ResearcherCvTemplate.vue'))
+const AcademicPortfolioTemplate = defineAsyncComponent(() => import('./AcademicPortfolioTemplate.vue'))
 
 export default {
   name: 'ResumeTemplate',
@@ -267,7 +281,14 @@ export default {
     ModernTemplate,
     ClassicTemplate,
     CreativeTemplate,
-    MinimalistTemplate
+    MinimalistTemplate,
+    AtsResumeTemplate,
+    SidebarResumeTemplate,
+    AcademicResumeTemplate,
+    ColorfulResumeTemplate,
+    CorporateCvTemplate,
+    ResearcherCvTemplate,
+    AcademicPortfolioTemplate
   },
   setup() {
     const resumeStore = useResumeStore()

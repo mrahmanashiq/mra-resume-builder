@@ -16,23 +16,15 @@
     <div class="grid grid-cols-2 gap-4">
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Smoking</label>
-        <select :value="biodataStore.lifestyle.smoking"
-                @change="update('smoking', $event.target.value)"
-                class="input-field">
-          <option value="">Select</option>
-          <option value="No">No</option>
-          <option value="Yes">Yes</option>
-        </select>
+        <BaseSelect :model-value="biodataStore.lifestyle.smoking"
+                    @update:model-value="update('smoking', $event)"
+                    :options="['No', 'Yes']" placeholder="Select" />
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">Drinking</label>
-        <select :value="biodataStore.lifestyle.drinking"
-                @change="update('drinking', $event.target.value)"
-                class="input-field">
-          <option value="">Select</option>
-          <option value="No">No</option>
-          <option value="Yes">Yes</option>
-        </select>
+        <BaseSelect :model-value="biodataStore.lifestyle.drinking"
+                    @update:model-value="update('drinking', $event)"
+                    :options="['No', 'Yes']" placeholder="Select" />
       </div>
     </div>
 

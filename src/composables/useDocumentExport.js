@@ -5,7 +5,7 @@ import { saveAs } from 'file-saver'
  * Document-agnostic export/print/share/import behaviour.
  *
  * Shared by every document type (résumé, biodata, future CV). Knows nothing about
- * a specific document — it operates purely through the passed-in store and config.
+ * a specific document - it operates purely through the passed-in store and config.
  *
  * @param {Object}   options
  * @param {Object}   options.store            Pinia store exposing exportData()/importData(json)

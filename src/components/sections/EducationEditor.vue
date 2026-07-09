@@ -56,17 +56,15 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
-            <input type="month" 
-                   :value="education.startDate"
-                   @input="updateEducation(education.id, 'startDate', $event.target.value)"
-                   class="input-field">
+            <BaseDatePicker mode="month"
+                            :model-value="education.startDate"
+                            @update:model-value="updateEducation(education.id, 'startDate', $event)" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">End Date</label>
-            <input type="month" 
-                   :value="education.endDate"
-                   @input="updateEducation(education.id, 'endDate', $event.target.value)"
-                   class="input-field">
+            <BaseDatePicker mode="month"
+                            :model-value="education.endDate"
+                            @update:model-value="updateEducation(education.id, 'endDate', $event)" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">GPA (Optional)</label>
@@ -75,6 +73,26 @@
                    @input="updateEducation(education.id, 'gpa', $event.target.value)"
                    class="input-field"
                    placeholder="3.8">
+          </div>
+        </div>
+
+        <!-- Thesis and Advisor (academic CV) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Thesis (Optional)</label>
+            <input type="text"
+                   :value="education.thesis"
+                   @input="updateEducation(education.id, 'thesis', $event.target.value)"
+                   class="input-field"
+                   placeholder="Contextual visual recognition from images and videos">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Advisor (Optional)</label>
+            <input type="text"
+                   :value="education.advisor"
+                   @input="updateEducation(education.id, 'advisor', $event.target.value)"
+                   class="input-field"
+                   placeholder="Prof. Jane Smith">
           </div>
         </div>
 
@@ -140,6 +158,8 @@ export default {
         startDate: '',
         endDate: '',
         gpa: '',
+        thesis: '',
+        advisor: '',
         description: ''
       })
       this.toast.success('New education added')

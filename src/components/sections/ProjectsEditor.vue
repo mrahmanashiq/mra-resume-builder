@@ -80,17 +80,15 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
-            <input type="month" 
-                   :value="project.startDate"
-                   @input="updateProject(project.id, 'startDate', $event.target.value)"
-                   class="input-field">
+            <BaseDatePicker mode="month"
+                            :model-value="project.startDate"
+                            @update:model-value="updateProject(project.id, 'startDate', $event)" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">End Date</label>
-            <input type="month" 
-                   :value="project.endDate"
-                   @input="updateProject(project.id, 'endDate', $event.target.value)"
-                   class="input-field">
+            <BaseDatePicker mode="month"
+                            :model-value="project.endDate"
+                            @update:model-value="updateProject(project.id, 'endDate', $event)" />
           </div>
         </div>
       </div>

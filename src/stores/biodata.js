@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { v4 as uuidv4 } from 'uuid'
 
 /**
- * Marriage Biodata store. Fully independent from the résumé store — shares no
+ * Marriage Biodata store. Fully independent from the résumé store - shares no
  * state and imports nothing from it. Exposes the same UI interface the shared
  * DocumentEditorShell relies on (ui.* + setCurrentSection/togglePreviewMode/
  * toggleSidebar + exportData/importData).
@@ -42,7 +42,7 @@ export const useBiodataStore = defineStore('biodata', {
       { id: uuidv4(), degree: 'Degree / Exam Name', year: '2020', institute: 'Institute / University Name', result: 'GPA / CGPA' }
     ],
 
-    // Professional Details — list of work experiences
+    // Professional Details - list of work experiences
     professional: {
       experiences: [
         { id: uuidv4(), company: 'Company Name', position: 'Designation', location: 'City', type: 'On-site', startDate: '2022-01', endDate: '', current: true },
@@ -201,7 +201,7 @@ export const useBiodataStore = defineStore('biodata', {
       this.professional.experiences = this.professional.experiences.filter(item => item.id !== id)
     },
 
-    // Family — parents
+    // Family - parents
     updateParent(parent, field, value) {
       if (this.family[parent]) {
         this.family[parent][field] = value
@@ -211,7 +211,7 @@ export const useBiodataStore = defineStore('biodata', {
       this.family[field] = value
     },
 
-    // Family — siblings
+    // Family - siblings
     addSibling(sibling) {
       this.family.siblings.push({ id: uuidv4(), name: '', relation: 'Brother', occupation: '', maritalStatus: '', ...sibling })
     },
@@ -225,7 +225,7 @@ export const useBiodataStore = defineStore('biodata', {
       this.family.siblings = this.family.siblings.filter(item => item.id !== id)
     },
 
-    // Family — paternal uncles (Chacha)
+    // Family - paternal uncles (Chacha)
     addPaternalUncle(uncle) {
       this.family.paternalUncles.push({ id: uuidv4(), name: '', occupation: '', location: '', ...uncle })
     },
@@ -239,7 +239,7 @@ export const useBiodataStore = defineStore('biodata', {
       this.family.paternalUncles = this.family.paternalUncles.filter(item => item.id !== id)
     },
 
-    // Family — maternal uncles (Mama)
+    // Family - maternal uncles (Mama)
     addMaternalUncle(uncle) {
       this.family.maternalUncles.push({ id: uuidv4(), name: '', occupation: '', location: '', ...uncle })
     },

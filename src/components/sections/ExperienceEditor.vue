@@ -68,18 +68,16 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
-            <input type="month" 
-                   :value="experience.startDate"
-                   @input="updateExperience(experience.id, 'startDate', $event.target.value)"
-                   class="input-field">
+            <BaseDatePicker mode="month"
+                            :model-value="experience.startDate"
+                            @update:model-value="updateExperience(experience.id, 'startDate', $event)" />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">End Date</label>
-            <input type="month" 
-                   :value="experience.endDate"
-                   @input="updateExperience(experience.id, 'endDate', $event.target.value)"
-                   :disabled="experience.current"
-                   class="input-field disabled:bg-gray-100">
+            <BaseDatePicker mode="month"
+                            :model-value="experience.endDate"
+                            @update:model-value="updateExperience(experience.id, 'endDate', $event)"
+                            :disabled="experience.current" />
           </div>
           <div class="flex items-center">
             <label class="flex items-center space-x-2 mt-6">

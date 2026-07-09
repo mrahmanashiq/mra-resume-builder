@@ -49,41 +49,18 @@
              :key="template.id"
              class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group">
           
-          <!-- Template Preview -->
-          <div class="relative h-64 bg-gradient-to-br" :class="template.gradient">
-            <div class="absolute inset-0 p-6 text-white">
-              <!-- Simulated Resume Content -->
-              <div class="space-y-3">
-                <div class="h-4 bg-white/40 rounded w-3/4"></div>
-                <div class="h-3 bg-white/30 rounded w-1/2"></div>
-                <div class="space-y-2 mt-4">
-                  <div class="h-2 bg-white/25 rounded"></div>
-                  <div class="h-2 bg-white/25 rounded w-4/5"></div>
-                  <div class="h-2 bg-white/25 rounded w-3/5"></div>
-                </div>
-                <div class="grid grid-cols-2 gap-4 mt-4">
-                  <div class="space-y-2">
-                    <div class="h-2 bg-white/30 rounded"></div>
-                    <div class="h-1 bg-white/20 rounded"></div>
-                    <div class="h-1 bg-white/20 rounded w-3/4"></div>
-                  </div>
-                  <div class="space-y-2">
-                    <div class="h-2 bg-white/30 rounded"></div>
-                    <div class="h-1 bg-white/20 rounded"></div>
-                    <div class="h-1 bg-white/20 rounded w-2/3"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
+          <!-- Template Preview (live, scaled-down render of the real template) -->
+          <div class="relative border-b border-gray-100 bg-gray-50">
+            <TemplateThumbnail :component="componentFor(template.id)" />
+
             <!-- Overlay on Hover -->
             <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <div class="space-y-3">
-                <button @click="previewTemplate(template)" 
+              <div class="space-y-3 w-40">
+                <button @click="previewTemplate(template)"
                         class="w-full bg-white text-gray-900 py-2 px-4 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-200">
                   Preview
                 </button>
-                <button @click="selectTemplate(template)" 
+                <button @click="selectTemplate(template)"
                         class="w-full bg-primary-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-primary-700 transition-colors duration-200">
                   Use Template
                 </button>
@@ -93,31 +70,16 @@
 
           <!-- Template Info -->
           <div class="p-6">
-            <div class="flex items-start justify-between mb-2">
-              <h3 class="text-lg font-semibold text-gray-900">{{ template.name }}</h3>
-              <span v-if="template.premium" 
-                    class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2 py-1 rounded-full">
-                Pro
-              </span>
-            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ template.name }}</h3>
             <p class="text-gray-600 text-sm mb-4">{{ template.description }}</p>
             
             <!-- Template Features -->
-            <div class="flex flex-wrap gap-2 mb-4">
-              <span v-for="feature in template.features" 
+            <div class="flex flex-wrap gap-2">
+              <span v-for="feature in template.features"
                     :key="feature"
                     class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">
                 {{ feature }}
               </span>
-            </div>
-
-            <!-- Template Stats -->
-            <div class="flex items-center justify-between text-sm text-gray-500">
-              <div class="flex items-center space-x-1">
-                <StarIcon class="w-4 h-4 text-yellow-400 fill-current" />
-                <span>{{ template.rating }}</span>
-              </div>
-              <span>{{ template.downloads }} downloads</span>
             </div>
           </div>
         </div>
@@ -139,65 +101,28 @@
     <!-- Template Preview Modal -->
     <div v-if="selectedTemplatePreview" 
          class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-      <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
-        <div class="flex items-center justify-between p-6 border-b border-gray-200">
+      <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <div class="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
           <h3 class="text-xl font-semibold text-gray-900">
             {{ selectedTemplatePreview.name }} Preview
           </h3>
-          <button @click="closePreview" 
+          <button @click="closePreview"
                   class="text-gray-400 hover:text-gray-600">
             <XMarkIcon class="w-6 h-6" />
           </button>
         </div>
-        
-        <div class="p-6 overflow-y-auto max-h-[calc(90vh-8rem)]">
-          <div class="bg-gray-100 p-8 rounded-lg">
-            <div class="bg-white shadow-lg mx-auto" style="width: 210mm; min-height: 297mm;">
-              <!-- Template preview content would go here -->
-              <div class="p-8">
-                <div class="text-center mb-8">
-                  <h1 class="text-3xl font-bold text-gray-900 mb-2">John Doe</h1>
-                  <p class="text-lg text-gray-600">Full Stack Developer</p>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  <div class="md:col-span-2">
-                    <section class="mb-8">
-                      <h2 class="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-300 pb-2">
-                        Experience
-                      </h2>
-                      <div class="space-y-4">
-                        <div>
-                          <h3 class="font-semibold text-gray-900">Senior Developer</h3>
-                          <p class="text-gray-600">Tech Company • 2022 - Present</p>
-                          <ul class="mt-2 text-sm text-gray-700 list-disc list-inside">
-                            <li>Led development of web applications</li>
-                            <li>Mentored junior developers</li>
-                          </ul>
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                  
-                  <div>
-                    <section class="mb-8">
-                      <h2 class="text-xl font-semibold text-gray-900 mb-4 border-b border-gray-300 pb-2">
-                        Skills
-                      </h2>
-                      <div class="space-y-2">
-                        <div class="text-sm text-gray-700">JavaScript</div>
-                        <div class="text-sm text-gray-700">React</div>
-                        <div class="text-sm text-gray-700">Node.js</div>
-                      </div>
-                    </section>
-                  </div>
-                </div>
-              </div>
+
+        <div class="p-6 overflow-auto flex-1 min-h-0">
+          <div class="bg-gray-100 p-4 sm:p-8 rounded-lg flex justify-center">
+            <div class="bg-white shadow-lg" style="width: 210mm; flex-shrink: 0;">
+              <Suspense>
+                <component :is="componentFor(selectedTemplatePreview.id)" />
+              </Suspense>
             </div>
           </div>
         </div>
         
-        <div class="p-6 border-t border-gray-200 flex justify-end space-x-4">
+        <div class="p-6 border-t border-gray-200 flex justify-end space-x-4 flex-shrink-0">
           <button @click="closePreview" class="btn-secondary">
             Close
           </button>
@@ -211,16 +136,33 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue'
 import { useResumeStore } from '../stores/resume'
 import { useToast } from 'vue-toastification'
-import { StarIcon, DocumentTextIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { DocumentTextIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import TemplateThumbnail from '../components/TemplateThumbnail.vue'
+
+// Map each template id to its real component (lazy-loaded).
+const templateComponents = {
+  modern: defineAsyncComponent(() => import('../components/templates/ModernTemplate.vue')),
+  classic: defineAsyncComponent(() => import('../components/templates/ClassicTemplate.vue')),
+  creative: defineAsyncComponent(() => import('../components/templates/CreativeTemplate.vue')),
+  minimalist: defineAsyncComponent(() => import('../components/templates/MinimalistTemplate.vue')),
+  ats: defineAsyncComponent(() => import('../components/templates/AtsResumeTemplate.vue')),
+  sidebar: defineAsyncComponent(() => import('../components/templates/SidebarResumeTemplate.vue')),
+  academic: defineAsyncComponent(() => import('../components/templates/AcademicResumeTemplate.vue')),
+  colorful: defineAsyncComponent(() => import('../components/templates/ColorfulResumeTemplate.vue')),
+  corporate: defineAsyncComponent(() => import('../components/templates/CorporateCvTemplate.vue')),
+  researcher: defineAsyncComponent(() => import('../components/templates/ResearcherCvTemplate.vue')),
+  academicPortfolio: defineAsyncComponent(() => import('../components/templates/AcademicPortfolioTemplate.vue'))
+}
 
 export default {
   name: 'Templates',
   components: {
-    StarIcon,
     DocumentTextIcon,
-    XMarkIcon
+    XMarkIcon,
+    TemplateThumbnail
   },
   setup() {
     const resumeStore = useResumeStore()
@@ -232,95 +174,84 @@ export default {
     return {
       selectedCategory: 'All',
       selectedTemplatePreview: null,
-      categories: ['All', 'Professional', 'Creative', 'Modern', 'Minimalist', 'Executive'],
+      categories: ['All', 'Professional', 'Academic', 'Creative', 'Modern', 'Minimalist', 'Executive'],
       templates: [
         {
+          id: 'researcher',
+          name: 'Researcher CV',
+          description: 'Clean multi-page academic CV with publications, talks, awards and service.',
+          categories: ['Academic', 'Professional', 'Minimalist'],
+          features: ['Publications', 'Multi-page', 'Serif', 'ATS-Friendly']
+        },
+        {
+          id: 'academicPortfolio',
+          name: 'Academic Portfolio',
+          description: 'Rich CV with margin labels, numbered publications and tl;dr summaries.',
+          categories: ['Academic', 'Professional', 'Executive'],
+          features: ['Publications', 'Margin labels', 'tl;dr summaries', 'Multi-page']
+        },
+        {
+          id: 'ats',
+          name: 'Clean ATS',
+          description: 'Single-column, ATS-friendly layout with ruled headings.',
+          categories: ['Professional', 'Modern', 'Minimalist'],
+          features: ['ATS-Friendly', 'Single-column', 'Clean']
+        },
+        {
           id: 'modern',
-          name: 'Modern Professional',
-          description: 'Clean and contemporary design perfect for tech professionals',
-          category: 'Modern',
-          gradient: 'from-blue-600 to-purple-600',
-          features: ['ATS-Friendly', 'Clean Layout', 'Modern Typography'],
-          rating: 4.8,
-          downloads: '12.5k',
-          premium: false
+          name: 'Modern',
+          description: 'Clean, contemporary two-column design.',
+          categories: ['Modern', 'Professional'],
+          features: ['Modern', 'Two-column', 'Color header']
+        },
+        {
+          id: 'sidebar',
+          name: 'Sidebar',
+          description: 'Two-column with a side panel for photo, skills and contact.',
+          categories: ['Modern', 'Creative'],
+          features: ['Two-column', 'Photo', 'Skill chips']
+        },
+        {
+          id: 'colorful',
+          name: 'Colorful',
+          description: 'Accent-colored header band with chips and skill bars.',
+          categories: ['Creative', 'Modern'],
+          features: ['Accent header', 'Chips', 'Skill bars']
         },
         {
           id: 'creative',
-          name: 'Creative Portfolio',
-          description: 'Vibrant design ideal for creative professionals and designers',
-          category: 'Creative',
-          gradient: 'from-pink-500 to-orange-500',
-          features: ['Portfolio Showcase', 'Creative Layout', 'Color Accents'],
-          rating: 4.6,
-          downloads: '8.3k',
-          premium: true
+          name: 'Creative',
+          description: 'Bold, colorful design for standout applications.',
+          categories: ['Creative'],
+          features: ['Bold', 'Color accents', 'Eye-catching']
+        },
+        {
+          id: 'academic',
+          name: 'Academic CV',
+          description: 'Serif, scholarly layout with margin dates.',
+          categories: ['Academic', 'Executive', 'Professional'],
+          features: ['Serif', 'Margin dates', 'Scholarly']
+        },
+        {
+          id: 'corporate',
+          name: 'Corporate CV',
+          description: 'Multi-page CV with header band, tables, personal details & references.',
+          categories: ['Professional', 'Executive'],
+          features: ['Multi-page', 'Tables', 'Personal details', 'References']
         },
         {
           id: 'classic',
-          name: 'Executive Suite',
-          description: 'Sophisticated template for senior-level positions',
-          category: 'Executive',
-          gradient: 'from-gray-700 to-gray-900',
-          features: ['Executive Style', 'Professional', 'Leadership Focus'],
-          rating: 4.9,
-          downloads: '15.2k',
-          premium: true
+          name: 'Classic',
+          description: 'Traditional, professional layout for any field.',
+          categories: ['Professional', 'Executive'],
+          features: ['Traditional', 'Professional', 'Timeless']
         },
         {
           id: 'minimalist',
-          name: 'Minimalist Clean',
-          description: 'Simple and elegant design that lets your content shine',
-          category: 'Minimalist',
-          gradient: 'from-teal-500 to-green-500',
-          features: ['Minimalist', 'Easy to Read', 'Content Focus'],
-          rating: 4.7,
-          downloads: '9.8k',
-          premium: false
-        },
-        {
-          id: 5,
-          name: 'Corporate Professional',
-          description: 'Traditional corporate design for business professionals',
-          category: 'Professional',
-          gradient: 'from-indigo-600 to-blue-600',
-          features: ['Corporate Style', 'Traditional Layout', 'Business Focus'],
-          rating: 4.5,
-          downloads: '11.1k',
-          premium: false
-        },
-        {
-          id: 6,
-          name: 'Tech Innovator',
-          description: 'Modern tech-focused design with innovative elements',
-          category: 'Modern',
-          gradient: 'from-purple-600 to-pink-600',
-          features: ['Tech Focus', 'Innovation Theme', 'Skills Highlight'],
-          rating: 4.8,
-          downloads: '7.9k',
-          premium: true
-        },
-        {
-          id: 7,
-          name: 'Simple Elegant',
-          description: 'Elegant simplicity with perfect typography balance',
-          category: 'Minimalist',
-          gradient: 'from-gray-600 to-blue-600',
-          features: ['Elegant Typography', 'Simple Layout', 'Professional'],
-          rating: 4.6,
-          downloads: '13.4k',
-          premium: false
-        },
-        {
-          id: 8,
-          name: 'Creative Burst',
-          description: 'Bold and colorful design for standout applications',
-          category: 'Creative',
-          gradient: 'from-yellow-500 to-red-500',
-          features: ['Bold Colors', 'Creative Sections', 'Eye-catching'],
-          rating: 4.4,
-          downloads: '6.7k',
-          premium: true
+          name: 'Minimalist',
+          description: 'Simple, elegant design that lets your content shine.',
+          categories: ['Minimalist', 'Professional'],
+          features: ['Minimalist', 'Easy to read', 'Content focus']
         }
       ]
     }
@@ -330,10 +261,14 @@ export default {
       if (this.selectedCategory === 'All') {
         return this.templates
       }
-      return this.templates.filter(template => template.category === this.selectedCategory)
+      return this.templates.filter(template => (template.categories || []).includes(this.selectedCategory))
     }
   },
   methods: {
+    componentFor(id) {
+      return templateComponents[id]
+    },
+
     previewTemplate(template) {
       this.selectedTemplatePreview = template
     },

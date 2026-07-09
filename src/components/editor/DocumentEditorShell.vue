@@ -8,9 +8,13 @@
             <router-link to="/" class="flex items-center">
               <AppLogo :title="config.headerTitle" />
             </router-link>
-            <div class="hidden md:flex items-center space-x-2 text-sm text-gray-500">
-              <span>Auto-saved</span>
-              <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+            <div class="flex items-center space-x-2 text-sm">
+              <span class="hidden md:inline" :class="saveStatus === 'saving' ? 'text-amber-600' : 'text-gray-500'">
+                {{ saveStatus === 'saving' ? 'Saving…' : 'Auto-saved' }}
+              </span>
+              <span class="save-dot"
+                    :class="saveStatus === 'saving' ? 'save-dot-saving' : 'save-dot-saved'"
+                    :title="saveStatus === 'saving' ? 'Saving…' : 'Saved to this browser'"></span>
             </div>
           </div>
 
@@ -32,7 +36,7 @@
               <!-- Export Menu -->
               <div v-if="showExportMenu"
                    class="absolute right-0 mt-2 w-60 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10">
-                <!-- Download formats — one click each -->
+                <!-- Download formats - one click each -->
                 <p class="px-4 pt-1 pb-1 text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Download as</p>
                 <button v-for="f in formats" :key="f.id" type="button"
                         @click="handleDownloadFormat(f.id)"
@@ -74,6 +78,23 @@
       </div>
     </header>
 
+    <!-- Mobile section switcher: sticky horizontal tabs under the header (edit mode only) -->
+    <div v-if="!store.ui.previewMode"
+         class="mobile-tabs lg:hidden sticky top-16 z-40 bg-white border-b border-gray-200 no-print">
+      <div class="flex gap-2 overflow-x-auto px-4 py-2">
+        <button v-for="section in config.navSections"
+                :key="section.id"
+                @click="jumpToSection(section.id, $event)"
+                :class="['mobile-tab flex-shrink-0 inline-flex items-center gap-1.5 px-3.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors',
+                         store.ui.currentSection === section.id
+                           ? 'bg-primary-600 text-white'
+                           : 'bg-gray-100 text-gray-700 active:bg-gray-200']">
+          <component :is="section.icon" class="w-4 h-4 flex-shrink-0" />
+          <span>{{ section.name }}</span>
+        </button>
+      </div>
+    </div>
+
     <div class="flex flex-col lg:flex-row lg:h-[calc(100vh-4rem)]">
       <!-- Sidebar -->
       <aside v-if="!store.ui.previewMode"
@@ -81,10 +102,9 @@
                       resizing ? '' : 'transition-[width] duration-300']"
              :style="asideStyle">
 
-        <!-- Sidebar Toggle (desktop can collapse; mobile shows a plain title) -->
-        <div class="p-4 border-b border-gray-200">
-          <button v-if="!isMobile"
-                  @click="toggleSidebar"
+        <!-- Sidebar Toggle (desktop only; mobile uses the sticky tab switcher above) -->
+        <div class="p-4 border-b border-gray-200 hidden lg:block">
+          <button @click="toggleSidebar"
                   class="w-full flex items-center justify-center p-2 rounded-lg hover:bg-gray-100">
             <Bars3Icon v-if="store.ui.sidebarCollapsed" class="w-5 h-5" />
             <div v-else class="flex items-center justify-between w-full">
@@ -92,11 +112,10 @@
               <ChevronLeftIcon class="w-5 h-5" />
             </div>
           </button>
-          <span v-else class="font-medium text-gray-900">{{ config.sidebarTitle }}</span>
         </div>
 
-        <!-- Navigation -->
-        <nav v-if="isMobile || !store.ui.sidebarCollapsed" class="p-4">
+        <!-- Navigation (desktop sidebar list) -->
+        <nav v-if="!isMobile && !store.ui.sidebarCollapsed" class="p-4">
           <div class="space-y-2">
             <button v-for="section in config.navSections"
                     :key="section.id"
@@ -112,7 +131,7 @@
         </nav>
 
         <!-- Section Editor -->
-        <div v-if="isMobile || !store.ui.sidebarCollapsed" class="flex-1 min-h-0 overflow-y-auto p-4">
+        <div v-if="isMobile || !store.ui.sidebarCollapsed" class="mobile-pb flex-1 min-h-0 overflow-y-auto p-4">
           <Suspense>
             <component :is="currentSectionComponent" />
             <template #fallback>
@@ -133,7 +152,7 @@
 
       <!-- Main Content (stacks below the editor on mobile, side-by-side on desktop) -->
       <main class="flex-1 overflow-hidden bg-gray-100">
-        <div class="lg:h-full overflow-y-auto overflow-x-auto p-4 sm:p-6 lg:p-8">
+        <div class="mobile-pb lg:h-full overflow-y-auto overflow-x-auto p-4 sm:p-6 lg:p-8">
           <div class="max-w-4xl mx-auto">
             <!-- Document Preview -->
             <div :id="config.previewElementId" class="document-preview bg-white shadow-lg">
@@ -152,6 +171,48 @@
           </div>
         </div>
       </main>
+    </div>
+
+    <!-- Mobile action bar (always reachable while editing) -->
+    <div class="mobile-actionbar lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-gray-200 flex items-center gap-3 px-4 py-2 no-print">
+      <button @click="togglePreview"
+              class="btn-outline flex-1 flex items-center justify-center gap-2 py-2.5">
+        <EyeIcon class="w-4 h-4" />
+        <span>{{ store.ui.previewMode ? 'Edit' : 'Preview' }}</span>
+      </button>
+      <button @click="showMobileExport = true"
+              class="btn-primary flex-1 flex items-center justify-center gap-2 py-2.5">
+        <CloudArrowDownIcon class="w-4 h-4" />
+        <span>Download</span>
+      </button>
+    </div>
+
+    <!-- Mobile export sheet -->
+    <div v-if="showMobileExport" class="lg:hidden fixed inset-0 z-50 no-print" @click.self="showMobileExport = false">
+      <div class="absolute inset-0 bg-black/40" @click="showMobileExport = false"></div>
+      <div class="mobile-sheet absolute inset-x-0 bottom-0 bg-white rounded-t-2xl p-4 pb-6 shadow-2xl">
+        <div class="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-4"></div>
+        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 px-1">Download as</p>
+        <button v-for="f in formats" :key="f.id" type="button"
+                @click="handleDownloadFormat(f.id)"
+                class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3">
+          <component :is="f.icon" class="w-5 h-5 text-gray-600 flex-shrink-0" />
+          <span class="flex-1 min-w-0">
+            <span class="block font-medium text-gray-800">{{ f.label }}</span>
+            <span class="block text-xs text-gray-500">{{ f.desc }}</span>
+          </span>
+        </button>
+        <hr class="my-2">
+        <button @click="handlePrint" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3">
+          <PrinterIcon class="w-5 h-5 text-gray-600" /> <span class="font-medium text-gray-800">Print</span>
+        </button>
+        <button @click="handleExportData" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3">
+          <DocumentTextIcon class="w-5 h-5 text-gray-600" /> <span class="font-medium text-gray-800">Export Data</span>
+        </button>
+        <button @click="openImportModal" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3">
+          <ArrowUpTrayIcon class="w-5 h-5 text-gray-600" /> <span class="font-medium text-gray-800">Import Data</span>
+        </button>
+      </div>
     </div>
 
     <!-- Import Modal -->
@@ -193,7 +254,7 @@ import {
   ChevronLeftIcon
 } from '@heroicons/vue/24/outline'
 
-// Download formats — each is a one-click download action.
+// Download formats - each is a one-click download action.
 const DOWNLOAD_FORMATS = [
   { id: 'pdf', label: 'PDF', desc: 'Best for printing & sharing', icon: DocumentArrowDownIcon },
   { id: 'png', label: 'PNG', desc: 'High-quality image', icon: PhotoIcon },
@@ -237,6 +298,8 @@ export default {
   data() {
     return {
       showExportMenu: false,
+      showMobileExport: false,
+      saveStatus: 'saved',
       formats: DOWNLOAD_FORMATS,
       showImportModal: false,
       importJsonData: '',
@@ -278,12 +341,20 @@ export default {
       this.store.setCurrentSection(section)
     },
 
+    jumpToSection(section, event) {
+      this.store.setCurrentSection(section)
+      // Keep the tapped tab visible in the horizontal strip.
+      const el = event && event.currentTarget
+      if (el && el.scrollIntoView) el.scrollIntoView({ inline: 'center', block: 'nearest' })
+    },
+
     toggleExportMenu() {
       this.showExportMenu = !this.showExportMenu
     },
 
     async handleDownloadFormat(format) {
       this.showExportMenu = false
+      this.showMobileExport = false
       if (format === 'pdf') {
         await this.exporter.downloadPDF()
       } else {
@@ -293,22 +364,26 @@ export default {
 
     handlePrint() {
       this.showExportMenu = false
+      this.showMobileExport = false
       this.exporter.printDocument()
     },
 
     handleShare() {
       this.showExportMenu = false
+      this.showMobileExport = false
       this.toast.info('Link sharing is coming soon')
     },
 
     handleExportData() {
       this.showExportMenu = false
+      this.showMobileExport = false
       this.exporter.downloadData()
     },
 
     openImportModal() {
       this.showImportModal = true
       this.showExportMenu = false
+      this.showMobileExport = false
     },
 
     handleImportData() {
@@ -362,7 +437,7 @@ export default {
       try {
         localStorage.setItem(this.widthKey, String(this.sidebarWidth))
       } catch (error) {
-        /* localStorage unavailable — ignore */
+        /* localStorage unavailable - ignore */
       }
     },
 
@@ -372,20 +447,26 @@ export default {
       try {
         localStorage.setItem(this.widthKey, String(this.sidebarWidth))
       } catch (error) {
-        /* localStorage unavailable — ignore */
+        /* localStorage unavailable - ignore */
       }
     }
   },
   mounted() {
     document.addEventListener('click', this.handleOutsideClick)
     window.addEventListener('resize', this.clampToViewport)
+    // Reflect real save activity: pulse "Saving…" on change, settle to "Auto-saved".
+    this._unsubscribeSave = this.store.$subscribe(() => {
+      this.saveStatus = 'saving'
+      clearTimeout(this._saveTimer)
+      this._saveTimer = setTimeout(() => { this.saveStatus = 'saved' }, 700)
+    })
     try {
       const saved = parseInt(localStorage.getItem(this.widthKey), 10)
       if (!Number.isNaN(saved)) {
         this.sidebarWidth = saved
       }
     } catch (error) {
-      /* localStorage unavailable — ignore */
+      /* localStorage unavailable - ignore */
     }
     this.clampToViewport()
   },
@@ -394,11 +475,73 @@ export default {
     window.removeEventListener('resize', this.clampToViewport)
     document.removeEventListener('mousemove', this.onResize)
     document.removeEventListener('mouseup', this.stopResize)
+    clearTimeout(this._saveTimer)
+    if (this._unsubscribeSave) this._unsubscribeSave()
   }
 }
 </script>
 
 <style scoped>
+/* Auto-save status dot */
+.save-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.save-dot-saved {
+  background: #22c55e;
+  animation: saveBreath 2.4s ease-in-out infinite;
+}
+.save-dot-saving {
+  background: #f59e0b;
+  box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5);
+  animation: saveBlink 0.85s ease-in-out infinite;
+}
+@keyframes saveBreath {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+@keyframes saveBlink {
+  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5); }
+  50% { opacity: 0.5; transform: scale(0.8); box-shadow: 0 0 0 4px rgba(245, 158, 11, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .save-dot-saved,
+  .save-dot-saving {
+    animation: none;
+  }
+}
+
+/* Mobile section tabs: horizontal scroll without a visible scrollbar */
+.mobile-tabs > div {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.mobile-tabs > div::-webkit-scrollbar {
+  display: none;
+}
+.mobile-tab {
+  min-height: 44px;
+}
+
+/* Keep content clear of the fixed mobile action bar (only below lg) */
+@media (max-width: 1023px) {
+  .mobile-pb {
+    padding-bottom: 6rem !important;
+  }
+}
+
+/* Respect iOS home-indicator safe area on the action bar */
+.mobile-actionbar {
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+}
+
+.mobile-sheet {
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+}
+
 @media print {
   header,
   aside,

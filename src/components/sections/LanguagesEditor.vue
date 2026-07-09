@@ -26,15 +26,10 @@
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1">Proficiency Level</label>
-              <select :value="language.level"
-                      @change="updateLanguage(language.id, 'level', $event.target.value)"
-                      class="input-field">
-                <option value="Native">Native</option>
-                <option value="Fluent">Fluent</option>
-                <option value="Advanced">Advanced</option>
-                <option value="Intermediate">Intermediate</option>
-                <option value="Basic">Basic</option>
-              </select>
+              <BaseSelect
+                :model-value="language.level"
+                @update:model-value="updateLanguage(language.id, 'level', $event)"
+                :options="['Native', 'Fluent', 'Advanced', 'Intermediate', 'Basic']" />
             </div>
           </div>
           <button @click="removeLanguage(language.id)" 

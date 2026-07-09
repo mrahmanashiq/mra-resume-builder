@@ -236,7 +236,7 @@
 
       <!-- Contact is rendered in the top-right side column (see .biodata-side) -->
 
-      <!-- Partner Preferences (standalone — only when not paired beside Hobbies & Habits) -->
+      <!-- Partner Preferences (standalone - only when not paired beside Hobbies & Habits) -->
       <section v-else-if="sectionId === 'preferences' && hasPreferences && !pairPreferencesInline" class="biodata-section print-avoid-break">
         <div class="section-bar">Partner Preferences</div>
         <div v-if="preferredBloodGroupsText" class="info-grid">

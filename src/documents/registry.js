@@ -3,7 +3,7 @@ import { biodataConfig } from './biodata.config'
 
 /**
  * The single place that knows every document type. Adding a new document type
- * (e.g. Academic CV) means adding its config here — no changes to the shell,
+ * (e.g. Academic CV) means adding its config here - no changes to the shell,
  * the export composable, or any existing document's code.
  */
 export const documents = {
@@ -26,7 +26,8 @@ export const documentCatalog = [
     description: 'ATS-friendly résumé for job applications.',
     route: '/editor',
     available: true,
-    gradient: 'from-blue-600 to-purple-600'
+    gradient: 'from-blue-600 to-purple-600',
+    icon: 'DocumentTextIcon'
   },
   {
     type: 'biodata',
@@ -34,14 +35,17 @@ export const documentCatalog = [
     description: 'Formal matrimonial biodata with family details.',
     route: '/biodata',
     available: true,
-    gradient: 'from-rose-700 to-red-900'
+    gradient: 'from-rose-700 to-red-900',
+    icon: 'HeartIcon'
   },
   {
     type: 'cv',
     name: 'Academic CV',
     description: 'Detailed CV for researchers and teachers.',
-    route: null,
-    available: false,
-    gradient: 'from-emerald-600 to-teal-700'
+    route: '/editor',
+    template: 'researcher',
+    available: true,
+    gradient: 'from-emerald-600 to-teal-700',
+    icon: 'AcademicCapIcon'
   }
 ]

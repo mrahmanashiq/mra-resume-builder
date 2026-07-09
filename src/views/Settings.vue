@@ -86,13 +86,15 @@
             <!-- Font Selection -->
             <div class="mb-6">
               <label class="block text-sm font-medium text-gray-700 mb-3">Font Family</label>
-              <select v-model="resumeStore.settings.font" class="input-field">
-                <option value="Inter">Inter (Modern)</option>
-                <option value="Merriweather">Merriweather (Serif)</option>
-                <option value="JetBrains Mono">JetBrains Mono (Monospace)</option>
-                <option value="Arial">Arial (Classic)</option>
-                <option value="Times New Roman">Times New Roman (Traditional)</option>
-              </select>
+              <BaseSelect
+                v-model="resumeStore.settings.font"
+                :options="[
+                  { value: 'Inter', label: 'Inter (Modern)' },
+                  { value: 'Merriweather', label: 'Merriweather (Serif)' },
+                  { value: 'JetBrains Mono', label: 'JetBrains Mono (Monospace)' },
+                  { value: 'Arial', label: 'Arial (Classic)' },
+                  { value: 'Times New Roman', label: 'Times New Roman (Traditional)' }
+                ]" />
             </div>
 
             <!-- Font Size -->
@@ -145,11 +147,13 @@
             <!-- Spacing -->
             <div class="mb-6">
               <label class="block text-sm font-medium text-gray-700 mb-3">Section Spacing</label>
-              <select v-model="resumeStore.settings.spacing" class="input-field">
-                <option value="compact">Compact</option>
-                <option value="normal">Normal</option>
-                <option value="relaxed">Relaxed</option>
-              </select>
+              <BaseSelect
+                v-model="resumeStore.settings.spacing"
+                :options="[
+                  { value: 'compact', label: 'Compact' },
+                  { value: 'normal', label: 'Normal' },
+                  { value: 'relaxed', label: 'Relaxed' }
+                ]" />
             </div>
           </div>
 
@@ -182,18 +186,18 @@
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <label class="block text-sm text-gray-700 mb-1">Paper Size</label>
-                  <select v-model="pdfSettings.paperSize" class="input-field">
-                    <option value="A4">A4</option>
-                    <option value="Letter">Letter</option>
-                    <option value="Legal">Legal</option>
-                  </select>
+                  <BaseSelect
+                    v-model="pdfSettings.paperSize"
+                    :options="['A4', 'Letter', 'Legal']" />
                 </div>
                 <div>
                   <label class="block text-sm text-gray-700 mb-1">Orientation</label>
-                  <select v-model="pdfSettings.orientation" class="input-field">
-                    <option value="portrait">Portrait</option>
-                    <option value="landscape">Landscape</option>
-                  </select>
+                  <BaseSelect
+                    v-model="pdfSettings.orientation"
+                    :options="[
+                      { value: 'portrait', label: 'Portrait' },
+                      { value: 'landscape', label: 'Landscape' }
+                    ]" />
                 </div>
               </div>
             </div>

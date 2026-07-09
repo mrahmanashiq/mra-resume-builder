@@ -69,15 +69,16 @@
       <div class="space-y-4">
         <div>
           <label class="block text-sm text-gray-700 mb-2">Font Family</label>
-          <select :value="resumeStore.settings.font" 
-                  @change="updateFont($event.target.value)"
-                  class="input-field">
-            <option value="Inter">Inter (Modern)</option>
-            <option value="Merriweather">Merriweather (Serif)</option>
-            <option value="JetBrains Mono">JetBrains Mono (Monospace)</option>
-            <option value="Arial">Arial (Classic)</option>
-            <option value="Times New Roman">Times New Roman (Traditional)</option>
-          </select>
+          <BaseSelect
+            :model-value="resumeStore.settings.font"
+            @update:model-value="updateFont($event)"
+            :options="[
+              { value: 'Inter', label: 'Inter (Modern)' },
+              { value: 'Merriweather', label: 'Merriweather (Serif)' },
+              { value: 'JetBrains Mono', label: 'JetBrains Mono (Monospace)' },
+              { value: 'Arial', label: 'Arial (Classic)' },
+              { value: 'Times New Roman', label: 'Times New Roman (Traditional)' }
+            ]" />
         </div>
         
         <div>
@@ -135,14 +136,23 @@
 <script>
 import { useResumeStore } from '../../stores/resume'
 import { useToast } from 'vue-toastification'
-import { 
+import {
   UserIcon,
   BriefcaseIcon,
   AcademicCapIcon,
   WrenchScrewdriverIcon,
   FolderIcon,
   TrophyIcon,
-  LanguageIcon
+  LanguageIcon,
+  BookOpenIcon,
+  PresentationChartBarIcon,
+  MicrophoneIcon,
+  StarIcon,
+  ClipboardDocumentCheckIcon,
+  IdentificationIcon,
+  UserGroupIcon,
+  SparklesIcon,
+  DocumentTextIcon
 } from '@heroicons/vue/24/outline'
 
 export default {
@@ -154,7 +164,16 @@ export default {
     WrenchScrewdriverIcon,
     FolderIcon,
     TrophyIcon,
-    LanguageIcon
+    LanguageIcon,
+    BookOpenIcon,
+    PresentationChartBarIcon,
+    MicrophoneIcon,
+    StarIcon,
+    ClipboardDocumentCheckIcon,
+    IdentificationIcon,
+    UserGroupIcon,
+    SparklesIcon,
+    DocumentTextIcon
   },
   setup() {
     const resumeStore = useResumeStore()
@@ -188,6 +207,48 @@ export default {
           name: 'Minimalist',
           description: 'Simple and elegant',
           preview: 'bg-gradient-to-br from-teal-500 to-green-500'
+        },
+        {
+          id: 'ats',
+          name: 'Clean ATS',
+          description: 'Single-column, ATS-friendly',
+          preview: 'bg-white border border-gray-300'
+        },
+        {
+          id: 'sidebar',
+          name: 'Sidebar',
+          description: 'Two-column with side panel',
+          preview: 'bg-gradient-to-r from-gray-200 from-35% to-white to-35%'
+        },
+        {
+          id: 'academic',
+          name: 'Academic CV',
+          description: 'Serif, margin dates, scholarly',
+          preview: 'bg-gradient-to-br from-lime-700 to-yellow-700'
+        },
+        {
+          id: 'colorful',
+          name: 'Colorful',
+          description: 'Accent header, chips & bars',
+          preview: 'bg-gradient-to-br from-indigo-500 to-fuchsia-500'
+        },
+        {
+          id: 'corporate',
+          name: 'Corporate CV',
+          description: 'Multi-page CV: header, tables, personal details & references',
+          preview: 'bg-gradient-to-br from-slate-700 to-blue-900'
+        },
+        {
+          id: 'researcher',
+          name: 'Researcher CV',
+          description: 'Clean academic CV with publications',
+          preview: 'bg-gradient-to-br from-stone-100 to-stone-300 border border-gray-300'
+        },
+        {
+          id: 'academicPortfolio',
+          name: 'Academic Portfolio',
+          description: 'Margin labels, numbered publications',
+          preview: 'bg-gradient-to-br from-blue-100 to-indigo-200 border border-gray-300'
         }
       ],
       colorPresets: [
@@ -201,10 +262,21 @@ export default {
         { id: 'personalInfo', name: 'Personal Info', icon: 'UserIcon' },
         { id: 'experience', name: 'Experience', icon: 'BriefcaseIcon' },
         { id: 'education', name: 'Education', icon: 'AcademicCapIcon' },
+        { id: 'publications', name: 'Publications', icon: 'BookOpenIcon' },
+        { id: 'teaching', name: 'Teaching', icon: 'PresentationChartBarIcon' },
+        { id: 'talks', name: 'Invited Talks', icon: 'MicrophoneIcon' },
+        { id: 'awards', name: 'Honors & Awards', icon: 'StarIcon' },
+        { id: 'service', name: 'Academic Service', icon: 'ClipboardDocumentCheckIcon' },
         { id: 'skills', name: 'Skills', icon: 'WrenchScrewdriverIcon' },
         { id: 'projects', name: 'Projects', icon: 'FolderIcon' },
         { id: 'certifications', name: 'Certifications', icon: 'TrophyIcon' },
-        { id: 'languages', name: 'Languages', icon: 'LanguageIcon' }
+        { id: 'languages', name: 'Languages', icon: 'LanguageIcon' },
+        { id: 'training', name: 'Training', icon: 'AcademicCapIcon' },
+        { id: 'accomplishments', name: 'Accomplishments', icon: 'TrophyIcon' },
+        { id: 'extracurricular', name: 'Extra-Curricular', icon: 'SparklesIcon' },
+        { id: 'personalDetails', name: 'Personal Details', icon: 'IdentificationIcon' },
+        { id: 'references', name: 'References', icon: 'UserGroupIcon' },
+        { id: 'declaration', name: 'Declaration', icon: 'DocumentTextIcon' }
       ]
     }
   },

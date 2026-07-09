@@ -41,12 +41,12 @@
       </div>
       <div v-if="biodataStore.settings.showBismillah" class="mt-3">
         <label class="block text-sm text-gray-700 mb-2">Bismillah style</label>
-        <select :value="biodataStore.settings.bismillahStyle"
-                @change="updateBismillahStyle($event.target.value)"
-                class="input-field">
-          <option value="bengali">Bengali - বিসমিল্লাহির রাহমানির রাহিম</option>
-          <option value="arabic">Arabic - بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</option>
-        </select>
+        <BaseSelect :model-value="biodataStore.settings.bismillahStyle"
+                    @update:model-value="updateBismillahStyle($event)"
+                    :options="[
+                      { value: 'bengali', label: 'Bengali - বিসমিল্লাহির রাহমানির রাহিম' },
+                      { value: 'arabic', label: 'Arabic - بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ' }
+                    ]" />
       </div>
     </div>
 
@@ -142,14 +142,14 @@
       <div class="space-y-4">
         <div>
           <label class="block text-sm text-gray-700 mb-2">Font Family</label>
-          <select :value="biodataStore.settings.font"
-                  @change="updateFont($event.target.value)"
-                  class="input-field">
-            <option value="Inter">Inter (Modern)</option>
-            <option value="Merriweather">Merriweather (Serif)</option>
-            <option value="Arial">Arial (Classic)</option>
-            <option value="Times New Roman">Times New Roman (Traditional)</option>
-          </select>
+          <BaseSelect :model-value="biodataStore.settings.font"
+                      @update:model-value="updateFont($event)"
+                      :options="[
+                        { value: 'Inter', label: 'Inter (Modern)' },
+                        { value: 'Merriweather', label: 'Merriweather (Serif)' },
+                        { value: 'Arial', label: 'Arial (Classic)' },
+                        { value: 'Times New Roman', label: 'Times New Roman (Traditional)' }
+                      ]" />
         </div>
         <div>
           <label class="block text-sm text-gray-700 mb-2">
@@ -172,23 +172,23 @@
       <div class="space-y-4">
         <div>
           <label class="block text-sm text-gray-700 mb-2">Name Style</label>
-          <select :value="biodataStore.settings.nameStyle"
-                  @change="updateSetting('nameStyle', $event.target.value)"
-                  class="input-field">
-            <option value="normal">Normal</option>
-            <option value="bold">Bold</option>
-            <option value="italic">Italic</option>
-          </select>
+          <BaseSelect :model-value="biodataStore.settings.nameStyle"
+                      @update:model-value="updateSetting('nameStyle', $event)"
+                      :options="[
+                        { value: 'normal', label: 'Normal' },
+                        { value: 'bold', label: 'Bold' },
+                        { value: 'italic', label: 'Italic' }
+                      ]" />
           <p class="text-xs text-gray-500 mt-1">Applies to every name (full name, parents, siblings, uncles).</p>
         </div>
         <div>
           <label class="block text-sm text-gray-700 mb-2">Uncle Labels</label>
-          <select :value="biodataStore.settings.uncleLabelStyle"
-                  @change="updateSetting('uncleLabelStyle', $event.target.value)"
-                  class="input-field">
-            <option value="chacha">Chacha / Mama</option>
-            <option value="english">Paternal / Maternal</option>
-          </select>
+          <BaseSelect :model-value="biodataStore.settings.uncleLabelStyle"
+                      @update:model-value="updateSetting('uncleLabelStyle', $event)"
+                      :options="[
+                        { value: 'chacha', label: 'Chacha / Mama' },
+                        { value: 'english', label: 'Paternal / Maternal' }
+                      ]" />
           <p class="text-xs text-gray-500 mt-1">Show / hide each side under Optional Fields.</p>
         </div>
       </div>
