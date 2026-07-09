@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-6">
     <div class="flex items-center justify-between">
-      <h3 class="text-lg font-semibold text-gray-900">Projects</h3>
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-slate-100">Projects</h3>
       <button @click="addProject" class="btn-primary">
         <PlusIcon class="w-4 h-4 mr-2" />
         Add Project
@@ -12,10 +12,10 @@
     <div class="space-y-6">
       <div v-for="(project, index) in resumeStore.projects" 
            :key="project.id"
-           class="border border-gray-200 rounded-lg p-6 bg-gray-50">
+           class="border border-gray-200 dark:border-slate-700 rounded-lg p-6 bg-gray-50 dark:bg-slate-800/60">
         
         <div class="flex items-start justify-between mb-4">
-          <h4 class="font-medium text-gray-900">Project {{ index + 1 }}</h4>
+          <h4 class="font-medium text-gray-900 dark:text-slate-100">Project {{ index + 1 }}</h4>
           <button @click="removeProject(project.id)" 
                   class="p-1 text-red-400 hover:text-red-600">
             <TrashIcon class="w-4 h-4" />
@@ -24,7 +24,7 @@
 
         <!-- Project Name -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">Project Name</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Project Name</label>
           <input type="text" 
                  :value="project.name"
                  @input="updateProject(project.id, 'name', $event.target.value)"
@@ -34,7 +34,7 @@
 
         <!-- Description -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Description</label>
           <textarea :value="project.description"
                     @input="updateProject(project.id, 'description', $event.target.value)"
                     rows="3"
@@ -44,7 +44,7 @@
 
         <!-- Technologies -->
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-2">Technologies Used</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Technologies Used</label>
           <div class="flex flex-wrap gap-2 mb-2">
             <span v-for="(tech, techIndex) in project.technologies" 
                   :key="techIndex"
@@ -71,7 +71,7 @@
         <!-- URL and Dates -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Project URL</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Project URL</label>
             <input type="url" 
                    :value="project.url"
                    @input="updateProject(project.id, 'url', $event.target.value)"
@@ -79,13 +79,13 @@
                    placeholder="https://github.com/username/project">
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Start Date</label>
             <BaseDatePicker mode="month"
                             :model-value="project.startDate"
                             @update:model-value="updateProject(project.id, 'startDate', $event)" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">End Date</label>
+            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">End Date</label>
             <BaseDatePicker mode="month"
                             :model-value="project.endDate"
                             @update:model-value="updateProject(project.id, 'endDate', $event)" />
@@ -96,17 +96,17 @@
 
     <!-- Empty State -->
     <div v-if="resumeStore.projects.length === 0" 
-         class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-      <FolderIcon class="w-12 h-12 text-gray-400 mx-auto mb-4" />
-      <h3 class="text-lg font-medium text-gray-900 mb-2">No projects added</h3>
-      <p class="text-gray-600 mb-4">Showcase your personal and professional projects</p>
+         class="text-center py-12 bg-gray-50 dark:bg-slate-800/60 rounded-lg border-2 border-dashed border-gray-300 dark:border-slate-600">
+      <FolderIcon class="w-12 h-12 text-gray-400 dark:text-slate-500 mx-auto mb-4" />
+      <h3 class="text-lg font-medium text-gray-900 dark:text-slate-100 mb-2">No projects added</h3>
+      <p class="text-gray-600 dark:text-slate-400 mb-4">Showcase your personal and professional projects</p>
       <button @click="addProject" class="btn-primary">
         Add Your First Project
       </button>
     </div>
 
     <!-- Actions -->
-    <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+    <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-slate-700">
       <button @click="clearAll" class="btn-secondary">
         Clear All
       </button>

@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-6">
     <div class="flex items-center justify-between">
-      <h3 class="text-lg font-semibold text-gray-900">Skills</h3>
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-slate-100">Skills</h3>
       <button @click="addSkill" class="btn-primary">
         <PlusIcon class="w-4 h-4 mr-2" />
         Add Skill
@@ -12,22 +12,22 @@
     <div class="space-y-6">
       <div v-for="(skills, category) in resumeStore.skillsByCategory" 
            :key="category"
-           class="border border-gray-200 rounded-lg p-6 bg-gray-50">
+           class="border border-gray-200 dark:border-slate-700 rounded-lg p-6 bg-gray-50 dark:bg-slate-800/60">
         
         <div class="flex items-center justify-between mb-4">
-          <h4 class="font-medium text-gray-900">{{ category }}</h4>
-          <span class="text-sm text-gray-500">{{ skills.length }} skills</span>
+          <h4 class="font-medium text-gray-900 dark:text-slate-100">{{ category }}</h4>
+          <span class="text-sm text-gray-500 dark:text-slate-400">{{ skills.length }} skills</span>
         </div>
 
         <div class="space-y-4">
           <div v-for="skill in skills" 
                :key="skill.id"
-               class="bg-white rounded-lg p-4 border border-gray-200">
+               class="bg-white dark:bg-slate-800 rounded-lg p-4 border border-gray-200 dark:border-slate-700">
             
             <div class="flex items-start justify-between mb-3">
               <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Skill Name</label>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Skill Name</label>
                   <input type="text" 
                          :value="skill.name"
                          @input="updateSkill(skill.id, 'name', $event.target.value)"
@@ -35,7 +35,7 @@
                          placeholder="JavaScript">
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                  <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-1">Category</label>
                   <BaseSelect
                     :model-value="skill.category"
                     @update:model-value="updateSkill(skill.id, 'category', $event)"
@@ -51,10 +51,10 @@
             <!-- Skill Level -->
             <div>
               <div class="flex items-center justify-between mb-2">
-                <label class="block text-sm font-medium text-gray-700">
+                <label class="block text-sm font-medium text-gray-700 dark:text-slate-300">
                   Proficiency Level
                 </label>
-                <span class="text-sm text-gray-600">{{ skill.level }}%</span>
+                <span class="text-sm text-gray-600 dark:text-slate-400">{{ skill.level }}%</span>
               </div>
               <div class="flex items-center space-x-4">
                 <input type="range" 
@@ -71,7 +71,7 @@
                           :class="['px-2 py-1 text-xs rounded transition-colors duration-200',
                                    skill.level >= level.value 
                                      ? 'bg-primary-600 text-white' 
-                                     : 'bg-gray-200 text-gray-600 hover:bg-gray-300']">
+                                     : 'bg-gray-200 text-gray-600 dark:text-slate-400 hover:bg-gray-300']">
                     {{ level.label }}
                   </button>
                 </div>
@@ -90,10 +90,10 @@
 
     <!-- Empty State -->
     <div v-if="resumeStore.skills.length === 0" 
-         class="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-      <WrenchScrewdriverIcon class="w-12 h-12 text-gray-400 mx-auto mb-4" />
-      <h3 class="text-lg font-medium text-gray-900 mb-2">No skills added</h3>
-      <p class="text-gray-600 mb-4">Add your technical and professional skills to showcase your expertise</p>
+         class="text-center py-12 bg-gray-50 dark:bg-slate-800/60 rounded-lg border-2 border-dashed border-gray-300 dark:border-slate-600">
+      <WrenchScrewdriverIcon class="w-12 h-12 text-gray-400 dark:text-slate-500 mx-auto mb-4" />
+      <h3 class="text-lg font-medium text-gray-900 dark:text-slate-100 mb-2">No skills added</h3>
+      <p class="text-gray-600 dark:text-slate-400 mb-4">Add your technical and professional skills to showcase your expertise</p>
       <button @click="addSkill" class="btn-primary">
         Add Your First Skill
       </button>
@@ -118,7 +118,7 @@
     </div>
 
     <!-- Actions -->
-    <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+    <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-slate-700">
       <button @click="clearAll" class="btn-secondary">
         Clear All
       </button>

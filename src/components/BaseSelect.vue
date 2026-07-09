@@ -361,6 +361,41 @@ export default {
   color: var(--bs-primary, #1d4ed8);
 }
 
+/* Dark mode (html.dark ancestor; teleported panel keeps this component's scope id) */
+html.dark .bs-trigger {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+html.dark .bs-placeholder .bs-label {
+  color: #94a3b8;
+}
+html.dark .bs-chevron {
+  color: #94a3b8;
+}
+html.dark .bs-panel {
+  background: #1e293b;
+  border-color: #334155;
+  box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+html.dark .bs-option {
+  color: #e2e8f0;
+}
+html.dark .bs-active {
+  background: #334155;
+}
+html.dark .bs-selected {
+  color: #93c5fd;
+}
+html.dark .bs-selected.bs-active {
+  background: #1e3a5f;
+}
+html.dark .bs-opt-placeholder {
+  color: #94a3b8;
+}
+html.dark .bs-check {
+  color: #93c5fd;
+}
+
 /* Open / close animation */
 .bs-pop-enter-active,
 .bs-pop-leave-active {

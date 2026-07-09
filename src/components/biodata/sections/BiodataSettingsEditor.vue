@@ -1,18 +1,18 @@
 <template>
   <div class="space-y-6">
     <div class="flex items-center justify-between">
-      <h3 class="text-lg font-semibold text-gray-900">Biodata Settings</h3>
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-slate-100">Biodata Settings</h3>
     </div>
 
     <!-- Title -->
     <div class="card">
-      <h4 class="font-medium text-gray-900 mb-4">Title</h4>
+      <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-4">Title</h4>
       <input type="text"
              :value="biodataStore.settings.title"
              @input="updateTitle($event.target.value)"
              class="input-field"
              placeholder="Marriage Biodata">
-      <p class="text-xs text-gray-500 mt-1">
+      <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">
         Tip: <span class="font-medium">{name}</span>, <span class="font-medium">{firstName}</span>, <span class="font-medium">{lastName}</span> are replaced with the person's name.
       </p>
       <div class="flex flex-wrap gap-2 mt-3">
@@ -22,25 +22,25 @@
                 :class="['px-3 py-1 text-sm rounded-full border transition-colors',
                          biodataStore.settings.title === t
                            ? 'border-primary-500 text-primary-600 bg-primary-50'
-                           : 'border-gray-300 text-gray-700 hover:border-gray-400']">
+                           : 'border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 hover:border-gray-400']">
           {{ t }}
         </button>
       </div>
 
       <div class="flex items-center justify-between mt-5">
         <div>
-          <h5 class="font-medium text-gray-900 text-sm">Bismillah line</h5>
-          <p class="text-xs text-gray-600">Show a Bismillah above the title.</p>
+          <h5 class="font-medium text-gray-900 dark:text-slate-100 text-sm">Bismillah line</h5>
+          <p class="text-xs text-gray-600 dark:text-slate-400">Show a Bismillah above the title.</p>
         </div>
         <button @click="toggleBismillah"
                 :class="['w-12 h-6 rounded-full flex items-center flex-shrink-0 transition-colors duration-200',
                          biodataStore.settings.showBismillah ? 'bg-primary-600' : 'bg-gray-300']">
-          <div :class="['w-4 h-4 bg-white rounded-full shadow transition-transform duration-200',
+          <div :class="['w-4 h-4 bg-white dark:bg-slate-800 rounded-full shadow transition-transform duration-200',
                         biodataStore.settings.showBismillah ? 'translate-x-7' : 'translate-x-1']"></div>
         </button>
       </div>
       <div v-if="biodataStore.settings.showBismillah" class="mt-3">
-        <label class="block text-sm text-gray-700 mb-2">Bismillah style</label>
+        <label class="block text-sm text-gray-700 dark:text-slate-300 mb-2">Bismillah style</label>
         <BaseSelect :model-value="biodataStore.settings.bismillahStyle"
                     @update:model-value="updateBismillahStyle($event)"
                     :options="[
@@ -52,7 +52,7 @@
 
     <!-- Template Selection -->
     <div class="card">
-      <h4 class="font-medium text-gray-900 mb-4">Template</h4>
+      <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-4">Template</h4>
       <div class="grid grid-cols-2 gap-4">
         <div v-for="template in templates"
              :key="template.id"
@@ -60,10 +60,10 @@
              :class="['p-4 rounded-lg border-2 cursor-pointer transition-all duration-200',
                       biodataStore.settings.template === template.id
                         ? 'border-primary-500 bg-primary-50'
-                        : 'border-gray-200 hover:border-gray-300']">
+                        : 'border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:border-slate-600']">
           <div class="h-20 rounded mb-2" :class="template.preview"></div>
           <h5 class="font-medium text-sm">{{ template.name }}</h5>
-          <p class="text-xs text-gray-600">{{ template.description }}</p>
+          <p class="text-xs text-gray-600 dark:text-slate-400">{{ template.description }}</p>
         </div>
       </div>
     </div>
@@ -72,25 +72,25 @@
     <div class="card">
       <div class="flex items-center justify-between">
         <div>
-          <h4 class="font-medium text-gray-900">Show Photo</h4>
-          <p class="text-xs text-gray-600">Display a photo at the top of the biodata.</p>
+          <h4 class="font-medium text-gray-900 dark:text-slate-100">Show Photo</h4>
+          <p class="text-xs text-gray-600 dark:text-slate-400">Display a photo at the top of the biodata.</p>
         </div>
         <button @click="toggleShowPhoto"
                 :class="['w-12 h-6 rounded-full flex items-center flex-shrink-0 transition-colors duration-200',
                          biodataStore.settings.showPhoto ? 'bg-primary-600' : 'bg-gray-300']">
-          <div :class="['w-4 h-4 bg-white rounded-full shadow transition-transform duration-200',
+          <div :class="['w-4 h-4 bg-white dark:bg-slate-800 rounded-full shadow transition-transform duration-200',
                         biodataStore.settings.showPhoto ? 'translate-x-7' : 'translate-x-1']"></div>
         </button>
       </div>
       <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
         <div>
-          <h4 class="font-medium text-gray-900">Blood Group as (+ve) / (-ve)</h4>
-          <p class="text-xs text-gray-600">Show "O+" as "O (+ve)".</p>
+          <h4 class="font-medium text-gray-900 dark:text-slate-100">Blood Group as (+ve) / (-ve)</h4>
+          <p class="text-xs text-gray-600 dark:text-slate-400">Show "O+" as "O (+ve)".</p>
         </div>
         <button @click="toggleBloodGroupVe"
                 :class="['w-12 h-6 rounded-full flex items-center flex-shrink-0 transition-colors duration-200',
                          biodataStore.settings.bloodGroupVe ? 'bg-primary-600' : 'bg-gray-300']">
-          <div :class="['w-4 h-4 bg-white rounded-full shadow transition-transform duration-200',
+          <div :class="['w-4 h-4 bg-white dark:bg-slate-800 rounded-full shadow transition-transform duration-200',
                         biodataStore.settings.bloodGroupVe ? 'translate-x-7' : 'translate-x-1']"></div>
         </button>
       </div>
@@ -98,32 +98,32 @@
 
     <!-- Colors -->
     <div class="card">
-      <h4 class="font-medium text-gray-900 mb-4">Colors</h4>
+      <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-4">Colors</h4>
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm text-gray-700 mb-2">Primary Color</label>
+          <label class="block text-sm text-gray-700 dark:text-slate-300 mb-2">Primary Color</label>
           <div class="flex items-center space-x-3">
             <input type="color"
                    :value="biodataStore.settings.colorScheme.primary"
                    @input="updateColor('primary', $event.target.value)"
-                   class="w-12 h-8 rounded border border-gray-300">
-            <span class="text-sm text-gray-600">{{ biodataStore.settings.colorScheme.primary }}</span>
+                   class="w-12 h-8 rounded border border-gray-300 dark:border-slate-600">
+            <span class="text-sm text-gray-600 dark:text-slate-400">{{ biodataStore.settings.colorScheme.primary }}</span>
           </div>
         </div>
         <div>
-          <label class="block text-sm text-gray-700 mb-2">Secondary Color</label>
+          <label class="block text-sm text-gray-700 dark:text-slate-300 mb-2">Secondary Color</label>
           <div class="flex items-center space-x-3">
             <input type="color"
                    :value="biodataStore.settings.colorScheme.secondary"
                    @input="updateColor('secondary', $event.target.value)"
-                   class="w-12 h-8 rounded border border-gray-300">
-            <span class="text-sm text-gray-600">{{ biodataStore.settings.colorScheme.secondary }}</span>
+                   class="w-12 h-8 rounded border border-gray-300 dark:border-slate-600">
+            <span class="text-sm text-gray-600 dark:text-slate-400">{{ biodataStore.settings.colorScheme.secondary }}</span>
           </div>
         </div>
       </div>
 
       <div class="mt-4">
-        <label class="block text-sm text-gray-700 mb-2">Quick Presets</label>
+        <label class="block text-sm text-gray-700 dark:text-slate-300 mb-2">Quick Presets</label>
         <div class="flex space-x-2">
           <button v-for="preset in colorPresets"
                   :key="preset.name"
@@ -138,10 +138,10 @@
 
     <!-- Typography -->
     <div class="card">
-      <h4 class="font-medium text-gray-900 mb-4">Typography</h4>
+      <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-4">Typography</h4>
       <div class="space-y-4">
         <div>
-          <label class="block text-sm text-gray-700 mb-2">Font Family</label>
+          <label class="block text-sm text-gray-700 dark:text-slate-300 mb-2">Font Family</label>
           <BaseSelect :model-value="biodataStore.settings.font"
                       @update:model-value="updateFont($event)"
                       :options="[
@@ -152,7 +152,7 @@
                       ]" />
         </div>
         <div>
-          <label class="block text-sm text-gray-700 mb-2">
+          <label class="block text-sm text-gray-700 dark:text-slate-300 mb-2">
             Font Size: {{ biodataStore.settings.fontSize }}px
           </label>
           <input type="range"
@@ -168,10 +168,10 @@
 
     <!-- Naming & Labels -->
     <div class="card">
-      <h4 class="font-medium text-gray-900 mb-4">Naming &amp; Labels</h4>
+      <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-4">Naming &amp; Labels</h4>
       <div class="space-y-4">
         <div>
-          <label class="block text-sm text-gray-700 mb-2">Name Style</label>
+          <label class="block text-sm text-gray-700 dark:text-slate-300 mb-2">Name Style</label>
           <BaseSelect :model-value="biodataStore.settings.nameStyle"
                       @update:model-value="updateSetting('nameStyle', $event)"
                       :options="[
@@ -179,37 +179,37 @@
                         { value: 'bold', label: 'Bold' },
                         { value: 'italic', label: 'Italic' }
                       ]" />
-          <p class="text-xs text-gray-500 mt-1">Applies to every name (full name, parents, siblings, uncles).</p>
+          <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Applies to every name (full name, parents, siblings, uncles).</p>
         </div>
         <div>
-          <label class="block text-sm text-gray-700 mb-2">Uncle Labels</label>
+          <label class="block text-sm text-gray-700 dark:text-slate-300 mb-2">Uncle Labels</label>
           <BaseSelect :model-value="biodataStore.settings.uncleLabelStyle"
                       @update:model-value="updateSetting('uncleLabelStyle', $event)"
                       :options="[
                         { value: 'chacha', label: 'Chacha / Mama' },
                         { value: 'english', label: 'Paternal / Maternal' }
                       ]" />
-          <p class="text-xs text-gray-500 mt-1">Show / hide each side under Optional Fields.</p>
+          <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">Show / hide each side under Optional Fields.</p>
         </div>
       </div>
     </div>
 
     <!-- Section Visibility & Order -->
     <div class="card">
-      <h4 class="font-medium text-gray-900 mb-1">Sections</h4>
-      <p class="text-xs text-gray-600 mb-4">Drag <span class="font-medium">⠿</span> to reorder · toggle to show/hide.</p>
+      <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-1">Sections</h4>
+      <p class="text-xs text-gray-600 dark:text-slate-400 mb-4">Drag <span class="font-medium">⠿</span> to reorder · toggle to show/hide.</p>
       <draggable v-model="orderedSections" item-key="id" handle=".drag-handle" class="space-y-3">
         <template #item="{ element }">
-          <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+          <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-800/60 rounded-lg">
             <div class="flex items-center space-x-3 min-w-0">
-              <Bars3Icon class="drag-handle w-5 h-5 text-gray-400 cursor-move flex-shrink-0" />
+              <Bars3Icon class="drag-handle w-5 h-5 text-gray-400 dark:text-slate-500 cursor-move flex-shrink-0" />
               <span class="font-medium truncate">{{ element.name }}</span>
             </div>
             <button @click="toggleSection(element.id)"
                     :class="['w-12 h-6 rounded-full flex items-center flex-shrink-0 transition-colors duration-200',
                              biodataStore.settings.sectionsEnabled[element.id]
                                ? 'bg-primary-600' : 'bg-gray-300']">
-              <div :class="['w-4 h-4 bg-white rounded-full shadow transition-transform duration-200',
+              <div :class="['w-4 h-4 bg-white dark:bg-slate-800 rounded-full shadow transition-transform duration-200',
                             biodataStore.settings.sectionsEnabled[element.id]
                               ? 'translate-x-7' : 'translate-x-1']"></div>
             </button>
@@ -220,18 +220,18 @@
 
     <!-- Optional Fields -->
     <div class="card">
-      <h4 class="font-medium text-gray-900 mb-4">Optional Fields</h4>
-      <p class="text-xs text-gray-600 mb-3">Turn extra fields on to show them on the biodata.</p>
+      <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-4">Optional Fields</h4>
+      <p class="text-xs text-gray-600 dark:text-slate-400 mb-3">Turn extra fields on to show them on the biodata.</p>
       <div class="space-y-3">
         <div v-for="field in fieldsConfig"
              :key="field.id"
-             class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+             class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-800/60 rounded-lg">
           <span class="font-medium text-sm">{{ field.name }}</span>
           <button @click="toggleField(field.id)"
                   :class="['w-12 h-6 rounded-full flex items-center flex-shrink-0 transition-colors duration-200',
                            biodataStore.settings.fieldsEnabled[field.id]
                              ? 'bg-primary-600' : 'bg-gray-300']">
-            <div :class="['w-4 h-4 bg-white rounded-full shadow transition-transform duration-200',
+            <div :class="['w-4 h-4 bg-white dark:bg-slate-800 rounded-full shadow transition-transform duration-200',
                           biodataStore.settings.fieldsEnabled[field.id]
                             ? 'translate-x-7' : 'translate-x-1']"></div>
           </button>
@@ -240,7 +240,7 @@
     </div>
 
     <!-- Actions -->
-    <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+    <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-slate-700">
       <button @click="resetSettings" class="btn-secondary">Reset to Default</button>
     </div>
   </div>
@@ -277,7 +277,7 @@ export default {
           id: 'classic',
           name: 'Classic',
           description: 'Bordered frame, centered title & photo',
-          preview: 'bg-white border-2 border-rose-800'
+          preview: 'bg-white dark:bg-slate-800 border-2 border-rose-800'
         }
       ],
       colorPresets: [

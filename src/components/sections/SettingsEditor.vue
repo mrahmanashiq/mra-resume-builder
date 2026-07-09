@@ -1,12 +1,12 @@
 <template>
   <div class="space-y-6">
     <div class="flex items-center justify-between">
-      <h3 class="text-lg font-semibold text-gray-900">Resume Settings</h3>
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-slate-100">Resume Settings</h3>
     </div>
 
     <!-- Template Selection -->
     <div class="card">
-      <h4 class="font-medium text-gray-900 mb-4">Template</h4>
+      <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-4">Template</h4>
       <div class="grid grid-cols-2 gap-4">
         <div v-for="template in templates" 
              :key="template.id"
@@ -14,43 +14,43 @@
              :class="['p-4 rounded-lg border-2 cursor-pointer transition-all duration-200',
                       resumeStore.settings.template === template.id 
                         ? 'border-primary-500 bg-primary-50' 
-                        : 'border-gray-200 hover:border-gray-300']">
+                        : 'border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:border-slate-600']">
           <div class="h-20 rounded mb-2" :class="template.preview"></div>
           <h5 class="font-medium text-sm">{{ template.name }}</h5>
-          <p class="text-xs text-gray-600">{{ template.description }}</p>
+          <p class="text-xs text-gray-600 dark:text-slate-400">{{ template.description }}</p>
         </div>
       </div>
     </div>
 
     <!-- Color Customization -->
     <div class="card">
-      <h4 class="font-medium text-gray-900 mb-4">Colors</h4>
+      <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-4">Colors</h4>
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm text-gray-700 mb-2">Primary Color</label>
+          <label class="block text-sm text-gray-700 dark:text-slate-300 mb-2">Primary Color</label>
           <div class="flex items-center space-x-3">
             <input type="color" 
                    :value="resumeStore.settings.colorScheme.primary"
                    @input="updateColor('primary', $event.target.value)"
-                   class="w-12 h-8 rounded border border-gray-300">
-            <span class="text-sm text-gray-600">{{ resumeStore.settings.colorScheme.primary }}</span>
+                   class="w-12 h-8 rounded border border-gray-300 dark:border-slate-600">
+            <span class="text-sm text-gray-600 dark:text-slate-400">{{ resumeStore.settings.colorScheme.primary }}</span>
           </div>
         </div>
         <div>
-          <label class="block text-sm text-gray-700 mb-2">Secondary Color</label>
+          <label class="block text-sm text-gray-700 dark:text-slate-300 mb-2">Secondary Color</label>
           <div class="flex items-center space-x-3">
             <input type="color" 
                    :value="resumeStore.settings.colorScheme.secondary"
                    @input="updateColor('secondary', $event.target.value)"
-                   class="w-12 h-8 rounded border border-gray-300">
-            <span class="text-sm text-gray-600">{{ resumeStore.settings.colorScheme.secondary }}</span>
+                   class="w-12 h-8 rounded border border-gray-300 dark:border-slate-600">
+            <span class="text-sm text-gray-600 dark:text-slate-400">{{ resumeStore.settings.colorScheme.secondary }}</span>
           </div>
         </div>
       </div>
       
       <!-- Preset Colors -->
       <div class="mt-4">
-        <label class="block text-sm text-gray-700 mb-2">Quick Presets</label>
+        <label class="block text-sm text-gray-700 dark:text-slate-300 mb-2">Quick Presets</label>
         <div class="flex space-x-2">
           <button v-for="preset in colorPresets" 
                   :key="preset.name"
@@ -65,10 +65,10 @@
 
     <!-- Typography -->
     <div class="card">
-      <h4 class="font-medium text-gray-900 mb-4">Typography</h4>
+      <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-4">Typography</h4>
       <div class="space-y-4">
         <div>
-          <label class="block text-sm text-gray-700 mb-2">Font Family</label>
+          <label class="block text-sm text-gray-700 dark:text-slate-300 mb-2">Font Family</label>
           <BaseSelect
             :model-value="resumeStore.settings.font"
             @update:model-value="updateFont($event)"
@@ -82,7 +82,7 @@
         </div>
         
         <div>
-          <label class="block text-sm text-gray-700 mb-2">
+          <label class="block text-sm text-gray-700 dark:text-slate-300 mb-2">
             Font Size: {{ resumeStore.settings.fontSize }}px
           </label>
           <input type="range" 
@@ -98,13 +98,13 @@
 
     <!-- Section Management -->
     <div class="card">
-      <h4 class="font-medium text-gray-900 mb-4">Section Visibility</h4>
+      <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-4">Section Visibility</h4>
       <div class="space-y-3">
         <div v-for="section in sectionsConfig" 
              :key="section.id"
-             class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+             class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-800/60 rounded-lg">
           <div class="flex items-center space-x-3">
-            <component :is="section.icon" class="w-5 h-5 text-gray-600" />
+            <component :is="section.icon" class="w-5 h-5 text-gray-600 dark:text-slate-400" />
             <span class="font-medium">{{ section.name }}</span>
           </div>
           <button @click="toggleSection(section.id)"
@@ -112,7 +112,7 @@
                            resumeStore.settings.sectionsEnabled[section.id] 
                              ? 'bg-primary-600' 
                              : 'bg-gray-300']">
-            <div :class="['w-4 h-4 bg-white rounded-full shadow transition-transform duration-200',
+            <div :class="['w-4 h-4 bg-white dark:bg-slate-800 rounded-full shadow transition-transform duration-200',
                           resumeStore.settings.sectionsEnabled[section.id] 
                             ? 'translate-x-7' 
                             : 'translate-x-1']"></div>
@@ -122,7 +122,7 @@
     </div>
 
     <!-- Actions -->
-    <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+    <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-slate-700">
       <button @click="resetSettings" class="btn-secondary">
         Reset to Default
       </button>
@@ -212,7 +212,7 @@ export default {
           id: 'ats',
           name: 'Clean ATS',
           description: 'Single-column, ATS-friendly',
-          preview: 'bg-white border border-gray-300'
+          preview: 'bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600'
         },
         {
           id: 'sidebar',
@@ -242,13 +242,13 @@ export default {
           id: 'researcher',
           name: 'Researcher CV',
           description: 'Clean academic CV with publications',
-          preview: 'bg-gradient-to-br from-stone-100 to-stone-300 border border-gray-300'
+          preview: 'bg-gradient-to-br from-stone-100 to-stone-300 border border-gray-300 dark:border-slate-600'
         },
         {
           id: 'academicPortfolio',
           name: 'Academic Portfolio',
           description: 'Margin labels, numbered publications',
-          preview: 'bg-gradient-to-br from-blue-100 to-indigo-200 border border-gray-300'
+          preview: 'bg-gradient-to-br from-blue-100 to-indigo-200 border border-gray-300 dark:border-slate-600'
         }
       ],
       colorPresets: [

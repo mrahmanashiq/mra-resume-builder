@@ -1,7 +1,7 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-gray-50 dark:bg-slate-900">
     <!-- Header -->
-    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50 no-print">
+    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50 no-print dark:bg-slate-800 dark:border-slate-700">
       <div class="w-full px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
           <div class="flex items-center space-x-4">
@@ -9,7 +9,7 @@
               <AppLogo :title="config.headerTitle" />
             </router-link>
             <div class="flex items-center space-x-2 text-sm">
-              <span class="hidden md:inline" :class="saveStatus === 'saving' ? 'text-amber-600' : 'text-gray-500'">
+              <span class="hidden md:inline" :class="saveStatus === 'saving' ? 'text-amber-600 dark:text-amber-400' : 'text-gray-500 dark:text-slate-400'">
                 {{ saveStatus === 'saving' ? 'Saving…' : 'Auto-saved' }}
               </span>
               <span class="save-dot"
@@ -18,14 +18,16 @@
             </div>
           </div>
 
-          <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-2 sm:space-x-4">
+            <ThemeToggle />
+            <!-- Preview + Download live in the sticky bottom bar on mobile; show here on larger screens only -->
             <button @click="togglePreview"
-                    class="btn-outline flex items-center space-x-2">
+                    class="btn-outline hidden lg:flex items-center space-x-2">
               <EyeIcon class="w-4 h-4" />
               <span class="hidden sm:inline">{{ store.ui.previewMode ? 'Edit' : 'Preview' }}</span>
             </button>
 
-            <div class="relative export-menu-wrap">
+            <div class="relative export-menu-wrap hidden lg:block">
               <button @click="toggleExportMenu"
                       class="btn-primary flex items-center space-x-2">
                 <CloudArrowDownIcon class="w-4 h-4" />
@@ -35,39 +37,39 @@
 
               <!-- Export Menu -->
               <div v-if="showExportMenu"
-                   class="absolute right-0 mt-2 w-60 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10">
+                   class="absolute right-0 mt-2 w-60 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">
                 <!-- Download formats - one click each -->
-                <p class="px-4 pt-1 pb-1 text-[11px] font-semibold text-gray-500 uppercase tracking-wide">Download as</p>
+                <p class="px-4 pt-1 pb-1 text-[11px] font-semibold text-gray-500 uppercase tracking-wide dark:text-slate-400">Download as</p>
                 <button v-for="f in formats" :key="f.id" type="button"
                         @click="handleDownloadFormat(f.id)"
-                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3">
-                  <component :is="f.icon" class="w-4 h-4 text-gray-600 flex-shrink-0" />
+                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3 dark:hover:bg-slate-700">
+                  <component :is="f.icon" class="w-4 h-4 text-gray-600 flex-shrink-0 dark:text-slate-400" />
                   <span class="flex-1 min-w-0">
-                    <span class="block font-medium text-gray-800">{{ f.label }}</span>
-                    <span class="block text-xs text-gray-500">{{ f.desc }}</span>
+                    <span class="block font-medium text-gray-800 dark:text-slate-100">{{ f.label }}</span>
+                    <span class="block text-xs text-gray-500 dark:text-slate-400">{{ f.desc }}</span>
                   </span>
                 </button>
 
-                <hr class="my-1">
+                <hr class="my-1 dark:border-slate-700">
                 <button @click="handlePrint"
-                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2">
+                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2 dark:hover:bg-slate-700">
                   <PrinterIcon class="w-4 h-4" />
                   <span>Print</span>
                 </button>
                 <button @click="handleShare"
-                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2 text-gray-400 cursor-not-allowed">
+                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2 text-gray-400 cursor-not-allowed dark:hover:bg-slate-700 dark:text-slate-500">
                   <ShareIcon class="w-4 h-4" />
                   <span>Share Link</span>
-                  <span class="ml-auto text-[10px] font-semibold uppercase tracking-wide bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded">Soon</span>
+                  <span class="ml-auto text-[10px] font-semibold uppercase tracking-wide bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded dark:bg-slate-700 dark:text-slate-400">Soon</span>
                 </button>
-                <hr class="my-2">
+                <hr class="my-2 dark:border-slate-700">
                 <button @click="handleExportData"
-                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2">
+                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2 dark:hover:bg-slate-700">
                   <DocumentTextIcon class="w-4 h-4" />
                   <span>Export Data</span>
                 </button>
                 <button @click="openImportModal"
-                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2">
+                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2 dark:hover:bg-slate-700">
                   <ArrowUpTrayIcon class="w-4 h-4" />
                   <span>Import Data</span>
                 </button>
@@ -80,7 +82,7 @@
 
     <!-- Mobile section switcher: sticky horizontal tabs under the header (edit mode only) -->
     <div v-if="!store.ui.previewMode"
-         class="mobile-tabs lg:hidden sticky top-16 z-40 bg-white border-b border-gray-200 no-print">
+         class="mobile-tabs lg:hidden sticky top-16 z-40 bg-white border-b border-gray-200 no-print dark:bg-slate-800 dark:border-slate-700">
       <div class="flex gap-2 overflow-x-auto px-4 py-2">
         <button v-for="section in config.navSections"
                 :key="section.id"
@@ -88,7 +90,7 @@
                 :class="['mobile-tab flex-shrink-0 inline-flex items-center gap-1.5 px-3.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors',
                          store.ui.currentSection === section.id
                            ? 'bg-primary-600 text-white'
-                           : 'bg-gray-100 text-gray-700 active:bg-gray-200']">
+                           : 'bg-gray-100 text-gray-700 active:bg-gray-200 dark:bg-slate-700 dark:text-slate-200 dark:active:bg-slate-600']">
           <component :is="section.icon" class="w-4 h-4 flex-shrink-0" />
           <span>{{ section.name }}</span>
         </button>
@@ -96,42 +98,39 @@
     </div>
 
     <div class="flex flex-col lg:flex-row lg:h-[calc(100vh-4rem)]">
-      <!-- Sidebar -->
-      <aside v-if="!store.ui.previewMode"
-             :class="['relative flex-shrink-0 flex flex-col overflow-hidden bg-white border-b lg:border-b-0 lg:border-r border-gray-200 no-print',
-                      resizing ? '' : 'transition-[width] duration-300']"
-             :style="asideStyle">
-
-        <!-- Sidebar Toggle (desktop only; mobile uses the sticky tab switcher above) -->
-        <div class="p-4 border-b border-gray-200 hidden lg:block">
+      <!-- Desktop nav rail: the section list sits BESIDE the form, not above it -->
+      <nav v-if="!isMobile && !store.ui.previewMode"
+           class="flex flex-col flex-shrink-0 w-56 overflow-hidden bg-white border-r border-gray-200 no-print dark:bg-slate-800 dark:border-slate-700">
+        <div class="p-3 border-b border-gray-200 dark:border-slate-700 flex items-center justify-between gap-2">
+          <span class="font-medium text-gray-900 dark:text-slate-100 px-1 truncate">{{ config.sidebarTitle }}</span>
           <button @click="toggleSidebar"
-                  class="w-full flex items-center justify-center p-2 rounded-lg hover:bg-gray-100">
-            <Bars3Icon v-if="store.ui.sidebarCollapsed" class="w-5 h-5" />
-            <div v-else class="flex items-center justify-between w-full">
-              <span class="font-medium text-gray-900">{{ config.sidebarTitle }}</span>
-              <ChevronLeftIcon class="w-5 h-5" />
-            </div>
+                  :title="store.ui.sidebarCollapsed ? 'Show editor panel' : 'Hide editor panel'"
+                  class="flex-shrink-0 p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700">
+            <ChevronLeftIcon class="w-4 h-4 text-gray-600 dark:text-slate-300 transition-transform"
+                             :class="{ 'rotate-180': store.ui.sidebarCollapsed }" />
           </button>
         </div>
+        <div class="flex-1 min-h-0 overflow-y-auto p-3 space-y-1.5">
+          <button v-for="section in config.navSections"
+                  :key="section.id"
+                  @click="setCurrentSection(section.id)"
+                  :class="['w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors duration-200',
+                           store.ui.currentSection === section.id
+                             ? 'bg-primary-100 text-primary-700 dark:bg-primary-500/20 dark:text-primary-200'
+                             : 'text-gray-700 hover:bg-gray-100 dark:text-slate-300 dark:hover:bg-slate-700']">
+            <component :is="section.icon" class="w-5 h-5 flex-shrink-0" />
+            <span class="truncate">{{ section.name }}</span>
+          </button>
+        </div>
+      </nav>
 
-        <!-- Navigation (desktop sidebar list) -->
-        <nav v-if="!isMobile && !store.ui.sidebarCollapsed" class="p-4">
-          <div class="space-y-2">
-            <button v-for="section in config.navSections"
-                    :key="section.id"
-                    @click="setCurrentSection(section.id)"
-                    :class="['w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors duration-200',
-                             store.ui.currentSection === section.id
-                               ? 'bg-primary-100 text-primary-700'
-                               : 'text-gray-700 hover:bg-gray-100']">
-              <component :is="section.icon" class="w-5 h-5" />
-              <span>{{ section.name }}</span>
-            </button>
-          </div>
-        </nav>
-
+      <!-- Editor form pane (beside the nav rail on desktop; full width on mobile) -->
+      <aside v-if="!store.ui.previewMode && (isMobile || !store.ui.sidebarCollapsed)"
+             :class="['relative flex-shrink-0 flex flex-col overflow-hidden bg-white border-b lg:border-b-0 lg:border-r border-gray-200 no-print dark:bg-slate-800 dark:border-slate-700',
+                      resizing ? '' : 'transition-[width] duration-300']"
+             :style="asideStyle">
         <!-- Section Editor -->
-        <div v-if="isMobile || !store.ui.sidebarCollapsed" class="mobile-pb flex-1 min-h-0 overflow-y-auto p-4">
+        <div class="mobile-pb flex-1 min-h-0 overflow-y-auto p-4">
           <Suspense>
             <component :is="currentSectionComponent" />
             <template #fallback>
@@ -143,7 +142,7 @@
         </div>
 
         <!-- Resize handle (desktop only) -->
-        <div v-if="!store.ui.sidebarCollapsed && !isMobile"
+        <div v-if="!isMobile"
              @mousedown.prevent="startResize"
              @dblclick="resetSidebarWidth"
              class="absolute top-0 right-0 h-full w-1.5 cursor-col-resize bg-transparent hover:bg-primary-300 active:bg-primary-400 transition-colors"
@@ -151,7 +150,7 @@
       </aside>
 
       <!-- Main Content (stacks below the editor on mobile, side-by-side on desktop) -->
-      <main class="flex-1 overflow-hidden bg-gray-100">
+      <main class="flex-1 overflow-hidden bg-gray-100 dark:bg-slate-900">
         <div class="mobile-pb lg:h-full overflow-y-auto overflow-x-auto p-4 sm:p-6 lg:p-8">
           <div class="max-w-4xl mx-auto">
             <!-- Document Preview -->
@@ -174,7 +173,7 @@
     </div>
 
     <!-- Mobile action bar (always reachable while editing) -->
-    <div class="mobile-actionbar lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-gray-200 flex items-center gap-3 px-4 py-2 no-print">
+    <div class="mobile-actionbar lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-gray-200 flex items-center gap-3 px-4 py-2 no-print dark:bg-slate-800 dark:border-slate-700">
       <button @click="togglePreview"
               class="btn-outline flex-1 flex items-center justify-center gap-2 py-2.5">
         <EyeIcon class="w-4 h-4" />
@@ -190,34 +189,34 @@
     <!-- Mobile export sheet -->
     <div v-if="showMobileExport" class="lg:hidden fixed inset-0 z-50 no-print" @click.self="showMobileExport = false">
       <div class="absolute inset-0 bg-black/40" @click="showMobileExport = false"></div>
-      <div class="mobile-sheet absolute inset-x-0 bottom-0 bg-white rounded-t-2xl p-4 pb-6 shadow-2xl">
-        <div class="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-4"></div>
-        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 px-1">Download as</p>
+      <div class="mobile-sheet absolute inset-x-0 bottom-0 bg-white rounded-t-2xl p-4 pb-6 shadow-2xl dark:bg-slate-800">
+        <div class="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-4 dark:bg-slate-600"></div>
+        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 px-1 dark:text-slate-400">Download as</p>
         <button v-for="f in formats" :key="f.id" type="button"
                 @click="handleDownloadFormat(f.id)"
-                class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3">
-          <component :is="f.icon" class="w-5 h-5 text-gray-600 flex-shrink-0" />
+                class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
+          <component :is="f.icon" class="w-5 h-5 text-gray-600 flex-shrink-0 dark:text-slate-400" />
           <span class="flex-1 min-w-0">
-            <span class="block font-medium text-gray-800">{{ f.label }}</span>
-            <span class="block text-xs text-gray-500">{{ f.desc }}</span>
+            <span class="block font-medium text-gray-800 dark:text-slate-100">{{ f.label }}</span>
+            <span class="block text-xs text-gray-500 dark:text-slate-400">{{ f.desc }}</span>
           </span>
         </button>
-        <hr class="my-2">
-        <button @click="handlePrint" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3">
-          <PrinterIcon class="w-5 h-5 text-gray-600" /> <span class="font-medium text-gray-800">Print</span>
+        <hr class="my-2 dark:border-slate-700">
+        <button @click="handlePrint" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600 dark:text-slate-100">
+          <PrinterIcon class="w-5 h-5 text-gray-600 dark:text-slate-400" /> <span class="font-medium text-gray-800 dark:text-slate-100">Print</span>
         </button>
-        <button @click="handleExportData" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3">
-          <DocumentTextIcon class="w-5 h-5 text-gray-600" /> <span class="font-medium text-gray-800">Export Data</span>
+        <button @click="handleExportData" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
+          <DocumentTextIcon class="w-5 h-5 text-gray-600 dark:text-slate-400" /> <span class="font-medium text-gray-800 dark:text-slate-100">Export Data</span>
         </button>
-        <button @click="openImportModal" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3">
-          <ArrowUpTrayIcon class="w-5 h-5 text-gray-600" /> <span class="font-medium text-gray-800">Import Data</span>
+        <button @click="openImportModal" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
+          <ArrowUpTrayIcon class="w-5 h-5 text-gray-600 dark:text-slate-400" /> <span class="font-medium text-gray-800 dark:text-slate-100">Import Data</span>
         </button>
       </div>
     </div>
 
     <!-- Import Modal -->
     <div v-if="showImportModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 no-print">
-      <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+      <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4 dark:bg-slate-800 dark:text-slate-100">
         <h3 class="text-lg font-semibold mb-4">Import {{ config.documentLabel }} Data</h3>
         <textarea v-model="importJsonData"
                   :placeholder="`Paste your ${config.documentLabel.toLowerCase()} JSON data here...`"
@@ -321,8 +320,9 @@ export default {
     },
     asideStyle() {
       // On mobile the editor takes the full width (single-panel, toggled by Preview).
+      // On desktop, collapsing hides the pane entirely (see v-if), so width is just the set width.
       if (this.isMobile) return { width: '100%' }
-      return { width: this.store.ui.sidebarCollapsed ? '4rem' : this.sidebarWidth + 'px' }
+      return { width: this.sidebarWidth + 'px' }
     },
     widthKey() {
       return `mra-${this.config.type}-sidebar-width`
@@ -400,8 +400,8 @@ export default {
     },
 
     effectiveMaxWidth() {
-      // Cap width to the viewport so the preview always has room (responsive).
-      return Math.max(this.minSidebarWidth, Math.min(this.maxSidebarWidth, window.innerWidth - 360))
+      // Cap width to the viewport so the nav rail and preview always have room.
+      return Math.max(this.minSidebarWidth, Math.min(this.maxSidebarWidth, window.innerWidth - 580))
     },
 
     clampToViewport() {

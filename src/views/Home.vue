@@ -1,19 +1,20 @@
 <template>
-  <div class="home min-h-screen bg-white text-slate-900 overflow-x-hidden">
+  <div class="home min-h-screen bg-white text-slate-900 overflow-x-hidden dark:bg-slate-900 dark:text-slate-100">
     <!-- Navigation -->
-    <nav class="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-gray-200">
+    <nav class="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-gray-200 dark:border-slate-700 dark:bg-slate-900/85">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16 gap-2">
           <div class="flex items-center min-w-0">
             <AppLogo title="MRA Builder" />
           </div>
           <div class="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
+            <ThemeToggle />
             <a :href="githubUrl" target="_blank" rel="noopener"
-               class="hidden md:inline-flex items-center gap-1 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg px-3 py-1.5 hover:border-primary-400 hover:text-primary-600 whitespace-nowrap">
+               class="hidden md:inline-flex items-center gap-1 text-sm font-medium text-gray-700 dark:text-slate-300 border border-gray-300 dark:border-slate-600 rounded-lg px-3 py-1.5 hover:border-primary-400 hover:text-primary-600 whitespace-nowrap">
               <span class="text-yellow-500">★</span> Star on GitHub
             </a>
             <router-link to="/templates"
-                         class="btn-outline text-sm px-3 py-1.5 sm:text-base sm:px-4 sm:py-2 whitespace-nowrap">
+                         class="hidden sm:inline-block btn-outline text-sm px-3 py-1.5 sm:text-base sm:px-4 sm:py-2 whitespace-nowrap">
               Templates
             </router-link>
             <a href="#choose" @click.prevent="scrollTo('choose')"
@@ -38,7 +39,7 @@
           <!-- Copy -->
           <div class="hero-copy text-center lg:text-left">
             <a :href="githubUrl" target="_blank" rel="noopener"
-               class="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 mb-6 rounded-full bg-white border border-gray-200 text-sm font-medium text-gray-700 shadow-sm hover:border-primary-300 transition-colors">
+               class="hero-badge inline-flex items-center gap-2 px-3.5 py-1.5 mb-6 rounded-full bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-sm font-medium text-gray-700 dark:text-slate-300 shadow-sm hover:border-primary-300 transition-colors">
               <span class="relative flex h-2 w-2">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
@@ -46,13 +47,13 @@
               Free &amp; open source, no sign-up
             </a>
 
-            <h1 class="hero-title text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 mb-6">
+            <h1 class="hero-title text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-6">
               Build a standout résumé or
               <span class="hero-accent">marriage biodata</span>
               in minutes.
             </h1>
 
-            <p class="hero-sub text-lg sm:text-xl text-slate-600 mb-8 max-w-xl mx-auto lg:mx-0">
+            <p class="hero-sub text-lg sm:text-xl text-slate-600 dark:text-slate-300 mb-8 max-w-xl mx-auto lg:mx-0">
               Pick a template, edit everything with a live preview, and export a print-ready
               PDF, PNG or JPG. No watermark, no paywall, and your data never leaves your browser.
             </p>
@@ -67,7 +68,7 @@
               </router-link>
             </div>
 
-            <ul class="hero-trust mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2 text-sm text-slate-500">
+            <ul class="hero-trust mt-8 flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2 text-sm text-slate-500 dark:text-slate-400">
               <li class="inline-flex items-center gap-1.5"><span class="hero-check">✓</span> No sign-up</li>
               <li class="inline-flex items-center gap-1.5"><span class="hero-check">✓</span> PDF, PNG &amp; JPG export</li>
               <li class="inline-flex items-center gap-1.5"><span class="hero-check">✓</span> MIT licensed</li>
@@ -90,11 +91,11 @@
     </section>
 
     <!-- Document Type Launcher -->
-    <section id="choose" class="py-16 bg-white border-t border-gray-100">
+    <section id="choose" class="py-16 bg-white dark:bg-slate-900 border-t border-gray-100 dark:border-slate-800">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="reveal text-center mb-12">
-          <h2 class="section-title text-3xl font-bold text-gray-900 mb-4">What do you want to build?</h2>
-          <p class="text-lg text-gray-600">
+          <h2 class="section-title text-3xl font-bold text-gray-900 dark:text-slate-100 mb-4">What do you want to build?</h2>
+          <p class="text-lg text-gray-600 dark:text-slate-400">
             One builder for résumés and marriage biodata. Academic CV is coming next.
           </p>
         </div>
@@ -107,20 +108,20 @@
                      @click="selectDoc(doc)"
                      :class="['reveal relative rounded-xl shadow-sm border overflow-hidden',
                               doc.available
-                                ? 'border-gray-200 hover:shadow-lg cursor-pointer hover-lift'
-                                : 'border-gray-200 opacity-70 cursor-not-allowed']">
+                                ? 'border-gray-200 dark:border-slate-700 hover:shadow-lg cursor-pointer hover-lift'
+                                : 'border-gray-200 dark:border-slate-700 opacity-70 cursor-not-allowed']">
             <div class="h-32 bg-gradient-to-br flex items-center justify-center" :class="doc.gradient">
               <component :is="doc.icon" class="w-14 h-14 text-white/90" />
             </div>
             <div class="p-6">
               <div class="flex items-center justify-between mb-2">
-                <h3 class="text-xl font-semibold text-gray-900">{{ doc.name }}</h3>
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-slate-100">{{ doc.name }}</h3>
                 <span v-if="!doc.available"
-                      class="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                      class="text-xs font-medium text-gray-500 dark:text-slate-400 bg-gray-100 dark:bg-slate-700 px-2 py-1 rounded-full">
                   Coming soon
                 </span>
               </div>
-              <p class="text-gray-600">{{ doc.description }}</p>
+              <p class="text-gray-600 dark:text-slate-400">{{ doc.description }}</p>
             </div>
           </component>
         </div>
@@ -128,13 +129,13 @@
     </section>
 
     <!-- Features Section -->
-    <section class="py-20 bg-white">
+    <section class="py-20 bg-white dark:bg-slate-900">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="reveal text-center mb-16">
-          <h2 class="section-title text-3xl font-bold text-gray-900 mb-4">
+          <h2 class="section-title text-3xl font-bold text-gray-900 dark:text-slate-100 mb-4">
             Everything you need to stand out
           </h2>
-          <p class="text-lg text-gray-600">
+          <p class="text-lg text-gray-600 dark:text-slate-400">
             Live editing, ATS-friendly output, and one-click export. Free and open source.
           </p>
         </div>
@@ -145,14 +146,14 @@
             <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center mx-auto mb-4">
               <component :is="feature.icon" class="w-6 h-6 text-primary-600" />
             </div>
-            <h3 class="text-xl font-semibold text-gray-900 mb-2">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-slate-100 mb-2">
               {{ feature.title }}
               <span v-if="feature.comingSoon"
-                    class="ml-2 align-middle text-xs font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                    class="ml-2 align-middle text-xs font-medium text-gray-500 dark:text-slate-400 bg-gray-100 dark:bg-slate-700 px-2 py-0.5 rounded-full">
                 Coming soon
               </span>
             </h3>
-            <p class="text-gray-600">
+            <p class="text-gray-600 dark:text-slate-400">
               {{ feature.description }}
             </p>
           </div>
@@ -161,13 +162,13 @@
     </section>
 
     <!-- Templates Preview -->
-    <section class="py-20 bg-gray-50">
+    <section class="py-20 bg-gray-50 dark:bg-slate-800/60">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="reveal text-center mb-16">
-          <h2 class="section-title text-3xl font-bold text-gray-900 mb-4">
+          <h2 class="section-title text-3xl font-bold text-gray-900 dark:text-slate-100 mb-4">
             One set of details, every template
           </h2>
-          <p class="text-lg text-gray-600">
+          <p class="text-lg text-gray-600 dark:text-slate-400">
             Your content flows into any design. Switch whenever you like, nothing is lost.
           </p>
         </div>
@@ -175,13 +176,13 @@
         <div class="reveal-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div v-for="template in templates" :key="template.id"
                @click="useTemplate(template.id)"
-               class="reveal hover-lift bg-white rounded-xl shadow-sm hover:shadow-md overflow-hidden cursor-pointer group">
-            <div class="border-b border-gray-100 bg-gray-50">
+               class="reveal hover-lift bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-md overflow-hidden cursor-pointer group">
+            <div class="border-b border-gray-100 dark:border-slate-800 bg-gray-50 dark:bg-slate-800/60">
               <TemplateThumbnail :component="componentFor(template.id)" />
             </div>
             <div class="p-4">
-              <h3 class="font-semibold text-gray-900 mb-1 group-hover:text-primary-600 transition-colors">{{ template.name }}</h3>
-              <p class="text-sm text-gray-600">{{ template.description }}</p>
+              <h3 class="font-semibold text-gray-900 dark:text-slate-100 mb-1 group-hover:text-primary-600 transition-colors">{{ template.name }}</h3>
+              <p class="text-sm text-gray-600 dark:text-slate-400">{{ template.description }}</p>
             </div>
           </div>
         </div>
@@ -205,7 +206,7 @@
           Free and open source, no sign-up, no paywall. Just build, customize, and export.
         </p>
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <router-link to="/editor" class="bg-white text-primary-600 hover:bg-gray-50 font-medium py-3 px-8 rounded-lg transition-colors duration-200">
+          <router-link to="/editor" class="bg-white text-primary-600 hover:bg-gray-50 dark:bg-slate-800/60 font-medium py-3 px-8 rounded-lg transition-colors duration-200">
             Start Building for Free
           </router-link>
           <a :href="githubUrl" target="_blank" rel="noopener"
@@ -221,7 +222,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center">
           <h3 class="text-xl font-bold mb-2">MRA Builder</h3>
-          <p class="text-gray-400 mb-4">
+          <p class="text-gray-400 dark:text-slate-500 mb-4">
             Free &amp; open source résumé and marriage biodata builder.
           </p>
           <div class="flex justify-center items-center flex-wrap gap-x-6 gap-y-2">
@@ -229,11 +230,11 @@
                class="text-gray-300 hover:text-white transition-colors duration-200 font-medium">
               ★ Open source on GitHub
             </a>
-            <router-link to="/templates" class="text-gray-400 hover:text-white transition-colors duration-200">Templates</router-link>
-            <router-link to="/editor" class="text-gray-400 hover:text-white transition-colors duration-200">Resume</router-link>
-            <router-link to="/biodata" class="text-gray-400 hover:text-white transition-colors duration-200">Biodata</router-link>
+            <router-link to="/templates" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Templates</router-link>
+            <router-link to="/editor" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Resume</router-link>
+            <router-link to="/biodata" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Biodata</router-link>
           </div>
-          <p class="text-gray-500 text-sm mt-6">
+          <p class="text-gray-500 dark:text-slate-400 text-sm mt-6">
             Released under the MIT License · Built by
             <a :href="authorUrl" target="_blank" rel="noopener"
                class="text-gray-300 hover:text-white underline underline-offset-2">{{ authorName }}</a>
@@ -397,6 +398,9 @@ export default {
 /* ---------- Hero background: soft blooms + faint dot grid ---------- */
 .hero-section {
   background: linear-gradient(180deg, #f6f8fc 0%, #ffffff 62%);
+}
+:global(html.dark) .hero-section {
+  background: linear-gradient(180deg, #0f172a 0%, #0b1220 62%);
 }
 .hero-bg {
   position: absolute;

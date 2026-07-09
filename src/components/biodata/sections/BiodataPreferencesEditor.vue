@@ -1,11 +1,11 @@
 <template>
   <div class="space-y-6">
     <div class="flex items-center justify-between">
-      <h3 class="text-lg font-semibold text-gray-900">Partner Preferences</h3>
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-slate-100">Partner Preferences</h3>
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Blood Group(s)</label>
+      <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Preferred Blood Group(s)</label>
       <div class="flex flex-wrap gap-2">
         <button v-for="bg in bloodGroups"
                 :key="bg"
@@ -14,7 +14,7 @@
                 :class="['px-3 py-1 text-sm rounded-full border transition-colors',
                          isSelected(bg)
                            ? 'border-primary-500 text-primary-600 bg-primary-50 font-medium'
-                           : 'border-gray-300 text-gray-700 hover:border-gray-400']">
+                           : 'border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 hover:border-gray-400']">
           {{ bg }}
         </button>
       </div>
@@ -26,15 +26,15 @@
                 class="btn-secondary text-sm py-1.5">
           Suggest by Rh factor
         </button>
-        <span v-if="ownBloodGroup" class="text-xs text-gray-500">
-          Your blood group: <span class="font-medium text-gray-700">{{ ownBloodGroup }}</span>
+        <span v-if="ownBloodGroup" class="text-xs text-gray-500 dark:text-slate-400">
+          Your blood group: <span class="font-medium text-gray-700 dark:text-slate-300">{{ ownBloodGroup }}</span>
         </span>
         <span v-else class="text-xs text-amber-600">
           Set your blood group in Personal Info to use this.
         </span>
       </div>
 
-      <p class="text-xs text-gray-500 mt-2">
+      <p class="text-xs text-gray-500 dark:text-slate-400 mt-2">
         Optional. Select any number of acceptable groups (or none for no preference).
         <span class="font-medium">Suggest by Rh factor</span> picks all groups with the same
         Rh sign as your blood group (e.g., O+ → all “+” groups), since Rh incompatibility mainly
@@ -43,7 +43,7 @@
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Complexion(s)</label>
+      <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Preferred Complexion(s)</label>
       <div class="flex flex-wrap gap-2">
         <button v-for="c in complexions"
                 :key="c"
@@ -52,23 +52,23 @@
                 :class="['px-3 py-1 text-sm rounded-full border transition-colors',
                          isComplexionSelected(c)
                            ? 'border-primary-500 text-primary-600 bg-primary-50 font-medium'
-                           : 'border-gray-300 text-gray-700 hover:border-gray-400']">
+                           : 'border-gray-300 dark:border-slate-600 text-gray-700 dark:text-slate-300 hover:border-gray-400']">
           {{ c }}
         </button>
       </div>
-      <p class="text-xs text-gray-500 mt-1">
+      <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">
         Optional. Select any number of acceptable complexions (or none for no preference).
       </p>
     </div>
 
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Expectations</label>
+      <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Expectations</label>
       <textarea :value="biodataStore.preferences.expectations"
                 @input="update('expectations', $event.target.value)"
                 rows="5"
                 class="textarea-field"
                 placeholder="Describe what you are looking for in a partner..."></textarea>
-      <p class="text-xs text-gray-500 mt-1">
+      <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">
         This whole section is optional. Enable "Partner Preferences" in Settings → Sections to show it.
       </p>
     </div>

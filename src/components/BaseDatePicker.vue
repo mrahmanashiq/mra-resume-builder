@@ -555,6 +555,66 @@ export default {
   background: #eff6ff;
 }
 
+/* Dark mode (html.dark ancestor; teleported panel keeps this component's scope id) */
+html.dark .dp-trigger {
+  background: #1e293b;
+  color: #e2e8f0;
+}
+html.dark .dp-placeholder .dp-label {
+  color: #94a3b8;
+}
+html.dark .dp-icon {
+  color: #94a3b8;
+}
+html.dark .dp-panel {
+  background: #1e293b;
+  border-color: #334155;
+  box-shadow: 0 16px 34px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+html.dark .dp-title {
+  color: #e2e8f0;
+}
+html.dark .dp-title:hover,
+html.dark .dp-nav:hover {
+  background: #334155;
+}
+html.dark .dp-nav {
+  color: #cbd5e1;
+}
+html.dark .dp-weekdays span {
+  color: #64748b;
+}
+html.dark .dp-cell {
+  color: #e2e8f0;
+}
+html.dark .dp-cell:hover {
+  background: #334155;
+}
+html.dark .dp-muted {
+  color: #475569;
+}
+html.dark .dp-today {
+  box-shadow: inset 0 0 0 1px #60a5fa;
+  color: #93c5fd;
+}
+html.dark .dp-hl {
+  background: #1e3a5f;
+}
+html.dark .dp-selected,
+html.dark .dp-selected:hover {
+  background: #2563eb;
+  color: #fff;
+}
+html.dark .dp-foot {
+  border-top-color: #334155;
+}
+html.dark .dp-link {
+  color: #93c5fd;
+}
+html.dark .dp-link:hover {
+  background: #1e3a5f;
+}
+
 .dp-pop-enter-active,
 .dp-pop-leave-active {
   transition: opacity 0.14s ease, transform 0.14s ease;

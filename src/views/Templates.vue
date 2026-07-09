@@ -1,13 +1,14 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-gray-50 dark:bg-slate-900">
     <!-- Header -->
-    <header class="bg-white shadow-sm border-b border-gray-200">
+    <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-slate-700">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
           <router-link to="/" class="text-xl font-bold text-primary-600">
             MRA Resume Builder
           </router-link>
-          <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-3 sm:space-x-4">
+            <ThemeToggle />
             <router-link to="/editor" class="btn-primary">
               Back to Editor
             </router-link>
@@ -19,10 +20,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <!-- Page Header -->
       <div class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-slate-100 mb-4">
           Choose Your Template
         </h1>
-        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        <p class="text-lg text-gray-600 dark:text-slate-400 max-w-2xl mx-auto">
           Select from our professionally designed templates. Each template is ATS-friendly 
           and optimized for modern hiring processes.
         </p>
@@ -37,7 +38,7 @@
                   :class="['px-4 py-2 rounded-lg font-medium transition-all duration-200',
                            selectedCategory === category 
                              ? 'bg-primary-600 text-white' 
-                             : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-300']">
+                             : 'bg-white dark:bg-slate-800 text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:bg-slate-800/60 border border-gray-300 dark:border-slate-600']">
             {{ category }}
           </button>
         </div>
@@ -47,17 +48,17 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         <div v-for="template in filteredTemplates" 
              :key="template.id"
-             class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group">
+             class="bg-white dark:bg-slate-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group">
           
           <!-- Template Preview (live, scaled-down render of the real template) -->
-          <div class="relative border-b border-gray-100 bg-gray-50">
+          <div class="relative border-b border-gray-100 dark:border-slate-800 bg-gray-50 dark:bg-slate-800/60">
             <TemplateThumbnail :component="componentFor(template.id)" />
 
             <!-- Overlay on Hover -->
             <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
               <div class="space-y-3 w-40">
                 <button @click="previewTemplate(template)"
-                        class="w-full bg-white text-gray-900 py-2 px-4 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-200">
+                        class="w-full bg-white dark:bg-slate-800 text-gray-900 dark:text-slate-100 py-2 px-4 rounded-lg font-medium hover:bg-gray-100 transition-colors duration-200">
                   Preview
                 </button>
                 <button @click="selectTemplate(template)"
@@ -70,14 +71,14 @@
 
           <!-- Template Info -->
           <div class="p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ template.name }}</h3>
-            <p class="text-gray-600 text-sm mb-4">{{ template.description }}</p>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-slate-100 mb-2">{{ template.name }}</h3>
+            <p class="text-gray-600 dark:text-slate-400 text-sm mb-4">{{ template.description }}</p>
             
             <!-- Template Features -->
             <div class="flex flex-wrap gap-2">
               <span v-for="feature in template.features"
                     :key="feature"
-                    class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">
+                    class="bg-gray-100 text-gray-700 dark:text-slate-300 text-xs px-2 py-1 rounded">
                 {{ feature }}
               </span>
             </div>
@@ -88,11 +89,11 @@
       <!-- Empty State -->
       <div v-if="filteredTemplates.length === 0" 
            class="text-center py-16">
-        <DocumentTextIcon class="w-16 h-16 text-gray-400 mx-auto mb-4" />
-        <h3 class="text-lg font-medium text-gray-900 mb-2">
+        <DocumentTextIcon class="w-16 h-16 text-gray-400 dark:text-slate-500 mx-auto mb-4" />
+        <h3 class="text-lg font-medium text-gray-900 dark:text-slate-100 mb-2">
           No templates found
         </h3>
-        <p class="text-gray-600">
+        <p class="text-gray-600 dark:text-slate-400">
           Try selecting a different category or check back later for new templates.
         </p>
       </div>
@@ -101,20 +102,20 @@
     <!-- Template Preview Modal -->
     <div v-if="selectedTemplatePreview" 
          class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
-      <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-        <div class="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
-          <h3 class="text-xl font-semibold text-gray-900">
+      <div class="bg-white dark:bg-slate-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-slate-700 flex-shrink-0">
+          <h3 class="text-xl font-semibold text-gray-900 dark:text-slate-100">
             {{ selectedTemplatePreview.name }} Preview
           </h3>
           <button @click="closePreview"
-                  class="text-gray-400 hover:text-gray-600">
+                  class="text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:text-slate-400">
             <XMarkIcon class="w-6 h-6" />
           </button>
         </div>
 
         <div class="p-6 overflow-auto flex-1 min-h-0">
           <div class="bg-gray-100 p-4 sm:p-8 rounded-lg flex justify-center">
-            <div class="bg-white shadow-lg" style="width: 210mm; flex-shrink: 0;">
+            <div class="bg-white dark:bg-slate-800 shadow-lg" style="width: 210mm; flex-shrink: 0;">
               <Suspense>
                 <component :is="componentFor(selectedTemplatePreview.id)" />
               </Suspense>
@@ -122,7 +123,7 @@
           </div>
         </div>
         
-        <div class="p-6 border-t border-gray-200 flex justify-end space-x-4 flex-shrink-0">
+        <div class="p-6 border-t border-gray-200 dark:border-slate-700 flex justify-end space-x-4 flex-shrink-0">
           <button @click="closePreview" class="btn-secondary">
             Close
           </button>

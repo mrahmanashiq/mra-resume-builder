@@ -1,14 +1,14 @@
 <template>
   <div class="space-y-8">
     <div class="flex items-center justify-between">
-      <h3 class="text-lg font-semibold text-gray-900">Family Information</h3>
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-slate-100">Family Information</h3>
     </div>
 
     <!-- Father -->
-    <div class="border border-gray-200 rounded-lg p-6 bg-gray-50 space-y-4">
-      <h4 class="font-medium text-gray-900">Father</h4>
+    <div class="border border-gray-200 dark:border-slate-700 rounded-lg p-6 bg-gray-50 dark:bg-slate-800/60 space-y-4">
+      <h4 class="font-medium text-gray-900 dark:text-slate-100">Father</h4>
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Name</label>
         <input type="text"
                :value="biodataStore.family.father.name"
                @input="updateParent('father', 'name', $event.target.value)"
@@ -17,7 +17,7 @@
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Profession</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Profession</label>
           <input type="text"
                  :value="biodataStore.family.father.profession"
                  @input="updateParent('father', 'profession', $event.target.value)"
@@ -25,7 +25,7 @@
                  placeholder="Business">
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Education</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Education</label>
           <input type="text"
                  :value="biodataStore.family.father.education"
                  @input="updateParent('father', 'education', $event.target.value)"
@@ -34,7 +34,7 @@
         </div>
       </div>
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Contact Number <span class="text-gray-400 font-normal">(optional)</span></label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Contact Number <span class="text-gray-400 dark:text-slate-500 font-normal">(optional)</span></label>
         <input type="tel"
                :value="biodataStore.family.father.phone"
                @input="updateParent('father', 'phone', $event.target.value)"
@@ -44,10 +44,10 @@
     </div>
 
     <!-- Mother -->
-    <div class="border border-gray-200 rounded-lg p-6 bg-gray-50 space-y-4">
-      <h4 class="font-medium text-gray-900">Mother</h4>
+    <div class="border border-gray-200 dark:border-slate-700 rounded-lg p-6 bg-gray-50 dark:bg-slate-800/60 space-y-4">
+      <h4 class="font-medium text-gray-900 dark:text-slate-100">Mother</h4>
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Name</label>
         <input type="text"
                :value="biodataStore.family.mother.name"
                @input="updateParent('mother', 'name', $event.target.value)"
@@ -56,7 +56,7 @@
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Profession</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Profession</label>
           <input type="text"
                  :value="biodataStore.family.mother.profession"
                  @input="updateParent('mother', 'profession', $event.target.value)"
@@ -64,7 +64,7 @@
                  placeholder="Housewife">
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Education</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Education</label>
           <input type="text"
                  :value="biodataStore.family.mother.education"
                  @input="updateParent('mother', 'education', $event.target.value)"
@@ -73,7 +73,7 @@
         </div>
       </div>
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Contact Number <span class="text-gray-400 font-normal">(optional)</span></label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Contact Number <span class="text-gray-400 dark:text-slate-500 font-normal">(optional)</span></label>
         <input type="tel"
                :value="biodataStore.family.mother.phone"
                @input="updateParent('mother', 'phone', $event.target.value)"
@@ -85,16 +85,16 @@
     <!-- Siblings -->
     <div class="space-y-4">
       <div class="flex items-center justify-between">
-        <h4 class="font-medium text-gray-900">Siblings</h4>
+        <h4 class="font-medium text-gray-900 dark:text-slate-100">Siblings</h4>
         <button @click="addSibling" class="btn-secondary flex items-center text-sm">
           <PlusIcon class="w-4 h-4 mr-1" /> Add Sibling
         </button>
       </div>
       <div v-for="(sibling, index) in biodataStore.family.siblings"
            :key="sibling.id"
-           class="border border-gray-200 rounded-lg p-4 bg-white space-y-3">
+           class="border border-gray-200 dark:border-slate-700 rounded-lg p-4 bg-white dark:bg-slate-800 space-y-3">
         <div class="flex items-center justify-between">
-          <span class="text-sm font-medium text-gray-700">Sibling {{ index + 1 }}</span>
+          <span class="text-sm font-medium text-gray-700 dark:text-slate-300">Sibling {{ index + 1 }}</span>
           <button @click="removeSibling(sibling.id)" class="p-1 text-red-400 hover:text-red-600">
             <TrashIcon class="w-4 h-4" />
           </button>
@@ -122,7 +122,7 @@
                  placeholder="Married / Unmarried">
         </div>
       </div>
-      <p class="text-xs text-gray-500">
+      <p class="text-xs text-gray-500 dark:text-slate-400">
         Siblings appear on the biodata only when enabled in Settings → Optional Fields.
       </p>
     </div>
@@ -130,16 +130,16 @@
     <!-- Paternal Uncles (Chacha) -->
     <div class="space-y-4">
       <div class="flex items-center justify-between">
-        <h4 class="font-medium text-gray-900">Uncles (Chacha)</h4>
+        <h4 class="font-medium text-gray-900 dark:text-slate-100">Uncles (Chacha)</h4>
         <button @click="addPaternalUncle" class="btn-secondary flex items-center text-sm">
           <PlusIcon class="w-4 h-4 mr-1" /> Add
         </button>
       </div>
       <div v-for="(uncle, index) in biodataStore.family.paternalUncles"
            :key="uncle.id"
-           class="border border-gray-200 rounded-lg p-4 bg-white">
+           class="border border-gray-200 dark:border-slate-700 rounded-lg p-4 bg-white dark:bg-slate-800">
         <div class="flex items-center justify-between mb-3">
-          <span class="text-sm font-medium text-gray-700">Chacha {{ index + 1 }}</span>
+          <span class="text-sm font-medium text-gray-700 dark:text-slate-300">Chacha {{ index + 1 }}</span>
           <button @click="removePaternalUncle(uncle.id)" class="p-1 text-red-400 hover:text-red-600">
             <TrashIcon class="w-4 h-4" />
           </button>
@@ -167,16 +167,16 @@
     <!-- Maternal Uncles (Mama) -->
     <div class="space-y-4">
       <div class="flex items-center justify-between">
-        <h4 class="font-medium text-gray-900">Uncles (Mama)</h4>
+        <h4 class="font-medium text-gray-900 dark:text-slate-100">Uncles (Mama)</h4>
         <button @click="addMaternalUncle" class="btn-secondary flex items-center text-sm">
           <PlusIcon class="w-4 h-4 mr-1" /> Add
         </button>
       </div>
       <div v-for="(uncle, index) in biodataStore.family.maternalUncles"
            :key="uncle.id"
-           class="border border-gray-200 rounded-lg p-4 bg-white">
+           class="border border-gray-200 dark:border-slate-700 rounded-lg p-4 bg-white dark:bg-slate-800">
         <div class="flex items-center justify-between mb-3">
-          <span class="text-sm font-medium text-gray-700">Mama {{ index + 1 }}</span>
+          <span class="text-sm font-medium text-gray-700 dark:text-slate-300">Mama {{ index + 1 }}</span>
           <button @click="removeMaternalUncle(uncle.id)" class="p-1 text-red-400 hover:text-red-600">
             <TrashIcon class="w-4 h-4" />
           </button>
@@ -203,13 +203,13 @@
 
     <!-- Home District -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Home District</label>
+      <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Home District</label>
       <input type="text"
              :value="biodataStore.family.homeDistrict"
              @input="updateFamilyField('homeDistrict', $event.target.value)"
              class="input-field"
              placeholder="Comilla">
-      <p class="text-xs text-gray-500 mt-1">
+      <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">
         Appears only when enabled in Settings → Optional Fields.
       </p>
     </div>

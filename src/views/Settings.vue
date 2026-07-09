@@ -1,13 +1,14 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-gray-50 dark:bg-slate-900">
     <!-- Header -->
-    <header class="bg-white shadow-sm border-b border-gray-200">
+    <header class="bg-white dark:bg-slate-800 shadow-sm border-b border-gray-200 dark:border-slate-700">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
           <router-link to="/" class="text-xl font-bold text-primary-600">
             MRA Resume Builder
           </router-link>
-          <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-3 sm:space-x-4">
+            <ThemeToggle />
             <router-link to="/editor" class="btn-primary">
               Back to Editor
             </router-link>
@@ -18,8 +19,8 @@
 
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">Settings</h1>
-        <p class="text-gray-600">Customize your resume builder experience</p>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-slate-100 mb-2">Settings</h1>
+        <p class="text-gray-600 dark:text-slate-400">Customize your resume builder experience</p>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -30,9 +31,9 @@
                     :key="section.id"
                     @click="activeSection = section.id"
                     :class="['w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-all duration-200',
-                             activeSection === section.id 
-                               ? 'bg-primary-100 text-primary-700 border border-primary-200' 
-                               : 'text-gray-700 hover:bg-gray-100']">
+                             activeSection === section.id
+                               ? 'bg-primary-100 text-primary-700 border border-primary-200 dark:bg-primary-500/20 dark:text-primary-200 dark:border-primary-500/30'
+                               : 'text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-700']">
               <component :is="section.icon" class="w-5 h-5" />
               <span class="font-medium">{{ section.name }}</span>
             </button>
@@ -47,7 +48,7 @@
             
             <!-- Theme Selection -->
             <div class="mb-6">
-              <label class="block text-sm font-medium text-gray-700 mb-3">Theme</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-3">Theme</label>
               <div class="grid grid-cols-2 gap-4">
                 <button v-for="theme in themes" 
                         :key="theme.id"
@@ -55,7 +56,7 @@
                         :class="['p-4 rounded-lg border-2 transition-all duration-200',
                                  resumeStore.ui.theme === theme.id 
                                    ? 'border-primary-500 bg-primary-50' 
-                                   : 'border-gray-200 hover:border-gray-300']">
+                                   : 'border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:border-slate-600']">
                   <div class="flex items-center space-x-3">
                     <div :class="['w-4 h-4 rounded-full', theme.color]"></div>
                     <span class="font-medium">{{ theme.name }}</span>
@@ -66,26 +67,26 @@
 
             <!-- Color Scheme -->
             <div class="mb-6">
-              <label class="block text-sm font-medium text-gray-700 mb-3">Color Scheme</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-3">Color Scheme</label>
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-xs text-gray-600 mb-1">Primary Color</label>
+                  <label class="block text-xs text-gray-600 dark:text-slate-400 mb-1">Primary Color</label>
                   <input type="color" 
                          v-model="resumeStore.settings.colorScheme.primary"
-                         class="w-full h-10 rounded border border-gray-300">
+                         class="w-full h-10 rounded border border-gray-300 dark:border-slate-600">
                 </div>
                 <div>
-                  <label class="block text-xs text-gray-600 mb-1">Secondary Color</label>
+                  <label class="block text-xs text-gray-600 dark:text-slate-400 mb-1">Secondary Color</label>
                   <input type="color" 
                          v-model="resumeStore.settings.colorScheme.secondary"
-                         class="w-full h-10 rounded border border-gray-300">
+                         class="w-full h-10 rounded border border-gray-300 dark:border-slate-600">
                 </div>
               </div>
             </div>
 
             <!-- Font Selection -->
             <div class="mb-6">
-              <label class="block text-sm font-medium text-gray-700 mb-3">Font Family</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-3">Font Family</label>
               <BaseSelect
                 v-model="resumeStore.settings.font"
                 :options="[
@@ -99,7 +100,7 @@
 
             <!-- Font Size -->
             <div class="mb-6">
-              <label class="block text-sm font-medium text-gray-700 mb-3">
+              <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-3">
                 Font Size: {{ resumeStore.settings.fontSize }}px
               </label>
               <input type="range" 
@@ -117,14 +118,14 @@
             
             <!-- Sections Order -->
             <div class="mb-6">
-              <label class="block text-sm font-medium text-gray-700 mb-3">Sections Order</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-3">Sections Order</label>
               <draggable v-model="resumeStore.settings.sectionsOrder" 
                          item-key="id"
                          class="space-y-2">
                 <template #item="{ element }">
-                  <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-200">
+                  <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-800/60 rounded-lg border border-gray-200 dark:border-slate-700">
                     <div class="flex items-center space-x-3">
-                      <Bars3Icon class="w-5 h-5 text-gray-400 cursor-move" />
+                      <Bars3Icon class="w-5 h-5 text-gray-400 dark:text-slate-500 cursor-move" />
                       <span class="font-medium capitalize">{{ element.replace(/([A-Z])/g, ' $1').trim() }}</span>
                     </div>
                     <div class="flex items-center space-x-2">
@@ -133,7 +134,7 @@
                                        resumeStore.settings.sectionsEnabled[element] 
                                          ? 'bg-primary-600' 
                                          : 'bg-gray-300']">
-                        <div :class="['w-4 h-4 bg-white rounded-full shadow transition-transform duration-200',
+                        <div :class="['w-4 h-4 bg-white dark:bg-slate-800 rounded-full shadow transition-transform duration-200',
                                       resumeStore.settings.sectionsEnabled[element] 
                                         ? 'translate-x-5' 
                                         : 'translate-x-1']"></div>
@@ -146,7 +147,7 @@
 
             <!-- Spacing -->
             <div class="mb-6">
-              <label class="block text-sm font-medium text-gray-700 mb-3">Section Spacing</label>
+              <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-3">Section Spacing</label>
               <BaseSelect
                 v-model="resumeStore.settings.spacing"
                 :options="[
@@ -163,35 +164,35 @@
             
             <!-- PDF Options -->
             <div class="mb-6">
-              <h4 class="font-medium text-gray-900 mb-3">PDF Export Options</h4>
+              <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-3">PDF Export Options</h4>
               <div class="space-y-3">
                 <label class="flex items-center space-x-3">
                   <input type="checkbox" v-model="pdfSettings.includeColors" class="rounded">
-                  <span class="text-sm text-gray-700">Include colors in PDF</span>
+                  <span class="text-sm text-gray-700 dark:text-slate-300">Include colors in PDF</span>
                 </label>
                 <label class="flex items-center space-x-3">
                   <input type="checkbox" v-model="pdfSettings.highQuality" class="rounded">
-                  <span class="text-sm text-gray-700">High quality images</span>
+                  <span class="text-sm text-gray-700 dark:text-slate-300">High quality images</span>
                 </label>
                 <label class="flex items-center space-x-3">
                   <input type="checkbox" v-model="pdfSettings.optimizeSize" class="rounded">
-                  <span class="text-sm text-gray-700">Optimize file size</span>
+                  <span class="text-sm text-gray-700 dark:text-slate-300">Optimize file size</span>
                 </label>
               </div>
             </div>
 
             <!-- Page Settings -->
             <div class="mb-6">
-              <h4 class="font-medium text-gray-900 mb-3">Page Settings</h4>
+              <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-3">Page Settings</h4>
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm text-gray-700 mb-1">Paper Size</label>
+                  <label class="block text-sm text-gray-700 dark:text-slate-300 mb-1">Paper Size</label>
                   <BaseSelect
                     v-model="pdfSettings.paperSize"
                     :options="['A4', 'Letter', 'Legal']" />
                 </div>
                 <div>
-                  <label class="block text-sm text-gray-700 mb-1">Orientation</label>
+                  <label class="block text-sm text-gray-700 dark:text-slate-300 mb-1">Orientation</label>
                   <BaseSelect
                     v-model="pdfSettings.orientation"
                     :options="[
@@ -211,13 +212,13 @@
             <div class="mb-6">
               <div class="flex items-center justify-between">
                 <div>
-                  <h4 class="font-medium text-gray-900">Auto-save</h4>
-                  <p class="text-sm text-gray-600">Automatically save your changes</p>
+                  <h4 class="font-medium text-gray-900 dark:text-slate-100">Auto-save</h4>
+                  <p class="text-sm text-gray-600 dark:text-slate-400">Automatically save your changes</p>
                 </div>
                 <button @click="toggleAutoSave"
                         :class="['w-12 h-6 rounded-full transition-colors duration-200',
                                  autoSaveEnabled ? 'bg-primary-600' : 'bg-gray-300']">
-                  <div :class="['w-4 h-4 bg-white rounded-full shadow transition-transform duration-200',
+                  <div :class="['w-4 h-4 bg-white dark:bg-slate-800 rounded-full shadow transition-transform duration-200',
                                 autoSaveEnabled ? 'translate-x-7' : 'translate-x-1']"></div>
                 </button>
               </div>
@@ -225,17 +226,17 @@
 
             <!-- Data Actions -->
             <div class="space-y-4">
-              <div class="border border-gray-200 rounded-lg p-4">
-                <h4 class="font-medium text-gray-900 mb-2">Export Data</h4>
-                <p class="text-sm text-gray-600 mb-3">Download your resume data as JSON file</p>
+              <div class="border border-gray-200 dark:border-slate-700 rounded-lg p-4">
+                <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-2">Export Data</h4>
+                <p class="text-sm text-gray-600 dark:text-slate-400 mb-3">Download your resume data as JSON file</p>
                 <button @click="exportData" class="btn-secondary">
                   Export Data
                 </button>
               </div>
 
-              <div class="border border-gray-200 rounded-lg p-4">
-                <h4 class="font-medium text-gray-900 mb-2">Import Data</h4>
-                <p class="text-sm text-gray-600 mb-3">Import resume data from JSON file</p>
+              <div class="border border-gray-200 dark:border-slate-700 rounded-lg p-4">
+                <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-2">Import Data</h4>
+                <p class="text-sm text-gray-600 dark:text-slate-400 mb-3">Import resume data from JSON file</p>
                 <input type="file" 
                        @change="handleFileImport" 
                        accept=".json"
@@ -263,20 +264,20 @@
             <div class="space-y-6">
               <div class="flex items-center justify-between">
                 <div>
-                  <h4 class="font-medium text-gray-900">Analytics</h4>
-                  <p class="text-sm text-gray-600">Help improve the app by sharing usage data</p>
+                  <h4 class="font-medium text-gray-900 dark:text-slate-100">Analytics</h4>
+                  <p class="text-sm text-gray-600 dark:text-slate-400">Help improve the app by sharing usage data</p>
                 </div>
                 <button @click="toggleAnalytics"
                         :class="['w-12 h-6 rounded-full transition-colors duration-200',
                                  analyticsEnabled ? 'bg-primary-600' : 'bg-gray-300']">
-                  <div :class="['w-4 h-4 bg-white rounded-full shadow transition-transform duration-200',
+                  <div :class="['w-4 h-4 bg-white dark:bg-slate-800 rounded-full shadow transition-transform duration-200',
                                 analyticsEnabled ? 'translate-x-7' : 'translate-x-1']"></div>
                 </button>
               </div>
 
-              <div class="border border-gray-200 rounded-lg p-4">
-                <h4 class="font-medium text-gray-900 mb-2">Data Storage</h4>
-                <p class="text-sm text-gray-600">Your resume data is stored locally in your browser and never sent to our servers without your explicit consent.</p>
+              <div class="border border-gray-200 dark:border-slate-700 rounded-lg p-4">
+                <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-2">Data Storage</h4>
+                <p class="text-sm text-gray-600 dark:text-slate-400">Your resume data is stored locally in your browser and never sent to our servers without your explicit consent.</p>
               </div>
             </div>
           </div>
@@ -286,9 +287,9 @@
 
     <!-- Reset Confirmation Modal -->
     <div v-if="showResetModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+      <div class="bg-white dark:bg-slate-800 rounded-lg p-6 w-full max-w-md mx-4">
         <h3 class="text-lg font-semibold text-red-900 mb-4">Confirm Reset</h3>
-        <p class="text-gray-600 mb-6">
+        <p class="text-gray-600 dark:text-slate-400 mb-6">
           Are you sure you want to reset all data? This action cannot be undone and will permanently delete all your resume information.
         </p>
         <div class="flex justify-end space-x-3">
@@ -349,7 +350,7 @@ export default {
         { id: 'privacy', name: 'Privacy', icon: 'ShieldCheckIcon' }
       ],
       themes: [
-        { id: 'light', name: 'Light', color: 'bg-white border border-gray-300' },
+        { id: 'light', name: 'Light', color: 'bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600' },
         { id: 'dark', name: 'Dark', color: 'bg-gray-800' }
       ],
       pdfSettings: {

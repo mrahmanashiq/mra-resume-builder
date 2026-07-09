@@ -1,7 +1,7 @@
 <template>
   <div class="space-y-6">
     <div class="flex items-center justify-between">
-      <h3 class="text-lg font-semibold text-gray-900">Personal Information</h3>
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-slate-100">Personal Information</h3>
     </div>
 
     <!-- Profile Image Upload -->
@@ -9,7 +9,7 @@
       <div class="relative mx-auto w-32 h-32 mb-4">
         <img :src="resumeStore.personalInfo.profileImage" 
              alt="Profile" 
-             class="w-32 h-32 rounded-full object-cover border-4 border-gray-200">
+             class="w-32 h-32 rounded-full object-cover border-4 border-gray-200 dark:border-slate-700">
         <label class="absolute bottom-0 right-0 bg-primary-600 hover:bg-primary-700 text-white p-2 rounded-full cursor-pointer transition-colors duration-200">
           <CameraIcon class="w-4 h-4" />
           <input type="file" 
@@ -18,13 +18,13 @@
                  class="hidden">
         </label>
       </div>
-      <p class="text-sm text-gray-600">Click the camera icon to upload a new photo</p>
+      <p class="text-sm text-gray-600 dark:text-slate-400">Click the camera icon to upload a new photo</p>
     </div>
 
     <!-- Name Fields -->
     <div class="grid grid-cols-2 gap-4">
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">First Name</label>
         <input type="text" 
                v-model="resumeStore.personalInfo.firstName"
                @input="updatePersonalInfo('firstName', $event.target.value)"
@@ -32,7 +32,7 @@
                placeholder="John">
       </div>
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Last Name</label>
         <input type="text" 
                v-model="resumeStore.personalInfo.lastName"
                @input="updatePersonalInfo('lastName', $event.target.value)"
@@ -43,7 +43,7 @@
 
     <!-- Professional Title -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Professional Title</label>
+      <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Professional Title</label>
       <input type="text" 
              v-model="resumeStore.personalInfo.title"
              @input="updatePersonalInfo('title', $event.target.value)"
@@ -53,11 +53,11 @@
 
     <!-- Contact Information -->
     <div class="space-y-4">
-      <h4 class="font-medium text-gray-900">Contact Information</h4>
+      <h4 class="font-medium text-gray-900 dark:text-slate-100">Contact Information</h4>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Email</label>
           <input type="email" 
                  v-model="resumeStore.personalInfo.email"
                  @input="updatePersonalInfo('email', $event.target.value)"
@@ -66,7 +66,7 @@
         </div>
         
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Phone</label>
           <input type="tel" 
                  v-model="resumeStore.personalInfo.phone"
                  @input="updatePersonalInfo('phone', $event.target.value)"
@@ -76,7 +76,7 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Address</label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Address</label>
         <input type="text" 
                v-model="resumeStore.personalInfo.address"
                @input="updatePersonalInfo('address', $event.target.value)"
@@ -87,11 +87,11 @@
 
     <!-- Professional Links -->
     <div class="space-y-4">
-      <h4 class="font-medium text-gray-900">Professional Links</h4>
+      <h4 class="font-medium text-gray-900 dark:text-slate-100">Professional Links</h4>
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">LinkedIn</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">LinkedIn</label>
           <input type="url" 
                  v-model="resumeStore.personalInfo.linkedin"
                  @input="updatePersonalInfo('linkedin', $event.target.value)"
@@ -100,7 +100,7 @@
         </div>
         
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">GitHub</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">GitHub</label>
           <input type="url" 
                  v-model="resumeStore.personalInfo.github"
                  @input="updatePersonalInfo('github', $event.target.value)"
@@ -110,7 +110,7 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Website/Portfolio</label>
+        <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Website/Portfolio</label>
         <input type="url" 
                v-model="resumeStore.personalInfo.website"
                @input="updatePersonalInfo('website', $event.target.value)"
@@ -121,45 +121,45 @@
 
     <!-- Google Scholar (academic CV) -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Google Scholar (Optional)</label>
+      <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Google Scholar (Optional)</label>
       <input type="text"
              v-model="resumeStore.personalInfo.scholar"
              @input="updatePersonalInfo('scholar', $event.target.value)"
              class="input-field"
              placeholder="scholar.google.com/citations?user=...">
-      <p class="text-xs text-gray-500 mt-1">
+      <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">
         Shown in the contact line on the academic CV templates.
       </p>
     </div>
 
     <!-- Research Interests (academic CV) -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Research Interests (Optional)</label>
+      <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Research Interests (Optional)</label>
       <input type="text"
              v-model="resumeStore.personalInfo.researchInterests"
              @input="updatePersonalInfo('researchInterests', $event.target.value)"
              class="input-field"
              placeholder="Machine Learning, Computer Vision, Deep Learning">
-      <p class="text-xs text-gray-500 mt-1">
+      <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">
         Shown as a one-line summary under your name on the academic CV templates.
       </p>
     </div>
 
     <!-- Professional Summary -->
     <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Professional Summary</label>
+      <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Professional Summary</label>
       <textarea v-model="resumeStore.personalInfo.summary"
                 @input="updatePersonalInfo('summary', $event.target.value)"
                 rows="4"
                 class="textarea-field"
                 placeholder="Write a brief summary of your professional background, key skills, and career objectives..."></textarea>
-      <p class="text-xs text-gray-500 mt-1">
+      <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">
         Tip: Keep it concise (2-3 sentences) and highlight your most relevant skills and experience.
       </p>
     </div>
 
     <!-- Actions -->
-    <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+    <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-slate-700">
       <button @click="clearForm" class="btn-secondary">
         Clear All
       </button>
