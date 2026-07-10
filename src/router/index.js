@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { LANDING_PAGES } from '../seo/landing'
 
 // Lazy load views for better code splitting
 const Home = () => import('../views/Home.vue')
@@ -7,6 +8,15 @@ const Templates = () => import('../views/Templates.vue')
 const Settings = () => import('../views/Settings.vue')
 const BiodataEditor = () => import('../views/BiodataEditor.vue')
 const BiodataTemplates = () => import('../views/BiodataTemplates.vue')
+const LandingPage = () => import('../views/landing/LandingPage.vue')
+
+// SEO keyword landing pages, generated from the landing config.
+const landingRoutes = Object.values(LANDING_PAGES).map((p) => ({
+  path: `/${p.slug}`,
+  name: `landing-${p.slug}`,
+  component: LandingPage,
+  meta: { seo: p.seo, landing: p.slug }
+}))
 
 const router = createRouter({
   history: createWebHistory(),
@@ -76,7 +86,8 @@ const router = createRouter({
             'Free marriage biodata templates and formats. Pick a design, fill in your details, and download a print-ready biodata PDF.'
         }
       }
-    }
+    },
+    ...landingRoutes
   ]
 })
 

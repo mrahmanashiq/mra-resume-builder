@@ -278,6 +278,11 @@
             <router-link to="/editor" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Resume</router-link>
             <router-link to="/biodata" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Biodata</router-link>
           </div>
+          <nav aria-label="Guides" class="mt-4 flex justify-center items-center flex-wrap gap-x-5 gap-y-2 text-sm">
+            <router-link to="/marriage-biodata-format" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Marriage biodata format</router-link>
+            <router-link to="/software-engineer-resume-template" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Software engineer resume</router-link>
+            <router-link to="/free-ats-resume-builder" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Free ATS resume builder</router-link>
+          </nav>
           <p class="text-gray-500 dark:text-slate-400 text-sm mt-6">
             Released under the MIT License · Built by
             <a :href="authorUrl" target="_blank" rel="noopener"
