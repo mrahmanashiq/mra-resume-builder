@@ -20,6 +20,20 @@
           </div>
 
           <div class="flex items-center space-x-2 sm:space-x-4">
+            <!-- Undo / redo (document-wide history) -->
+            <div class="hidden sm:flex items-center rounded-lg border border-gray-300 overflow-hidden dark:border-slate-600">
+              <button type="button" @click="undo" :disabled="!canUndo"
+                      class="px-2.5 py-1.5 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed dark:text-slate-300 dark:hover:bg-slate-700"
+                      title="Undo (Ctrl+Z)" aria-label="Undo">
+                <ArrowUturnLeftIcon class="w-4 h-4" />
+              </button>
+              <span class="w-px self-stretch bg-gray-300 dark:bg-slate-600" aria-hidden="true"></span>
+              <button type="button" @click="redo" :disabled="!canRedo"
+                      class="px-2.5 py-1.5 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed dark:text-slate-300 dark:hover:bg-slate-700"
+                      title="Redo (Ctrl+Shift+Z)" aria-label="Redo">
+                <ArrowUturnRightIcon class="w-4 h-4" />
+              </button>
+            </div>
             <ThemeToggle />
             <!-- Preview + Download live in the sticky bottom bar on mobile; show here on larger screens only -->
             <button @click="togglePreview"
@@ -276,6 +290,7 @@
 <script>
 import { useToast } from 'vue-toastification'
 import { useDocumentExport } from '../../composables/useDocumentExport'
+import { useHistory } from '../../composables/useHistory'
 import AppLogo from '../AppLogo.vue'
 import AtsMatchModal from './AtsMatchModal.vue'
 import ResumeTipsModal from './ResumeTipsModal.vue'
@@ -297,7 +312,9 @@ import {
   Bars3Icon,
   ChevronLeftIcon,
   MagnifyingGlassIcon,
-  LightBulbIcon
+  LightBulbIcon,
+  ArrowUturnLeftIcon,
+  ArrowUturnRightIcon
 } from '@heroicons/vue/24/outline'
 
 // Download formats - each is a one-click download action.
@@ -328,7 +345,9 @@ export default {
     ArrowUpTrayIcon,
     Bars3Icon,
     ChevronLeftIcon,
-    MagnifyingGlassIcon
+    MagnifyingGlassIcon,
+    ArrowUturnLeftIcon,
+    ArrowUturnRightIcon
   },
   props: {
     config: {
@@ -346,7 +365,8 @@ export default {
       label: props.config.documentLabel,
       toast
     })
-    return { store, toast, exporter }
+    const { canUndo, canRedo, undo, redo } = useHistory({ store, type: props.config.type })
+    return { store, toast, exporter, canUndo, canRedo, undo, redo }
   },
   data() {
     return {
@@ -507,6 +527,27 @@ export default {
       }
     },
 
+    handleShortcuts(event) {
+      const mod = event.ctrlKey || event.metaKey
+      if (!mod) return
+      const key = event.key.toLowerCase()
+      const isUndo = key === 'z' && !event.shiftKey
+      const isRedo = (key === 'z' && event.shiftKey) || key === 'y'
+      if (!isUndo && !isRedo) return
+
+      // While typing in a field, leave native text undo/redo alone; document-wide
+      // history is driven by the toolbar buttons there. Outside fields, Ctrl+Z
+      // steps the whole document.
+      const el = event.target
+      const tag = el && el.tagName ? el.tagName.toLowerCase() : ''
+      const editable = tag === 'input' || tag === 'textarea' || tag === 'select' || (el && el.isContentEditable)
+      if (editable) return
+
+      event.preventDefault()
+      if (isRedo) this.redo()
+      else this.undo()
+    },
+
     effectiveMaxWidth() {
       // Cap width to the viewport so the nav rail and preview always have room.
       return Math.max(this.minSidebarWidth, Math.min(this.maxSidebarWidth, window.innerWidth - 580))
@@ -562,6 +603,7 @@ export default {
   mounted() {
     document.addEventListener('click', this.handleOutsideClick)
     window.addEventListener('resize', this.clampToViewport)
+    window.addEventListener('keydown', this.handleShortcuts)
     // Reflect real save activity: pulse "Saving…" on change, settle to "Auto-saved".
     this._unsubscribeSave = this.store.$subscribe(() => {
       this.saveStatus = 'saving'
@@ -581,6 +623,7 @@ export default {
   beforeUnmount() {
     document.removeEventListener('click', this.handleOutsideClick)
     window.removeEventListener('resize', this.clampToViewport)
+    window.removeEventListener('keydown', this.handleShortcuts)
     document.removeEventListener('mousemove', this.onResize)
     document.removeEventListener('mouseup', this.stopResize)
     clearTimeout(this._saveTimer)
