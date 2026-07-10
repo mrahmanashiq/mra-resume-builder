@@ -16,6 +16,7 @@
     "@headlessui/vue": "^1.7.16",
     "@heroicons/vue": "^2.0.18",
     "@unhead/vue": "^1.11.20",
+    "@vercel/analytics": "^2.0.1",
     "date-fns": "^2.30.0",
     "file-saver": "^2.0.5",
     "html2canvas": "^1.4.1",

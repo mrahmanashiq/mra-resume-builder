@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createHead } from '@unhead/vue'
 import Toast from 'vue-toastification'
+import { inject } from '@vercel/analytics'
 import router from './router'
 import './assets/main.css'
 import 'vue-toastification/dist/index.css'
@@ -13,6 +14,7 @@ import { createPersistedState } from './stores/persist'
 import { useTheme } from './composables/useTheme'
 
 useTheme().initTheme()
+inject()
 
 const app = createApp(App)
 const pinia = createPinia()
