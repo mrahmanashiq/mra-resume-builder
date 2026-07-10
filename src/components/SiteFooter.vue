@@ -83,8 +83,8 @@ export default {
       githubUrl: 'https://github.com/mrahmanashiq/mra-resume-builder',
       authorName: 'Mizanur Rahman Ashiq',
       authorUrl: 'https://mrahmanashiq.vercel.app',
-      // Static so it is stable in SSG/prerender and avoids Date at module scope.
-      year: 2026
+      // Current year, so the copyright updates automatically.
+      year: new Date().getFullYear()
     }
   }
 }
