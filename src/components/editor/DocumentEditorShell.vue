@@ -52,6 +52,14 @@
                       <span class="block text-xs text-gray-500 dark:text-slate-400">Compare with a job description</span>
                     </span>
                   </button>
+                  <button type="button" @click="openResumeTips"
+                          class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3 dark:hover:bg-slate-700">
+                    <LightBulbIcon class="w-4 h-4 text-gray-600 flex-shrink-0 dark:text-slate-400" />
+                    <span class="flex-1 min-w-0">
+                      <span class="block font-medium text-gray-800 dark:text-slate-100">Resume tips</span>
+                      <span class="block text-xs text-gray-500 dark:text-slate-400">Check your resume's strength</span>
+                    </span>
+                  </button>
                 </template>
 
                 <hr class="my-1 dark:border-slate-700">
@@ -204,6 +212,13 @@
               <span class="block text-xs text-gray-500 dark:text-slate-400">Compare with a job description</span>
             </span>
           </button>
+          <button type="button" @click="openResumeTips" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
+            <LightBulbIcon class="w-5 h-5 text-gray-600 flex-shrink-0 dark:text-slate-400" />
+            <span class="flex-1 min-w-0">
+              <span class="block font-medium text-gray-800 dark:text-slate-100">Resume tips</span>
+              <span class="block text-xs text-gray-500 dark:text-slate-400">Check your resume's strength</span>
+            </span>
+          </button>
         </template>
         <hr class="my-2 dark:border-slate-700">
         <button @click="handlePrint" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600 dark:text-slate-100">
@@ -239,8 +254,9 @@
       </div>
     </div>
 
-    <!-- ATS match check (resume only) -->
+    <!-- Resume analysis tools (resume only) -->
     <AtsMatchModal v-if="showAtsModal" :store="store" @close="showAtsModal = false" />
+    <ResumeTipsModal v-if="showTipsModal" :store="store" @close="showTipsModal = false" />
   </div>
 </template>
 
@@ -250,6 +266,7 @@ import { useDocumentExport } from '../../composables/useDocumentExport'
 import { buildShareUrl } from '../../utils/shareLink'
 import AppLogo from '../AppLogo.vue'
 import AtsMatchModal from './AtsMatchModal.vue'
+import ResumeTipsModal from './ResumeTipsModal.vue'
 import DocumentSwitcher from './DocumentSwitcher.vue'
 import DownloadPanel from './DownloadPanel.vue'
 
@@ -265,7 +282,8 @@ import {
   ArrowUpTrayIcon,
   Bars3Icon,
   ChevronLeftIcon,
-  MagnifyingGlassIcon
+  MagnifyingGlassIcon,
+  LightBulbIcon
 } from '@heroicons/vue/24/outline'
 
 // Download formats - each is a one-click download action.
@@ -280,6 +298,7 @@ export default {
   components: {
     AppLogo,
     AtsMatchModal,
+    ResumeTipsModal,
     DocumentSwitcher,
     DownloadPanel,
     EyeIcon,
@@ -318,6 +337,7 @@ export default {
       showExportMenu: false,
       showMobileExport: false,
       showAtsModal: false,
+      showTipsModal: false,
       saveStatus: 'saved',
       formats: DOWNLOAD_FORMATS,
       showImportModal: false,
@@ -430,6 +450,12 @@ export default {
       this.showExportMenu = false
       this.showMobileExport = false
       this.showAtsModal = true
+    },
+
+    openResumeTips() {
+      this.showExportMenu = false
+      this.showMobileExport = false
+      this.showTipsModal = true
     },
 
     async handleCopyShareLink() {
