@@ -15,13 +15,13 @@
     </header>
 
     <!-- Summary -->
-    <section v-if="enabled.summary && personalInfo.summary" class="dev-section print-avoid-break">
+    <section v-if="enabled.summary && personalInfo.summary" class="dev-section print-avoid-break" :style="{ order: ord('summary') }">
       <h2 class="dev-heading">Summary</h2>
       <p class="dev-summary">{{ personalInfo.summary }}</p>
     </section>
 
     <!-- Skills -->
-    <section v-if="enabled.skills && skills.length" class="dev-section print-avoid-break">
+    <section v-if="enabled.skills && skills.length" class="dev-section print-avoid-break" :style="{ order: ord('skills') }">
       <h2 class="dev-heading">Skills</h2>
       <div class="dev-skills">
         <div v-for="(list, cat) in resumeStore.skillsByCategory" :key="cat" class="dev-skill-row">
@@ -31,7 +31,7 @@
     </section>
 
     <!-- Experience -->
-    <section v-if="enabled.experience && experience.length" class="dev-section">
+    <section v-if="enabled.experience && experience.length" class="dev-section" :style="{ order: ord('experience') }">
       <h2 class="dev-heading">Experience</h2>
       <div v-for="exp in resumeStore.sortedExperience" :key="exp.id" class="dev-entry print-avoid-break">
         <div class="dev-entry-row">
@@ -50,7 +50,7 @@
     </section>
 
     <!-- Projects -->
-    <section v-if="enabled.projects && projects.length" class="dev-section">
+    <section v-if="enabled.projects && projects.length" class="dev-section" :style="{ order: ord('projects') }">
       <h2 class="dev-heading">Projects</h2>
       <ul class="dev-proj-list">
         <li v-for="p in projects" :key="p.id" class="dev-proj print-avoid-break">
@@ -64,7 +64,7 @@
     </section>
 
     <!-- Education -->
-    <section v-if="enabled.education && education.length" class="dev-section print-avoid-break">
+    <section v-if="enabled.education && education.length" class="dev-section print-avoid-break" :style="{ order: ord('education') }">
       <h2 class="dev-heading">Education</h2>
       <div v-for="edu in education" :key="edu.id" class="dev-entry">
         <div class="dev-entry-row">
@@ -81,7 +81,7 @@
     </section>
 
     <!-- Certifications -->
-    <section v-if="enabled.certifications && certifications.length" class="dev-section print-avoid-break">
+    <section v-if="enabled.certifications && certifications.length" class="dev-section print-avoid-break" :style="{ order: ord('certifications') }">
       <h2 class="dev-heading">Certifications</h2>
       <div v-for="c in certifications" :key="c.id" class="dev-cert">
         <span class="dev-entry-title">{{ c.name }}</span><span v-if="c.issuer" class="dev-entry-org"> - {{ c.issuer }}</span>
@@ -90,7 +90,7 @@
     </section>
 
     <!-- Languages -->
-    <section v-if="enabled.languages && languages.length" class="dev-section print-avoid-break">
+    <section v-if="enabled.languages && languages.length" class="dev-section print-avoid-break" :style="{ order: ord('languages') }">
       <h2 class="dev-heading">Languages</h2>
       <div class="dev-lang">
         <span v-for="(l, i) in languages" :key="l.id">
@@ -150,6 +150,10 @@ export default {
     }
   },
   methods: {
+    ord(key) {
+      const i = this.settings.sectionsOrder.indexOf(key)
+      return i === -1 ? 99 : i
+    },
     hasAchievements(exp) {
       return exp.achievements && exp.achievements.some(a => a && a.trim())
     },
@@ -191,10 +195,14 @@ export default {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   line-height: 1.4;
+  /* Sections are ordered via CSS `order` from settings.sectionsOrder. */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Header */
 .dev-header {
+  order: -1;
   padding-bottom: 10px;
   border-bottom: 1.5px solid var(--text);
   margin-bottom: 16px;
