@@ -8,6 +8,7 @@ export const useResumeStore = defineStore('resume', {
       firstName: 'John',
       lastName: 'Doe',
       title: 'Full Stack Developer',
+      headerTagline: '',
       email: 'john.doe@example.com',
       phone: '+1 (555) 123-4567',
       address: 'San Francisco, CA',
@@ -19,6 +20,10 @@ export const useResumeStore = defineStore('resume', {
       scholar: 'scholar.google.com/citations',
       profileImage: '/profile_pic.png'
     },
+
+    // Custom header links (user-defined label + URL, e.g. Portfolio, Blog, Twitter).
+    // Empty by default - opt-in, shown in the header alongside the fixed links.
+    customLinks: [],
 
     // Skills with categories and proficiency levels
     skills: [
@@ -341,6 +346,20 @@ export const useResumeStore = defineStore('resume', {
       this.personalInfo[field] = value
     },
 
+    // Custom header links
+    addCustomLink(link = {}) {
+      this.customLinks.push({ id: uuidv4(), label: '', url: '', ...link })
+    },
+
+    updateCustomLink(id, field, value) {
+      const l = this.customLinks.find((x) => x.id === id)
+      if (l) l[field] = value
+    },
+
+    removeCustomLink(id) {
+      this.customLinks = this.customLinks.filter((x) => x.id !== id)
+    },
+
     // Skills Actions
     addSkill(skill) {
       this.skills.push({
@@ -611,6 +630,7 @@ export const useResumeStore = defineStore('resume', {
     exportData() {
       return JSON.stringify({
         personalInfo: this.personalInfo,
+        customLinks: this.customLinks,
         skills: this.skills,
         experience: this.experience,
         education: this.education,
@@ -636,6 +656,7 @@ export const useResumeStore = defineStore('resume', {
       try {
         const data = JSON.parse(jsonData)
         if (data.personalInfo) this.personalInfo = data.personalInfo
+        if (data.customLinks) this.customLinks = data.customLinks
         if (data.skills) this.skills = data.skills
         if (data.experience) this.experience = data.experience
         if (data.education) this.education = data.education

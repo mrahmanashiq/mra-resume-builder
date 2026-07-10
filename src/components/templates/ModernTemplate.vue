@@ -21,15 +21,20 @@
             <h1 class="text-4xl md:text-5xl font-bold mb-2">
               {{ resumeStore.fullName }}
             </h1>
-            <h2 class="text-xl md:text-2xl font-light mb-4 opacity-90">
+            <h2 class="text-xl md:text-2xl font-light mb-2 opacity-90">
               {{ resumeStore.personalInfo.title }}
             </h2>
-            
+
+            <!-- Tagline -->
+            <p v-if="resumeStore.personalInfo.headerTagline" class="text-base opacity-90 mb-3">
+              {{ resumeStore.personalInfo.headerTagline }}
+            </p>
+
             <!-- Summary -->
             <p v-if="resumeStore.personalInfo.summary" class="text-lg opacity-80 mb-4 max-w-2xl">
               {{ resumeStore.personalInfo.summary }}
             </p>
-            
+
             <!-- Contact Information -->
             <div class="flex flex-wrap justify-center md:justify-start gap-6 text-white opacity-90">
               <div v-if="resumeStore.personalInfo.email" class="flex items-center space-x-2">
@@ -44,6 +49,12 @@
                 <MapPinIcon class="w-5 h-5" />
                 <span>{{ resumeStore.personalInfo.address }}</span>
               </div>
+            </div>
+
+            <!-- Links (fixed + custom) -->
+            <div v-if="headerLinks.length" class="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-1 mt-2 text-white opacity-90 text-sm">
+              <a v-for="(l, i) in headerLinks" :key="i" :href="l.href" target="_blank" rel="noopener"
+                 class="underline hover:opacity-100">{{ l.label }}</a>
             </div>
           </div>
         </div>
@@ -240,9 +251,25 @@ export default {
         fontSize: `${this.resumeStore.settings.fontSize}px`,
         fontFamily: this.resumeStore.settings.font
       }
+    },
+    headerLinks() {
+      const p = this.resumeStore.personalInfo
+      const out = []
+      if (p.linkedin) out.push({ label: 'LinkedIn', href: this.formatUrl(p.linkedin) })
+      if (p.github) out.push({ label: 'GitHub', href: this.formatUrl(p.github) })
+      if (p.website) out.push({ label: 'Portfolio', href: this.formatUrl(p.website) })
+      for (const l of this.resumeStore.customLinks || []) {
+        if (l && l.label && l.url) out.push({ label: l.label, href: this.formatUrl(l.url) })
+      }
+      return out
     }
   },
   methods: {
+    formatUrl(url) {
+      if (!url) return ''
+      if (/^https?:\/\//i.test(url) || url.startsWith('mailto:')) return url
+      return `https://${url}`
+    },
     formatDate(dateString) {
       if (!dateString) return ''
       try {

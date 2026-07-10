@@ -4,6 +4,7 @@
     <header class="dev-header">
       <h1 class="dev-name">{{ resumeStore.fullName }}</h1>
       <div v-if="personalInfo.title" class="dev-title">{{ personalInfo.title }}</div>
+      <div v-if="personalInfo.headerTagline" class="dev-tagline">{{ personalInfo.headerTagline }}</div>
       <div v-if="headerEntries.length" class="dev-contact">
         <template v-for="(e, i) in headerEntries" :key="i">
           <span v-if="i > 0" class="dev-sep">|</span>
@@ -139,6 +140,9 @@ export default {
       if (p.github) out.push({ text: 'Github', href: this.formatUrl(p.github) })
       if (p.linkedin) out.push({ text: 'Linkedin', href: this.formatUrl(p.linkedin) })
       if (p.website) out.push({ text: 'Portfolio', href: this.formatUrl(p.website) })
+      for (const l of this.resumeStore.customLinks || []) {
+        if (l && l.label && l.url) out.push({ text: l.label, href: this.formatUrl(l.url) })
+      }
       if (p.email) out.push({ text: p.email, href: `mailto:${p.email}` })
       if (p.phone) out.push({ text: p.phone, href: null })
       if (p.address) out.push({ text: p.address, href: null })
@@ -207,6 +211,12 @@ export default {
   color: var(--primary);
   font-weight: 600;
   margin-top: 2px;
+}
+
+.dev-tagline {
+  font-size: 0.92em;
+  color: #4b5563;
+  margin-top: 3px;
 }
 
 .dev-contact {

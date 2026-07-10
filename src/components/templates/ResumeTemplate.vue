@@ -37,10 +37,14 @@
             <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-2">
               {{ resumeStore.fullName }}
             </h1>
-            <h2 class="text-xl md:text-2xl text-primary-600 font-medium mb-4">
+            <h2 class="text-xl md:text-2xl text-primary-600 font-medium mb-2">
               {{ resumeStore.personalInfo.title }}
             </h2>
-            
+
+            <p v-if="resumeStore.personalInfo.headerTagline" class="text-gray-600 mb-4">
+              {{ resumeStore.personalInfo.headerTagline }}
+            </p>
+
             <!-- Contact Information -->
             <div class="flex flex-wrap justify-center md:justify-start gap-4 text-gray-600">
               <div v-if="resumeStore.personalInfo.email" class="flex items-center space-x-2">
@@ -69,11 +73,16 @@
                  class="flex items-center space-x-2 hover:text-primary-700">
                 <span class="text-sm">GitHub</span>
               </a>
-              <a v-if="resumeStore.personalInfo.website" 
+              <a v-if="resumeStore.personalInfo.website"
                  :href="formatUrl(resumeStore.personalInfo.website)"
                  class="flex items-center space-x-2 hover:text-primary-700">
                 <GlobeAltIcon class="w-4 h-4" />
                 <span class="text-sm">Portfolio</span>
+              </a>
+              <a v-for="link in customLinks" :key="link.id"
+                 :href="formatUrl(link.url)"
+                 class="flex items-center space-x-2 hover:text-primary-700">
+                <span class="text-sm">{{ link.label }}</span>
               </a>
             </div>
           </div>
@@ -312,9 +321,13 @@ export default {
     },
     
     hasLinks() {
-      return this.resumeStore.personalInfo.linkedin || 
-             this.resumeStore.personalInfo.github || 
-             this.resumeStore.personalInfo.website
+      return this.resumeStore.personalInfo.linkedin ||
+             this.resumeStore.personalInfo.github ||
+             this.resumeStore.personalInfo.website ||
+             this.customLinks.length
+    },
+    customLinks() {
+      return (this.resumeStore.customLinks || []).filter(l => l && l.label && l.url)
     }
   },
   methods: {

@@ -4,6 +4,7 @@
     <header class="ats-header">
       <h1 class="ats-name">{{ resumeStore.fullName }}</h1>
       <div v-if="personalInfo.title" class="ats-title">{{ personalInfo.title }}</div>
+      <div v-if="personalInfo.headerTagline" class="ats-tagline">{{ personalInfo.headerTagline }}</div>
       <div class="ats-contact">
         <span v-for="(item, i) in contactItems" :key="'c' + i">
           <span v-if="i > 0" class="ats-sep">|</span>{{ item }}
@@ -142,6 +143,9 @@ export default {
       if (p.linkedin) out.push({ label: 'LinkedIn', value: p.linkedin })
       if (p.github) out.push({ label: 'GitHub', value: p.github })
       if (p.website) out.push({ label: 'Portfolio', value: p.website })
+      for (const l of this.resumeStore.customLinks || []) {
+        if (l && l.label && l.url) out.push({ label: l.label, value: l.url })
+      }
       return out
     }
   },
@@ -203,6 +207,12 @@ export default {
   color: var(--primary);
   font-weight: 600;
   margin-top: 2px;
+}
+
+.ats-tagline {
+  font-size: 0.9em;
+  color: #4b5563;
+  margin-top: 3px;
 }
 
 .ats-contact {
