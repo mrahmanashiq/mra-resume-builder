@@ -38,45 +38,9 @@
 
               <!-- Export Menu -->
               <div v-if="showExportMenu"
-                   class="absolute right-0 mt-2 w-60 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">
-                <!-- Download formats - one click each -->
-                <p class="px-4 pt-1 pb-1 text-[11px] font-semibold text-gray-500 uppercase tracking-wide dark:text-slate-400">Download as</p>
-                <template v-if="supportsTextExport">
-                  <button type="button" @click="handleTextPDF"
-                          class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3 dark:hover:bg-slate-700">
-                    <DocumentArrowDownIcon class="w-4 h-4 text-gray-600 flex-shrink-0 dark:text-slate-400" />
-                    <span class="flex-1 min-w-0">
-                      <span class="block font-medium text-gray-800 dark:text-slate-100">PDF · selectable text</span>
-                      <span class="block text-xs text-gray-500 dark:text-slate-400">ATS-friendly, searchable</span>
-                    </span>
-                  </button>
-                  <button type="button" @click="handleWord"
-                          class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3 dark:hover:bg-slate-700">
-                    <DocumentTextIcon class="w-4 h-4 text-gray-600 flex-shrink-0 dark:text-slate-400" />
-                    <span class="flex-1 min-w-0">
-                      <span class="block font-medium text-gray-800 dark:text-slate-100">Word (.doc)</span>
-                      <span class="block text-xs text-gray-500 dark:text-slate-400">Editable in Word / Google Docs</span>
-                    </span>
-                  </button>
-                  <button type="button" @click="handleText"
-                          class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3 dark:hover:bg-slate-700">
-                    <Bars3Icon class="w-4 h-4 text-gray-600 flex-shrink-0 dark:text-slate-400" />
-                    <span class="flex-1 min-w-0">
-                      <span class="block font-medium text-gray-800 dark:text-slate-100">Plain text (.txt)</span>
-                      <span class="block text-xs text-gray-500 dark:text-slate-400">Paste into online forms</span>
-                    </span>
-                  </button>
-                  <hr class="my-1 dark:border-slate-700">
-                </template>
-                <button v-for="f in formats" :key="f.id" type="button"
-                        @click="handleDownloadFormat(f.id)"
-                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3 dark:hover:bg-slate-700">
-                  <component :is="f.icon" class="w-4 h-4 text-gray-600 flex-shrink-0 dark:text-slate-400" />
-                  <span class="flex-1 min-w-0">
-                    <span class="block font-medium text-gray-800 dark:text-slate-100">{{ f.label }}</span>
-                    <span class="block text-xs text-gray-500 dark:text-slate-400">{{ f.desc }}</span>
-                  </span>
-                </button>
+                   class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">
+                <!-- Format picker + single Download button -->
+                <DownloadPanel :supports-text="supportsTextExport" @download="handlePanelDownload" />
 
                 <template v-if="supportsTextExport">
                   <hr class="my-1 dark:border-slate-700">
@@ -230,43 +194,7 @@
       <div class="absolute inset-0 bg-black/40" @click="showMobileExport = false"></div>
       <div class="mobile-sheet absolute inset-x-0 bottom-0 bg-white rounded-t-2xl p-4 pb-6 shadow-2xl dark:bg-slate-800">
         <div class="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-4 dark:bg-slate-600"></div>
-        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 px-1 dark:text-slate-400">Download as</p>
-        <template v-if="supportsTextExport">
-          <button type="button" @click="handleTextPDF"
-                  class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
-            <DocumentArrowDownIcon class="w-5 h-5 text-gray-600 flex-shrink-0 dark:text-slate-400" />
-            <span class="flex-1 min-w-0">
-              <span class="block font-medium text-gray-800 dark:text-slate-100">PDF · selectable text</span>
-              <span class="block text-xs text-gray-500 dark:text-slate-400">ATS-friendly, searchable</span>
-            </span>
-          </button>
-          <button type="button" @click="handleWord"
-                  class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
-            <DocumentTextIcon class="w-5 h-5 text-gray-600 flex-shrink-0 dark:text-slate-400" />
-            <span class="flex-1 min-w-0">
-              <span class="block font-medium text-gray-800 dark:text-slate-100">Word (.doc)</span>
-              <span class="block text-xs text-gray-500 dark:text-slate-400">Editable in Word / Google Docs</span>
-            </span>
-          </button>
-          <button type="button" @click="handleText"
-                  class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
-            <Bars3Icon class="w-5 h-5 text-gray-600 flex-shrink-0 dark:text-slate-400" />
-            <span class="flex-1 min-w-0">
-              <span class="block font-medium text-gray-800 dark:text-slate-100">Plain text (.txt)</span>
-              <span class="block text-xs text-gray-500 dark:text-slate-400">Paste into online forms</span>
-            </span>
-          </button>
-          <hr class="my-2 dark:border-slate-700">
-        </template>
-        <button v-for="f in formats" :key="f.id" type="button"
-                @click="handleDownloadFormat(f.id)"
-                class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
-          <component :is="f.icon" class="w-5 h-5 text-gray-600 flex-shrink-0 dark:text-slate-400" />
-          <span class="flex-1 min-w-0">
-            <span class="block font-medium text-gray-800 dark:text-slate-100">{{ f.label }}</span>
-            <span class="block text-xs text-gray-500 dark:text-slate-400">{{ f.desc }}</span>
-          </span>
-        </button>
+        <DownloadPanel :supports-text="supportsTextExport" @download="handlePanelDownload" />
         <template v-if="supportsTextExport">
           <hr class="my-2 dark:border-slate-700">
           <button type="button" @click="openAtsCheck" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
@@ -323,6 +251,7 @@ import { buildShareUrl } from '../../utils/shareLink'
 import AppLogo from '../AppLogo.vue'
 import AtsMatchModal from './AtsMatchModal.vue'
 import DocumentSwitcher from './DocumentSwitcher.vue'
+import DownloadPanel from './DownloadPanel.vue'
 
 import {
   EyeIcon,
@@ -352,6 +281,7 @@ export default {
     AppLogo,
     AtsMatchModal,
     DocumentSwitcher,
+    DownloadPanel,
     EyeIcon,
     CloudArrowDownIcon,
     ChevronDownIcon,
@@ -472,6 +402,22 @@ export default {
       } else {
         await this.exporter.downloadImage(format)
       }
+    },
+
+    // Canva-style download panel: one handler for the selected format.
+    handlePanelDownload(format) {
+      this.showExportMenu = false
+      this.showMobileExport = false
+      const actions = {
+        'text-pdf': () => this.exporter.downloadTextPDF(),
+        pdf: () => this.exporter.downloadPDF(),
+        word: () => this.exporter.downloadWord(),
+        txt: () => this.exporter.downloadText(),
+        png: () => this.exporter.downloadImage('png'),
+        jpg: () => this.exporter.downloadImage('jpg')
+      }
+      const run = actions[format]
+      if (run) run()
     },
 
     handlePrint() {
