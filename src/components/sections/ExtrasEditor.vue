@@ -12,7 +12,7 @@
         <div v-for="a in resumeStore.accomplishments" :key="a.id" class="flex items-center gap-2">
           <input type="text" :value="a.text" @input="updateAccomplishment(a.id, $event.target.value)"
                  class="input-field flex-1" placeholder="Award / achievement">
-          <button @click="removeAccomplishment(a.id)" class="p-1 text-red-400 hover:text-red-600">
+          <button @click="removeAccomplishment(a.id)" aria-label="Remove" class="p-1 text-red-400 hover:text-red-600">
             <TrashIcon class="w-4 h-4" />
           </button>
         </div>
@@ -32,7 +32,7 @@
         <div v-for="e in resumeStore.extracurricular" :key="e.id" class="flex items-center gap-2">
           <input type="text" :value="e.text" @input="updateExtracurricular(e.id, $event.target.value)"
                  class="input-field flex-1" placeholder="Activity / involvement">
-          <button @click="removeExtracurricular(e.id)" class="p-1 text-red-400 hover:text-red-600">
+          <button @click="removeExtracurricular(e.id)" aria-label="Remove" class="p-1 text-red-400 hover:text-red-600">
             <TrashIcon class="w-4 h-4" />
           </button>
         </div>

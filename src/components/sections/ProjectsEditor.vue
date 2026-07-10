@@ -16,7 +16,7 @@
         
         <div class="flex items-start justify-between mb-4">
           <h4 class="font-medium text-gray-900 dark:text-slate-100">Project {{ index + 1 }}</h4>
-          <button @click="removeProject(project.id)" 
+          <button @click="removeProject(project.id)" aria-label="Remove"
                   class="p-1 text-red-400 hover:text-red-600">
             <TrashIcon class="w-4 h-4" />
           </button>
@@ -50,8 +50,9 @@
                   :key="techIndex"
                   class="bg-primary-100 text-primary-800 px-2 py-1 rounded-full text-sm flex items-center">
               {{ tech }}
-              <button @click="removeTechnology(project.id, techIndex)" 
-                      class="ml-2 text-primary-600 hover:text-primary-800">
+              <button @click="removeTechnology(project.id, techIndex)"
+                      class="ml-2 text-primary-600 hover:text-primary-800"
+                      :aria-label="`Remove ${tech}`">
                 <XMarkIcon class="w-3 h-3" />
               </button>
             </span>

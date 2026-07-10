@@ -17,17 +17,17 @@
         <div class="flex items-start justify-between mb-4">
           <h4 class="font-medium text-gray-900 dark:text-slate-100">Experience {{ index + 1 }}</h4>
           <div class="flex items-center space-x-2">
-            <button @click="moveUp(index)" 
+            <button @click="moveUp(index)" aria-label="Move up"
                     :disabled="index === 0"
                     class="p-1 text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:text-slate-400 disabled:opacity-50">
               <ChevronUpIcon class="w-4 h-4" />
             </button>
-            <button @click="moveDown(index)" 
+            <button @click="moveDown(index)" aria-label="Move down"
                     :disabled="index === resumeStore.experience.length - 1"
                     class="p-1 text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:text-slate-400 disabled:opacity-50">
               <ChevronDownIcon class="w-4 h-4" />
             </button>
-            <button @click="removeExperience(experience.id)" 
+            <button @click="removeExperience(experience.id)" aria-label="Remove"
                     class="p-1 text-red-400 hover:text-red-600">
               <TrashIcon class="w-4 h-4" />
             </button>

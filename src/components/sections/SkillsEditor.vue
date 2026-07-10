@@ -42,7 +42,7 @@
                     :options="skillCategories" />
                 </div>
               </div>
-              <button @click="removeSkill(skill.id)" 
+              <button @click="removeSkill(skill.id)" aria-label="Remove"
                       class="ml-4 p-1 text-red-400 hover:text-red-600">
                 <TrashIcon class="w-4 h-4" />
               </button>

@@ -95,7 +95,7 @@
            class="border border-gray-200 dark:border-slate-700 rounded-lg p-4 bg-white dark:bg-slate-800 space-y-3">
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-gray-700 dark:text-slate-300">Sibling {{ index + 1 }}</span>
-          <button @click="removeSibling(sibling.id)" class="p-1 text-red-400 hover:text-red-600">
+          <button @click="removeSibling(sibling.id)" aria-label="Remove" class="p-1 text-red-400 hover:text-red-600">
             <TrashIcon class="w-4 h-4" />
           </button>
         </div>
@@ -140,7 +140,7 @@
            class="border border-gray-200 dark:border-slate-700 rounded-lg p-4 bg-white dark:bg-slate-800">
         <div class="flex items-center justify-between mb-3">
           <span class="text-sm font-medium text-gray-700 dark:text-slate-300">Chacha {{ index + 1 }}</span>
-          <button @click="removePaternalUncle(uncle.id)" class="p-1 text-red-400 hover:text-red-600">
+          <button @click="removePaternalUncle(uncle.id)" aria-label="Remove" class="p-1 text-red-400 hover:text-red-600">
             <TrashIcon class="w-4 h-4" />
           </button>
         </div>
@@ -177,7 +177,7 @@
            class="border border-gray-200 dark:border-slate-700 rounded-lg p-4 bg-white dark:bg-slate-800">
         <div class="flex items-center justify-between mb-3">
           <span class="text-sm font-medium text-gray-700 dark:text-slate-300">Mama {{ index + 1 }}</span>
-          <button @click="removeMaternalUncle(uncle.id)" class="p-1 text-red-400 hover:text-red-600">
+          <button @click="removeMaternalUncle(uncle.id)" aria-label="Remove" class="p-1 text-red-400 hover:text-red-600">
             <TrashIcon class="w-4 h-4" />
           </button>
         </div>

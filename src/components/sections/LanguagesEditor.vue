@@ -32,7 +32,7 @@
                 :options="['Native', 'Fluent', 'Advanced', 'Intermediate', 'Basic']" />
             </div>
           </div>
-          <button @click="removeLanguage(language.id)" 
+          <button @click="removeLanguage(language.id)" aria-label="Remove"
                   class="ml-4 p-1 text-red-400 hover:text-red-600">
             <TrashIcon class="w-4 h-4" />
           </button>
