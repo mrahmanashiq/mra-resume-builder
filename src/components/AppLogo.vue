@@ -10,11 +10,14 @@
       <path d="M8 2.5h9.5L26 11v16.5A2.5 2.5 0 0 1 23.5 30h-15A2.5 2.5 0 0 1 6 27.5v-22A2.5 2.5 0 0 1 8 2.5Z"
             :fill="`url(#${gradId})`" />
       <path d="M17.5 2.5 26 11h-6a2 2 0 0 1-2-2V2.5Z" fill="#ffffff" fill-opacity="0.38" />
-      <rect x="10.5" y="14" width="11" height="2.2" rx="1.1" fill="#ffffff" />
-      <rect x="10.5" y="18.4" width="11" height="2.2" rx="1.1" fill="#ffffff" />
-      <rect x="10.5" y="22.8" width="7" height="2.2" rx="1.1" fill="#ffffff" fill-opacity="0.78" />
+      <rect x="10.5" y="13.5" width="11" height="2.1" rx="1.05" fill="#ffffff" />
+      <rect x="10.5" y="17.6" width="11" height="2.1" rx="1.05" fill="#ffffff" />
+      <rect x="10.5" y="21.7" width="6" height="2.1" rx="1.05" fill="#ffffff" fill-opacity="0.78" />
+      <!-- "ready" check badge -->
+      <circle cx="24" cy="24" r="5.6" fill="#16a34a" stroke="#ffffff" stroke-width="1.3" />
+      <path d="M21.6 24.1l1.7 1.7 3-3.2" stroke="#ffffff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
-    <span v-if="title" class="app-logo__text">{{ title }}</span>
+    <span v-if="showText" class="app-logo__text">{{ title }}</span>
   </span>
 </template>
 
@@ -24,9 +27,14 @@ let uid = 0
 export default {
   name: 'AppLogo',
   props: {
+    // Brand wordmark. Defaults to the site brand.
     title: {
       type: String,
-      default: ''
+      default: 'Resume Builder'
+    },
+    showText: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -68,7 +76,7 @@ export default {
     height: 26px;
   }
   .app-logo__text {
-    font-size: 1.05rem;
+    font-size: 1.02rem;
   }
 }
 </style>

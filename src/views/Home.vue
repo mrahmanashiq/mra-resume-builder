@@ -5,7 +5,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16 gap-2">
           <div class="flex items-center min-w-0">
-            <AppLogo title="MRA Builder" />
+            <AppLogo />
           </div>
           <div class="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
             <ThemeToggle />
@@ -96,11 +96,11 @@
         <div class="reveal text-center mb-12">
           <h2 class="section-title text-3xl font-bold text-gray-900 dark:text-slate-100 mb-4">What do you want to build?</h2>
           <p class="text-lg text-gray-600 dark:text-slate-400">
-            One builder for résumés and marriage biodata. Academic CV is coming next.
+            One builder for résumés, marriage biodata, academic CVs, and cover letters.
           </p>
         </div>
 
-        <div class="reveal-grid grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div class="reveal-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
           <component :is="doc.available ? 'router-link' : 'div'"
                      v-for="doc in documentCatalog"
                      :key="doc.type"
@@ -262,40 +262,18 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center">
-          <h3 class="text-xl font-bold mb-2">MRA Builder</h3>
-          <p class="text-gray-400 dark:text-slate-500 mb-4">
-            Free &amp; open source résumé and marriage biodata builder.
-          </p>
-          <div class="flex justify-center items-center flex-wrap gap-x-6 gap-y-2">
-            <a :href="githubUrl" target="_blank" rel="noopener"
-               class="text-gray-300 hover:text-white transition-colors duration-200 font-medium">
-              ★ Open source on GitHub
-            </a>
-            <router-link to="/templates" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Templates</router-link>
-            <router-link to="/editor" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Resume</router-link>
-            <router-link to="/biodata" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Biodata</router-link>
-          </div>
-          <p class="text-gray-500 dark:text-slate-400 text-sm mt-6">
-            Released under the MIT License · Built by
-            <a :href="authorUrl" target="_blank" rel="noopener"
-               class="text-gray-300 hover:text-white underline underline-offset-2">{{ authorName }}</a>
-          </p>
-        </div>
-      </div>
-    </footer>
+    <SiteFooter />
   </div>
 </template>
 
 <script>
 import { defineAsyncComponent } from 'vue'
-import { PaintBrushIcon, DocumentTextIcon, CloudArrowDownIcon, ShareIcon, EyeIcon, PrinterIcon, HeartIcon, AcademicCapIcon, ShieldCheckIcon, ServerStackIcon, EyeSlashIcon, CodeBracketIcon, UserCircleIcon } from '@heroicons/vue/24/outline'
+import { PaintBrushIcon, DocumentTextIcon, CloudArrowDownIcon, ShareIcon, EyeIcon, PrinterIcon, HeartIcon, AcademicCapIcon, EnvelopeIcon, ShieldCheckIcon, ServerStackIcon, EyeSlashIcon, CodeBracketIcon, UserCircleIcon } from '@heroicons/vue/24/outline'
 import { documentCatalog } from '../documents/registry'
 import { useResumeStore } from '../stores/resume'
 import AppLogo from '../components/AppLogo.vue'
 import TemplateThumbnail from '../components/TemplateThumbnail.vue'
+import SiteFooter from '../components/SiteFooter.vue'
 
 // Live preview components for the featured templates on the landing page.
 const homeTemplateComponents = {
@@ -310,6 +288,7 @@ export default {
   components: {
     AppLogo,
     TemplateThumbnail,
+    SiteFooter,
     PaintBrushIcon,
     DocumentTextIcon,
     CloudArrowDownIcon,
@@ -318,6 +297,7 @@ export default {
     PrinterIcon,
     HeartIcon,
     AcademicCapIcon,
+    EnvelopeIcon,
     ShieldCheckIcon,
     ServerStackIcon,
     EyeSlashIcon,

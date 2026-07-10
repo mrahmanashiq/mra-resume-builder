@@ -16,6 +16,7 @@
                     :class="saveStatus === 'saving' ? 'save-dot-saving' : 'save-dot-saved'"
                     :title="saveStatus === 'saving' ? 'Saving…' : 'Saved to this browser'"></span>
             </div>
+            <DocumentSwitcher :store="store" :type="config.type" :label="config.documentLabel" />
           </div>
 
           <div class="flex items-center space-x-2 sm:space-x-4">
@@ -37,37 +38,21 @@
 
               <!-- Export Menu -->
               <div v-if="showExportMenu"
-                   class="absolute right-0 mt-2 w-60 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">
-                <!-- Download formats - one click each -->
-                <p class="px-4 pt-1 pb-1 text-[11px] font-semibold text-gray-500 uppercase tracking-wide dark:text-slate-400">Download as</p>
+                   class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">
+                <!-- Format picker + single Download button -->
+                <DownloadPanel :supports-text="supportsTextExport" @download="handlePanelDownload" />
+
                 <template v-if="supportsTextExport">
-                  <button type="button" @click="handleTextPDF"
-                          class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3 dark:hover:bg-slate-700">
-                    <DocumentArrowDownIcon class="w-4 h-4 text-gray-600 flex-shrink-0 dark:text-slate-400" />
-                    <span class="flex-1 min-w-0">
-                      <span class="block font-medium text-gray-800 dark:text-slate-100">PDF · selectable text</span>
-                      <span class="block text-xs text-gray-500 dark:text-slate-400">ATS-friendly, searchable</span>
-                    </span>
-                  </button>
-                  <button type="button" @click="handleWord"
-                          class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3 dark:hover:bg-slate-700">
-                    <DocumentTextIcon class="w-4 h-4 text-gray-600 flex-shrink-0 dark:text-slate-400" />
-                    <span class="flex-1 min-w-0">
-                      <span class="block font-medium text-gray-800 dark:text-slate-100">Word (.doc)</span>
-                      <span class="block text-xs text-gray-500 dark:text-slate-400">Editable in Word / Google Docs</span>
-                    </span>
-                  </button>
                   <hr class="my-1 dark:border-slate-700">
+                  <button type="button" @click="openAtsCheck"
+                          class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3 dark:hover:bg-slate-700">
+                    <MagnifyingGlassIcon class="w-4 h-4 text-gray-600 flex-shrink-0 dark:text-slate-400" />
+                    <span class="flex-1 min-w-0">
+                      <span class="block font-medium text-gray-800 dark:text-slate-100">ATS match check</span>
+                      <span class="block text-xs text-gray-500 dark:text-slate-400">Compare with a job description</span>
+                    </span>
+                  </button>
                 </template>
-                <button v-for="f in formats" :key="f.id" type="button"
-                        @click="handleDownloadFormat(f.id)"
-                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3 dark:hover:bg-slate-700">
-                  <component :is="f.icon" class="w-4 h-4 text-gray-600 flex-shrink-0 dark:text-slate-400" />
-                  <span class="flex-1 min-w-0">
-                    <span class="block font-medium text-gray-800 dark:text-slate-100">{{ f.label }}</span>
-                    <span class="block text-xs text-gray-500 dark:text-slate-400">{{ f.desc }}</span>
-                  </span>
-                </button>
 
                 <hr class="my-1 dark:border-slate-700">
                 <button @click="handlePrint"
@@ -75,11 +60,10 @@
                   <PrinterIcon class="w-4 h-4" />
                   <span>Print</span>
                 </button>
-                <button @click="handleShare"
-                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2 text-gray-400 cursor-not-allowed dark:hover:bg-slate-700 dark:text-slate-500">
+                <button @click="handleCopyShareLink"
+                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2 dark:hover:bg-slate-700 dark:text-slate-100">
                   <ShareIcon class="w-4 h-4" />
-                  <span>Share Link</span>
-                  <span class="ml-auto text-[10px] font-semibold uppercase tracking-wide bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded dark:bg-slate-700 dark:text-slate-400">Soon</span>
+                  <span>Copy share link</span>
                 </button>
                 <hr class="my-2 dark:border-slate-700">
                 <button @click="handleExportData"
@@ -210,38 +194,23 @@
       <div class="absolute inset-0 bg-black/40" @click="showMobileExport = false"></div>
       <div class="mobile-sheet absolute inset-x-0 bottom-0 bg-white rounded-t-2xl p-4 pb-6 shadow-2xl dark:bg-slate-800">
         <div class="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-4 dark:bg-slate-600"></div>
-        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 px-1 dark:text-slate-400">Download as</p>
+        <DownloadPanel :supports-text="supportsTextExport" @download="handlePanelDownload" />
         <template v-if="supportsTextExport">
-          <button type="button" @click="handleTextPDF"
-                  class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
-            <DocumentArrowDownIcon class="w-5 h-5 text-gray-600 flex-shrink-0 dark:text-slate-400" />
-            <span class="flex-1 min-w-0">
-              <span class="block font-medium text-gray-800 dark:text-slate-100">PDF · selectable text</span>
-              <span class="block text-xs text-gray-500 dark:text-slate-400">ATS-friendly, searchable</span>
-            </span>
-          </button>
-          <button type="button" @click="handleWord"
-                  class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
-            <DocumentTextIcon class="w-5 h-5 text-gray-600 flex-shrink-0 dark:text-slate-400" />
-            <span class="flex-1 min-w-0">
-              <span class="block font-medium text-gray-800 dark:text-slate-100">Word (.doc)</span>
-              <span class="block text-xs text-gray-500 dark:text-slate-400">Editable in Word / Google Docs</span>
-            </span>
-          </button>
           <hr class="my-2 dark:border-slate-700">
+          <button type="button" @click="openAtsCheck" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
+            <MagnifyingGlassIcon class="w-5 h-5 text-gray-600 flex-shrink-0 dark:text-slate-400" />
+            <span class="flex-1 min-w-0">
+              <span class="block font-medium text-gray-800 dark:text-slate-100">ATS match check</span>
+              <span class="block text-xs text-gray-500 dark:text-slate-400">Compare with a job description</span>
+            </span>
+          </button>
         </template>
-        <button v-for="f in formats" :key="f.id" type="button"
-                @click="handleDownloadFormat(f.id)"
-                class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
-          <component :is="f.icon" class="w-5 h-5 text-gray-600 flex-shrink-0 dark:text-slate-400" />
-          <span class="flex-1 min-w-0">
-            <span class="block font-medium text-gray-800 dark:text-slate-100">{{ f.label }}</span>
-            <span class="block text-xs text-gray-500 dark:text-slate-400">{{ f.desc }}</span>
-          </span>
-        </button>
         <hr class="my-2 dark:border-slate-700">
         <button @click="handlePrint" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600 dark:text-slate-100">
           <PrinterIcon class="w-5 h-5 text-gray-600 dark:text-slate-400" /> <span class="font-medium text-gray-800 dark:text-slate-100">Print</span>
+        </button>
+        <button @click="handleCopyShareLink" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
+          <ShareIcon class="w-5 h-5 text-gray-600 dark:text-slate-400" /> <span class="font-medium text-gray-800 dark:text-slate-100">Copy share link</span>
         </button>
         <button @click="handleExportData" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
           <DocumentTextIcon class="w-5 h-5 text-gray-600 dark:text-slate-400" /> <span class="font-medium text-gray-800 dark:text-slate-100">Export Data</span>
@@ -269,13 +238,20 @@
         </div>
       </div>
     </div>
+
+    <!-- ATS match check (resume only) -->
+    <AtsMatchModal v-if="showAtsModal" :store="store" @close="showAtsModal = false" />
   </div>
 </template>
 
 <script>
 import { useToast } from 'vue-toastification'
 import { useDocumentExport } from '../../composables/useDocumentExport'
+import { buildShareUrl } from '../../utils/shareLink'
 import AppLogo from '../AppLogo.vue'
+import AtsMatchModal from './AtsMatchModal.vue'
+import DocumentSwitcher from './DocumentSwitcher.vue'
+import DownloadPanel from './DownloadPanel.vue'
 
 import {
   EyeIcon,
@@ -288,7 +264,8 @@ import {
   DocumentTextIcon,
   ArrowUpTrayIcon,
   Bars3Icon,
-  ChevronLeftIcon
+  ChevronLeftIcon,
+  MagnifyingGlassIcon
 } from '@heroicons/vue/24/outline'
 
 // Download formats - each is a one-click download action.
@@ -302,6 +279,9 @@ export default {
   name: 'DocumentEditorShell',
   components: {
     AppLogo,
+    AtsMatchModal,
+    DocumentSwitcher,
+    DownloadPanel,
     EyeIcon,
     CloudArrowDownIcon,
     ChevronDownIcon,
@@ -312,7 +292,8 @@ export default {
     DocumentTextIcon,
     ArrowUpTrayIcon,
     Bars3Icon,
-    ChevronLeftIcon
+    ChevronLeftIcon,
+    MagnifyingGlassIcon
   },
   props: {
     config: {
@@ -336,6 +317,7 @@ export default {
     return {
       showExportMenu: false,
       showMobileExport: false,
+      showAtsModal: false,
       saveStatus: 'saved',
       formats: DOWNLOAD_FORMATS,
       showImportModal: false,
@@ -406,6 +388,12 @@ export default {
       this.exporter.downloadWord()
     },
 
+    handleText() {
+      this.showExportMenu = false
+      this.showMobileExport = false
+      this.exporter.downloadText()
+    },
+
     async handleDownloadFormat(format) {
       this.showExportMenu = false
       this.showMobileExport = false
@@ -416,16 +404,72 @@ export default {
       }
     },
 
+    // Canva-style download panel: one handler for the selected format.
+    handlePanelDownload(format) {
+      this.showExportMenu = false
+      this.showMobileExport = false
+      const actions = {
+        'text-pdf': () => this.exporter.downloadTextPDF(),
+        pdf: () => this.exporter.downloadPDF(),
+        word: () => this.exporter.downloadWord(),
+        txt: () => this.exporter.downloadText(),
+        png: () => this.exporter.downloadImage('png'),
+        jpg: () => this.exporter.downloadImage('jpg')
+      }
+      const run = actions[format]
+      if (run) run()
+    },
+
     handlePrint() {
       this.showExportMenu = false
       this.showMobileExport = false
       this.exporter.printDocument()
     },
 
-    handleShare() {
+    openAtsCheck() {
       this.showExportMenu = false
       this.showMobileExport = false
-      this.toast.info('Link sharing is coming soon')
+      this.showAtsModal = true
+    },
+
+    async handleCopyShareLink() {
+      this.showExportMenu = false
+      this.showMobileExport = false
+      try {
+        const data = JSON.parse(this.store.exportData())
+        const url = buildShareUrl(this.config.type, data)
+        const ok = await this.copyToClipboard(url)
+        if (ok) this.toast.success('Share link copied. The photo is not included in the link.')
+        else this.toast.error('Could not copy the link')
+      } catch (e) {
+        console.error('Share link failed:', e)
+        this.toast.error('Could not create the share link')
+      }
+    },
+
+    async copyToClipboard(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text)
+          return true
+        }
+      } catch (e) {
+        /* fall through to legacy path */
+      }
+      try {
+        const ta = document.createElement('textarea')
+        ta.value = text
+        ta.style.position = 'fixed'
+        ta.style.opacity = '0'
+        document.body.appendChild(ta)
+        ta.focus()
+        ta.select()
+        const ok = document.execCommand('copy')
+        document.body.removeChild(ta)
+        return ok
+      } catch (e) {
+        return false
+      }
     },
 
     handleExportData() {

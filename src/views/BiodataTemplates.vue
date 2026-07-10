@@ -5,7 +5,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
           <router-link to="/" class="text-xl font-bold text-primary-600">
-            MRA Biodata Builder
+            Resume Builder
           </router-link>
           <router-link to="/biodata" class="btn-primary">
             Open Editor

@@ -47,5 +47,14 @@ export const documentCatalog = [
     available: true,
     gradient: 'from-emerald-600 to-teal-700',
     icon: 'AcademicCapIcon'
+  },
+  {
+    type: 'coverLetter',
+    name: 'Cover Letter',
+    description: 'A matching cover letter, prefilled from your resume.',
+    route: '/cover-letter',
+    available: true,
+    gradient: 'from-amber-500 to-orange-600',
+    icon: 'EnvelopeIcon'
   }
 ]

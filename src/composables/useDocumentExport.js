@@ -1,5 +1,5 @@
 import { exportToPDF, exportToImage } from '../utils/pdfExport'
-import { exportResumePDF, exportResumeWord } from '../utils/textExport'
+import { exportResumePDF, exportResumeWord, exportResumeText } from '../utils/textExport'
 import { saveAs } from 'file-saver'
 
 /**
@@ -72,6 +72,18 @@ export function useDocumentExport({ store, previewElementId, baseName, label, to
     }
   }
 
+  function downloadText() {
+    try {
+      exportResumeText(store, `${safeBase()}_${label}.txt`)
+      toast.success('Plain text exported!')
+      return true
+    } catch (error) {
+      console.error('Error exporting text:', error)
+      toast.error('Failed to export plain text')
+      return false
+    }
+  }
+
   function printDocument() {
     window.print()
   }
@@ -92,5 +104,5 @@ export function useDocumentExport({ store, previewElementId, baseName, label, to
     return false
   }
 
-  return { downloadPDF, downloadImage, downloadTextPDF, downloadWord, printDocument, downloadData, importData }
+  return { downloadPDF, downloadImage, downloadTextPDF, downloadWord, downloadText, printDocument, downloadData, importData }
 }

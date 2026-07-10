@@ -1,42 +1,47 @@
+import { docManager } from '../documents/manager'
+
+// Persistence can be suspended so a read-only view (e.g. a shared link) can load
+// data into a store WITHOUT overwriting the user's saved documents on disk.
+let suspended = false
+export function suspendPersistence() { suspended = true }
+export function resumePersistence() { suspended = false }
+
 /**
- * Lightweight Pinia persistence plugin.
+ * Document-aware Pinia persistence plugin.
  *
- * Hydrates the listed stores from localStorage on creation and writes back
- * (debounced) on every change, so a refresh or a browser tab being evicted
- * never loses the user's document. The transient `ui` slice is not persisted.
+ * Each store ('resume' | 'biodata') is backed by the *active* document for its
+ * type (see src/documents/manager.js). On creation the store hydrates from the
+ * active document and thereafter writes back (debounced) to it. Switching, new,
+ * duplicate, rename and delete are handled by the manager + DocumentSwitcher;
+ * this plugin just keeps the active document in sync with the live store.
  */
 export function createPersistedState(options = {}) {
   const stores = options.stores || []
-  const version = options.version || 'v1'
   const debounceMs = options.debounceMs || 400
 
   return ({ store }) => {
     if (!stores.includes(store.$id)) return
-    const key = `mra-${store.$id}-${version}`
+    const type = store.$id // 'resume' | 'biodata' === document type
 
-    // Hydrate from a previous session (missing keys keep their defaults).
+    docManager.init()
+
+    // Hydrate from the active document (missing/empty keeps store defaults).
     try {
-      const saved = localStorage.getItem(key)
-      if (saved) {
-        const data = JSON.parse(saved)
-        if (data && typeof data === 'object') {
-          delete data.ui
-          store.$patch(data)
-        }
-      }
+      const json = docManager.loadActive(type)
+      if (json) store.importData(json)
     } catch (e) {
       /* corrupt or unavailable storage - start fresh */
     }
 
-    // Persist on change, debounced.
+    // Persist changes to the active document, debounced.
     let timer = null
-    store.$subscribe((_mutation, state) => {
+    store.$subscribe(() => {
+      if (suspended) return
       if (timer) clearTimeout(timer)
       timer = setTimeout(() => {
+        if (suspended) return
         try {
-          const clone = JSON.parse(JSON.stringify(state))
-          delete clone.ui
-          localStorage.setItem(key, JSON.stringify(clone))
+          docManager.saveActive(type, store.exportData())
         } catch (e) {
           /* quota exceeded or unavailable - ignore */
         }

@@ -5,7 +5,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
           <router-link to="/" class="text-xl font-bold text-primary-600">
-            MRA Resume Builder
+            Resume Builder
           </router-link>
           <div class="flex items-center space-x-3 sm:space-x-4">
             <ThemeToggle />
