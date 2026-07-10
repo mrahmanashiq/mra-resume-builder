@@ -14,7 +14,7 @@
            class="border border-gray-200 dark:border-slate-700 rounded-lg p-6 bg-gray-50 dark:bg-slate-800/60">
         <div class="flex items-start justify-between mb-4">
           <h4 class="font-medium text-gray-900 dark:text-slate-100">Qualification {{ index + 1 }}</h4>
-          <button @click="removeRow(row.id)" class="p-1 text-red-400 hover:text-red-600">
+          <button @click="removeRow(row.id)" aria-label="Remove" class="p-1 text-red-400 hover:text-red-600">
             <TrashIcon class="w-4 h-4" />
           </button>
         </div>
@@ -94,10 +94,8 @@ export default {
       this.biodataStore.updateEducation(id, { [field]: value })
     },
     removeRow(id) {
-      if (confirm('Remove this qualification?')) {
-        this.biodataStore.removeEducation(id)
-        this.toast.success('Qualification removed')
-      }
+      this.biodataStore.removeEducation(id)
+      this.toast.success('Removed. Use Undo to restore.')
     }
   }
 }

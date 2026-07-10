@@ -20,6 +20,20 @@
           </div>
 
           <div class="flex items-center space-x-2 sm:space-x-4">
+            <!-- Undo / redo (document-wide history); on phones this lives in the bottom action bar -->
+            <div class="hidden sm:flex items-center rounded-lg border border-gray-300 overflow-hidden dark:border-slate-600">
+              <button type="button" @click="undo" :disabled="!canUndo"
+                      class="px-2.5 py-1.5 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed dark:text-slate-300 dark:hover:bg-slate-700"
+                      title="Undo (Ctrl+Z)" aria-label="Undo">
+                <ArrowUturnLeftIcon class="w-4 h-4" />
+              </button>
+              <span class="w-px self-stretch bg-gray-300 dark:bg-slate-600" aria-hidden="true"></span>
+              <button type="button" @click="redo" :disabled="!canRedo"
+                      class="px-2.5 py-1.5 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed dark:text-slate-300 dark:hover:bg-slate-700"
+                      title="Redo (Ctrl+Shift+Z)" aria-label="Redo">
+                <ArrowUturnRightIcon class="w-4 h-4" />
+              </button>
+            </div>
             <ThemeToggle />
             <!-- Preview + Download live in the sticky bottom bar on mobile; show here on larger screens only -->
             <button @click="togglePreview"
@@ -52,6 +66,14 @@
                       <span class="block text-xs text-gray-500 dark:text-slate-400">Compare with a job description</span>
                     </span>
                   </button>
+                  <button type="button" @click="openResumeTips"
+                          class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3 dark:hover:bg-slate-700">
+                    <LightBulbIcon class="w-4 h-4 text-gray-600 flex-shrink-0 dark:text-slate-400" />
+                    <span class="flex-1 min-w-0">
+                      <span class="block font-medium text-gray-800 dark:text-slate-100">Resume tips</span>
+                      <span class="block text-xs text-gray-500 dark:text-slate-400">Check your resume's strength</span>
+                    </span>
+                  </button>
                 </template>
 
                 <hr class="my-1 dark:border-slate-700">
@@ -60,10 +82,10 @@
                   <PrinterIcon class="w-4 h-4" />
                   <span>Print</span>
                 </button>
-                <button @click="handleCopyShareLink"
+                <button @click="openShareModal"
                         class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2 dark:hover:bg-slate-700 dark:text-slate-100">
                   <ShareIcon class="w-4 h-4" />
-                  <span>Copy share link</span>
+                  <span>Share link &amp; QR</span>
                 </button>
                 <hr class="my-2 dark:border-slate-700">
                 <button @click="handleExportData"
@@ -153,22 +175,31 @@
       </aside>
 
       <!-- Main Content (stacks below the editor on mobile, side-by-side on desktop) -->
-      <main class="flex-1 overflow-hidden bg-gray-100 dark:bg-slate-900">
+      <main class="flex-1 overflow-hidden bg-gray-100 dark:bg-slate-900 relative">
+        <button type="button" @click="showGuides = !showGuides"
+                class="no-print absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg border shadow-sm bg-white dark:bg-slate-800 transition-colors"
+                :class="showGuides ? 'border-primary-400 text-primary-600 dark:text-primary-300 dark:border-primary-500' : 'border-gray-300 text-gray-600 dark:border-slate-600 dark:text-slate-300'"
+                title="Show A4 page-break lines on the preview">
+          Page guides: {{ showGuides ? 'On' : 'Off' }}
+        </button>
         <div class="mobile-pb lg:h-full overflow-y-auto overflow-x-auto p-4 sm:p-6 lg:p-8">
           <div class="max-w-4xl mx-auto">
             <!-- Document Preview -->
-            <div :id="config.previewElementId" class="document-preview bg-white shadow-lg">
-              <Suspense>
-                <component :is="config.template" />
-                <template #fallback>
-                  <div class="flex items-center justify-center p-16">
-                    <div class="text-center">
-                      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-                      <p class="text-gray-600">Loading template...</p>
+            <div class="preview-wrap relative">
+              <div :id="config.previewElementId" class="document-preview bg-white shadow-lg">
+                <Suspense>
+                  <component :is="config.template" />
+                  <template #fallback>
+                    <div class="flex items-center justify-center p-16">
+                      <div class="text-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Loading template...</p>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </Suspense>
+                  </template>
+                </Suspense>
+              </div>
+              <PageGuides v-if="showGuides" :target-id="config.previewElementId" class="no-print" />
             </div>
           </div>
         </div>
@@ -176,7 +207,17 @@
     </div>
 
     <!-- Mobile action bar (always reachable while editing) -->
-    <div class="mobile-actionbar lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-gray-200 flex items-center gap-3 px-4 py-2 no-print dark:bg-slate-800 dark:border-slate-700">
+    <div class="mobile-actionbar lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-gray-200 flex items-center gap-2 px-4 py-2 no-print dark:bg-slate-800 dark:border-slate-700">
+      <button @click="undo" :disabled="!canUndo"
+              class="btn-outline flex-none px-3 py-2.5 disabled:opacity-40 disabled:cursor-not-allowed"
+              title="Undo" aria-label="Undo">
+        <ArrowUturnLeftIcon class="w-4 h-4" />
+      </button>
+      <button @click="redo" :disabled="!canRedo"
+              class="btn-outline flex-none px-3 py-2.5 disabled:opacity-40 disabled:cursor-not-allowed"
+              title="Redo" aria-label="Redo">
+        <ArrowUturnRightIcon class="w-4 h-4" />
+      </button>
       <button @click="togglePreview"
               class="btn-outline flex-1 flex items-center justify-center gap-2 py-2.5">
         <EyeIcon class="w-4 h-4" />
@@ -204,13 +245,20 @@
               <span class="block text-xs text-gray-500 dark:text-slate-400">Compare with a job description</span>
             </span>
           </button>
+          <button type="button" @click="openResumeTips" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
+            <LightBulbIcon class="w-5 h-5 text-gray-600 flex-shrink-0 dark:text-slate-400" />
+            <span class="flex-1 min-w-0">
+              <span class="block font-medium text-gray-800 dark:text-slate-100">Resume tips</span>
+              <span class="block text-xs text-gray-500 dark:text-slate-400">Check your resume's strength</span>
+            </span>
+          </button>
         </template>
         <hr class="my-2 dark:border-slate-700">
         <button @click="handlePrint" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600 dark:text-slate-100">
           <PrinterIcon class="w-5 h-5 text-gray-600 dark:text-slate-400" /> <span class="font-medium text-gray-800 dark:text-slate-100">Print</span>
         </button>
-        <button @click="handleCopyShareLink" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
-          <ShareIcon class="w-5 h-5 text-gray-600 dark:text-slate-400" /> <span class="font-medium text-gray-800 dark:text-slate-100">Copy share link</span>
+        <button @click="openShareModal" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
+          <ShareIcon class="w-5 h-5 text-gray-600 dark:text-slate-400" /> <span class="font-medium text-gray-800 dark:text-slate-100">Share link &amp; QR</span>
         </button>
         <button @click="handleExportData" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
           <DocumentTextIcon class="w-5 h-5 text-gray-600 dark:text-slate-400" /> <span class="font-medium text-gray-800 dark:text-slate-100">Export Data</span>
@@ -239,19 +287,27 @@
       </div>
     </div>
 
-    <!-- ATS match check (resume only) -->
+    <!-- Resume analysis tools (resume only) -->
     <AtsMatchModal v-if="showAtsModal" :store="store" @close="showAtsModal = false" />
+    <ResumeTipsModal v-if="showTipsModal" :store="store" @close="showTipsModal = false" />
+
+    <!-- Share: link + QR -->
+    <ShareModal v-if="showShareModal" :store="store" :type="config.type" :label="config.documentLabel"
+                @close="showShareModal = false" />
   </div>
 </template>
 
 <script>
 import { useToast } from 'vue-toastification'
 import { useDocumentExport } from '../../composables/useDocumentExport'
-import { buildShareUrl } from '../../utils/shareLink'
+import { useHistory } from '../../composables/useHistory'
 import AppLogo from '../AppLogo.vue'
 import AtsMatchModal from './AtsMatchModal.vue'
+import ResumeTipsModal from './ResumeTipsModal.vue'
+import ShareModal from './ShareModal.vue'
 import DocumentSwitcher from './DocumentSwitcher.vue'
 import DownloadPanel from './DownloadPanel.vue'
+import PageGuides from './PageGuides.vue'
 
 import {
   EyeIcon,
@@ -265,7 +321,10 @@ import {
   ArrowUpTrayIcon,
   Bars3Icon,
   ChevronLeftIcon,
-  MagnifyingGlassIcon
+  MagnifyingGlassIcon,
+  LightBulbIcon,
+  ArrowUturnLeftIcon,
+  ArrowUturnRightIcon
 } from '@heroicons/vue/24/outline'
 
 // Download formats - each is a one-click download action.
@@ -280,8 +339,11 @@ export default {
   components: {
     AppLogo,
     AtsMatchModal,
+    ResumeTipsModal,
+    ShareModal,
     DocumentSwitcher,
     DownloadPanel,
+    PageGuides,
     EyeIcon,
     CloudArrowDownIcon,
     ChevronDownIcon,
@@ -293,7 +355,9 @@ export default {
     ArrowUpTrayIcon,
     Bars3Icon,
     ChevronLeftIcon,
-    MagnifyingGlassIcon
+    MagnifyingGlassIcon,
+    ArrowUturnLeftIcon,
+    ArrowUturnRightIcon
   },
   props: {
     config: {
@@ -311,13 +375,17 @@ export default {
       label: props.config.documentLabel,
       toast
     })
-    return { store, toast, exporter }
+    const { canUndo, canRedo, undo, redo } = useHistory({ store, type: props.config.type })
+    return { store, toast, exporter, canUndo, canRedo, undo, redo }
   },
   data() {
     return {
       showExportMenu: false,
       showMobileExport: false,
       showAtsModal: false,
+      showTipsModal: false,
+      showShareModal: false,
+      showGuides: true,
       saveStatus: 'saved',
       formats: DOWNLOAD_FORMATS,
       showImportModal: false,
@@ -432,44 +500,16 @@ export default {
       this.showAtsModal = true
     },
 
-    async handleCopyShareLink() {
+    openResumeTips() {
       this.showExportMenu = false
       this.showMobileExport = false
-      try {
-        const data = JSON.parse(this.store.exportData())
-        const url = buildShareUrl(this.config.type, data)
-        const ok = await this.copyToClipboard(url)
-        if (ok) this.toast.success('Share link copied. The photo is not included in the link.')
-        else this.toast.error('Could not copy the link')
-      } catch (e) {
-        console.error('Share link failed:', e)
-        this.toast.error('Could not create the share link')
-      }
+      this.showTipsModal = true
     },
 
-    async copyToClipboard(text) {
-      try {
-        if (navigator.clipboard && window.isSecureContext) {
-          await navigator.clipboard.writeText(text)
-          return true
-        }
-      } catch (e) {
-        /* fall through to legacy path */
-      }
-      try {
-        const ta = document.createElement('textarea')
-        ta.value = text
-        ta.style.position = 'fixed'
-        ta.style.opacity = '0'
-        document.body.appendChild(ta)
-        ta.focus()
-        ta.select()
-        const ok = document.execCommand('copy')
-        document.body.removeChild(ta)
-        return ok
-      } catch (e) {
-        return false
-      }
+    openShareModal() {
+      this.showExportMenu = false
+      this.showMobileExport = false
+      this.showShareModal = true
     },
 
     handleExportData() {
@@ -495,6 +535,51 @@ export default {
       if (!event.target.closest('.export-menu-wrap')) {
         this.showExportMenu = false
       }
+    },
+
+    closeAllOverlays() {
+      this.showExportMenu = false
+      this.showMobileExport = false
+      this.showShareModal = false
+      this.showAtsModal = false
+      this.showTipsModal = false
+      this.showImportModal = false
+    },
+
+    handleShortcuts(event) {
+      // Escape closes any open menu or modal.
+      if (event.key === 'Escape') {
+        this.closeAllOverlays()
+        return
+      }
+
+      const mod = event.ctrlKey || event.metaKey
+      if (!mod) return
+      const key = event.key.toLowerCase()
+
+      // Ctrl/Cmd+S: we auto-save, so just reassure the user (and stop the
+      // browser's "save page" dialog).
+      if (key === 's') {
+        event.preventDefault()
+        this.toast.success('Your changes are saved in this browser.')
+        return
+      }
+
+      const isUndo = key === 'z' && !event.shiftKey
+      const isRedo = (key === 'z' && event.shiftKey) || key === 'y'
+      if (!isUndo && !isRedo) return
+
+      // While typing in a field, leave native text undo/redo alone; document-wide
+      // history is driven by the toolbar buttons there. Outside fields, Ctrl+Z
+      // steps the whole document.
+      const el = event.target
+      const tag = el && el.tagName ? el.tagName.toLowerCase() : ''
+      const editable = tag === 'input' || tag === 'textarea' || tag === 'select' || (el && el.isContentEditable)
+      if (editable) return
+
+      event.preventDefault()
+      if (isRedo) this.redo()
+      else this.undo()
     },
 
     effectiveMaxWidth() {
@@ -552,6 +637,7 @@ export default {
   mounted() {
     document.addEventListener('click', this.handleOutsideClick)
     window.addEventListener('resize', this.clampToViewport)
+    window.addEventListener('keydown', this.handleShortcuts)
     // Reflect real save activity: pulse "Saving…" on change, settle to "Auto-saved".
     this._unsubscribeSave = this.store.$subscribe(() => {
       this.saveStatus = 'saving'
@@ -571,6 +657,7 @@ export default {
   beforeUnmount() {
     document.removeEventListener('click', this.handleOutsideClick)
     window.removeEventListener('resize', this.clampToViewport)
+    window.removeEventListener('keydown', this.handleShortcuts)
     document.removeEventListener('mousemove', this.onResize)
     document.removeEventListener('mouseup', this.stopResize)
     clearTimeout(this._saveTimer)

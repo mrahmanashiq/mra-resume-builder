@@ -44,11 +44,24 @@
     <!-- Professional Title -->
     <div>
       <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Professional Title</label>
-      <input type="text" 
+      <input type="text"
              v-model="resumeStore.personalInfo.title"
              @input="updatePersonalInfo('title', $event.target.value)"
              class="input-field"
              placeholder="Full Stack Developer">
+    </div>
+
+    <!-- Header Tagline -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Header tagline (optional)</label>
+      <input type="text"
+             v-model="resumeStore.personalInfo.headerTagline"
+             @input="updatePersonalInfo('headerTagline', $event.target.value)"
+             class="input-field"
+             placeholder="e.g. Available for remote work">
+      <p class="text-xs text-gray-500 dark:text-slate-400 mt-1">
+        A short line shown under your name on templates that support it.
+      </p>
     </div>
 
     <!-- Contact Information -->
@@ -58,20 +71,24 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Email</label>
-          <input type="email" 
+          <input type="email"
                  v-model="resumeStore.personalInfo.email"
                  @input="updatePersonalInfo('email', $event.target.value)"
                  class="input-field"
+                 :aria-invalid="!!emailHint"
                  placeholder="john.doe@example.com">
+          <p v-if="emailHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ emailHint }}</p>
         </div>
-        
+
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Phone</label>
-          <input type="tel" 
+          <input type="tel"
                  v-model="resumeStore.personalInfo.phone"
                  @input="updatePersonalInfo('phone', $event.target.value)"
                  class="input-field"
+                 :aria-invalid="!!phoneHint"
                  placeholder="+1 (555) 123-4567">
+          <p v-if="phoneHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ phoneHint }}</p>
         </div>
       </div>
 
@@ -92,30 +109,64 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">LinkedIn</label>
-          <input type="url" 
+          <input type="url"
                  v-model="resumeStore.personalInfo.linkedin"
                  @input="updatePersonalInfo('linkedin', $event.target.value)"
                  class="input-field"
+                 :aria-invalid="!!linkedinHint"
                  placeholder="linkedin.com/in/johndoe">
+          <p v-if="linkedinHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ linkedinHint }}</p>
         </div>
-        
+
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">GitHub</label>
-          <input type="url" 
+          <input type="url"
                  v-model="resumeStore.personalInfo.github"
                  @input="updatePersonalInfo('github', $event.target.value)"
                  class="input-field"
+                 :aria-invalid="!!githubHint"
                  placeholder="github.com/johndoe">
+          <p v-if="githubHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ githubHint }}</p>
         </div>
       </div>
 
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Website/Portfolio</label>
-        <input type="url" 
+        <input type="url"
                v-model="resumeStore.personalInfo.website"
                @input="updatePersonalInfo('website', $event.target.value)"
                class="input-field"
+               :aria-invalid="!!websiteHint"
                placeholder="johndoe.dev">
+        <p v-if="websiteHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ websiteHint }}</p>
+      </div>
+
+      <!-- Custom links (user-defined label + URL) -->
+      <div>
+        <div class="flex items-center justify-between mb-1">
+          <label class="block text-sm font-medium text-gray-700 dark:text-slate-300">Custom links</label>
+          <button type="button" @click="addLink"
+                  class="text-sm text-primary-600 hover:text-primary-700 flex items-center gap-1">
+            <PlusIcon class="w-4 h-4" /> Add link
+          </button>
+        </div>
+        <p class="text-xs text-gray-500 dark:text-slate-400 mb-2">
+          Add your own labelled links (e.g. Portfolio, Blog, Twitter). They appear in the header next to LinkedIn / GitHub.
+        </p>
+        <div v-if="resumeStore.customLinks.length" class="space-y-2">
+          <div v-for="link in resumeStore.customLinks" :key="link.id" class="flex gap-2 items-start">
+            <input type="text" :value="link.label"
+                   @input="updateLink(link.id, 'label', $event.target.value)"
+                   class="input-field flex-1" placeholder="Label (e.g. Portfolio)">
+            <input type="text" :value="link.url"
+                   @input="updateLink(link.id, 'url', $event.target.value)"
+                   class="input-field flex-1" placeholder="yoursite.com">
+            <button type="button" @click="removeLink(link.id)"
+                    class="mt-2 p-1 text-red-400 hover:text-red-600 flex-shrink-0" aria-label="Remove link">
+              <TrashIcon class="w-4 h-4" />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -173,24 +224,54 @@
 <script>
 import { useResumeStore } from '../../stores/resume'
 import { useToast } from 'vue-toastification'
-import { CameraIcon } from '@heroicons/vue/24/outline'
+import { CameraIcon, PlusIcon, TrashIcon } from '@heroicons/vue/24/outline'
+import { emailHint, phoneHint, urlHint } from '../../utils/validators'
 
 export default {
   name: 'PersonalInfoEditor',
   components: {
-    CameraIcon
+    CameraIcon,
+    PlusIcon,
+    TrashIcon
   },
   setup() {
     const resumeStore = useResumeStore()
     const toast = useToast()
-    
+
     return { resumeStore, toast }
+  },
+  computed: {
+    emailHint() {
+      return emailHint(this.resumeStore.personalInfo.email)
+    },
+    phoneHint() {
+      return phoneHint(this.resumeStore.personalInfo.phone)
+    },
+    linkedinHint() {
+      return urlHint(this.resumeStore.personalInfo.linkedin, 'linkedin.com/in/username')
+    },
+    githubHint() {
+      return urlHint(this.resumeStore.personalInfo.github, 'github.com/username')
+    },
+    websiteHint() {
+      return urlHint(this.resumeStore.personalInfo.website, 'yourname.dev')
+    }
   },
   methods: {
     updatePersonalInfo(field, value) {
       this.resumeStore.updatePersonalInfo(field, value)
     },
-    
+
+    addLink() {
+      this.resumeStore.addCustomLink()
+    },
+    updateLink(id, field, value) {
+      this.resumeStore.updateCustomLink(id, field, value)
+    },
+    removeLink(id) {
+      this.resumeStore.removeCustomLink(id)
+    },
+
     handleImageUpload(event) {
       const file = event.target.files[0]
       if (!file) return
@@ -221,7 +302,9 @@ export default {
         this.resumeStore.updatePersonalInfo('github', '')
         this.resumeStore.updatePersonalInfo('website', '')
         this.resumeStore.updatePersonalInfo('summary', '')
+        this.resumeStore.updatePersonalInfo('headerTagline', '')
         this.resumeStore.updatePersonalInfo('profileImage', '/profile_pic.png')
+        this.resumeStore.customLinks = []
         this.toast.success('Personal information cleared')
       }
     },

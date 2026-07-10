@@ -10,7 +10,9 @@
              :value="biodataStore.contact.phone"
              @input="update('phone', $event.target.value)"
              class="input-field"
+             :aria-invalid="!!phoneHint"
              placeholder="01XXXXXXXXX">
+      <p v-if="phoneHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ phoneHint }}</p>
     </div>
 
     <div>
@@ -31,7 +33,9 @@
              :value="biodataStore.contact.email"
              @input="update('email', $event.target.value)"
              class="input-field"
+             :aria-invalid="!!emailHint"
              placeholder="Optional">
+      <p v-if="emailHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ emailHint }}</p>
     </div>
 
     <div class="space-y-4 pt-2">
@@ -42,7 +46,9 @@
                :value="biodataStore.contact.website"
                @input="update('website', $event.target.value)"
                class="input-field"
+               :aria-invalid="!!websiteHint"
                placeholder="https://example.com">
+        <p v-if="websiteHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ websiteHint }}</p>
       </div>
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Facebook</label>
@@ -78,12 +84,24 @@
 
 <script>
 import { useBiodataStore } from '../../../stores/biodata'
+import { emailHint, phoneHint, urlHint } from '../../../utils/validators'
 
 export default {
   name: 'BiodataContactEditor',
   setup() {
     const biodataStore = useBiodataStore()
     return { biodataStore }
+  },
+  computed: {
+    phoneHint() {
+      return phoneHint(this.biodataStore.contact.phone)
+    },
+    emailHint() {
+      return emailHint(this.biodataStore.contact.email)
+    },
+    websiteHint() {
+      return urlHint(this.biodataStore.contact.website, 'yourname.com')
+    }
   },
   methods: {
     update(field, value) {

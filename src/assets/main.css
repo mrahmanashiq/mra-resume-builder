@@ -31,6 +31,26 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold;
   }
+
+  /*
+   * Keyboard focus visibility (a11y). Any focusable element navigated to with
+   * the keyboard gets a clear ring, including the many icon-only buttons that
+   * carry no focus style of their own. Mouse clicks do not trigger it.
+   */
+  :focus-visible {
+    outline: 2px solid #3b82f6; /* primary-500 */
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* These components already render their own focus ring - avoid a double ring. */
+  .btn-primary:focus-visible,
+  .btn-secondary:focus-visible,
+  .btn-outline:focus-visible,
+  .input-field:focus-visible,
+  .textarea-field:focus-visible {
+    outline: none;
+  }
 }
 
 @layer components {

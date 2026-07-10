@@ -13,11 +13,17 @@
             <h1 class="text-3xl md:text-4xl font-light text-gray-900 mb-2">
               {{ resumeStore.fullName }}
             </h1>
-            <h2 v-if="resumeStore.personalInfo.title" 
+            <h2 v-if="resumeStore.personalInfo.title"
                 class="text-lg text-gray-600 mb-4 font-light">
               {{ resumeStore.personalInfo.title }}
             </h2>
-            
+
+            <!-- Header tagline -->
+            <p v-if="resumeStore.personalInfo.headerTagline"
+               class="text-sm text-gray-500 font-light mb-4">
+              {{ resumeStore.personalInfo.headerTagline }}
+            </p>
+
             <!-- Summary -->
             <p v-if="resumeStore.personalInfo.summary" 
                class="text-gray-700 leading-relaxed max-w-2xl font-light">
@@ -46,6 +52,14 @@
               <div v-if="resumeStore.personalInfo.address">
                 {{ resumeStore.personalInfo.address }}
               </div>
+            </div>
+
+            <!-- Custom links -->
+            <div v-if="customLinkEntries.length"
+                 class="mt-3 space-y-1 text-sm text-center md:text-right">
+              <a v-for="(link, i) in customLinkEntries" :key="i"
+                 :href="link.href" target="_blank" rel="noopener"
+                 class="block text-gray-500 hover:text-gray-700 underline font-light">{{ link.label }}</a>
             </div>
           </div>
         </div>
@@ -234,9 +248,18 @@ export default {
         fontSize: `${this.resumeStore.settings.fontSize}px`,
         fontFamily: this.resumeStore.settings.font
       }
+    },
+    customLinkEntries() {
+      return (this.resumeStore.customLinks || [])
+        .filter(l => l && l.label && l.url)
+        .map(l => ({ label: l.label, href: this.formatUrl(l.url) }))
     }
   },
   methods: {
+    formatUrl(url) {
+      if (!url) return ''
+      return /^https?:\/\//i.test(url) || url.startsWith('mailto:') ? url : `https://${url}`
+    },
     formatDate(dateString) {
       if (!dateString) return ''
       try {

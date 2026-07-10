@@ -42,7 +42,7 @@
                     :options="skillCategories" />
                 </div>
               </div>
-              <button @click="removeSkill(skill.id)" 
+              <button @click="removeSkill(skill.id)" aria-label="Remove"
                       class="ml-4 p-1 text-red-400 hover:text-red-600">
                 <TrashIcon class="w-4 h-4" />
               </button>
@@ -205,11 +205,8 @@ export default {
     },
     
     removeSkill(id) {
-      const confirmDelete = confirm('Are you sure you want to remove this skill?')
-      if (confirmDelete) {
-        this.resumeStore.removeSkill(id)
-        this.toast.success('Skill removed')
-      }
+      this.resumeStore.removeSkill(id)
+      this.toast.success('Removed. Use Undo to restore.')
     },
     
     addSuggestedSkill(suggestion) {

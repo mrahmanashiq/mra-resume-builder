@@ -19,11 +19,17 @@
         <h1 class="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-2">
           {{ resumeStore.fullName }}
         </h1>
-        <h2 v-if="resumeStore.personalInfo.title" 
+        <h2 v-if="resumeStore.personalInfo.title"
             class="text-xl md:text-2xl font-serif text-gray-700 mb-6">
           {{ resumeStore.personalInfo.title }}
         </h2>
-        
+
+        <!-- Header tagline -->
+        <p v-if="resumeStore.personalInfo.headerTagline"
+           class="text-base font-serif text-gray-600 mb-4">
+          {{ resumeStore.personalInfo.headerTagline }}
+        </p>
+
         <!-- Contact Information -->
         <div class="flex flex-wrap justify-center gap-6 text-gray-700">
           <div v-if="resumeStore.personalInfo.email" class="flex items-center space-x-2">
@@ -38,6 +44,14 @@
             <MapPinIcon class="w-4 h-4" />
             <span>{{ resumeStore.personalInfo.address }}</span>
           </div>
+        </div>
+
+        <!-- Custom links -->
+        <div v-if="customLinkEntries.length"
+             class="flex flex-wrap justify-center gap-x-6 gap-y-1 mt-4 text-sm text-gray-700">
+          <a v-for="(link, i) in customLinkEntries" :key="i"
+             :href="link.href" target="_blank" rel="noopener"
+             class="underline hover:text-gray-900">{{ link.label }}</a>
         </div>
       </div>
     </header>
@@ -243,9 +257,18 @@ export default {
         fontSize: `${this.resumeStore.settings.fontSize}px`,
         fontFamily: this.resumeStore.settings.font
       }
+    },
+    customLinkEntries() {
+      return (this.resumeStore.customLinks || [])
+        .filter(l => l && l.label && l.url)
+        .map(l => ({ label: l.label, href: this.formatUrl(l.url) }))
     }
   },
   methods: {
+    formatUrl(url) {
+      if (!url) return ''
+      return /^https?:\/\//i.test(url) || url.startsWith('mailto:') ? url : `https://${url}`
+    },
     formatDate(dateString) {
       if (!dateString) return ''
       try {

@@ -13,7 +13,7 @@
            class="border border-gray-200 dark:border-slate-700 rounded-lg p-6 bg-gray-50 dark:bg-slate-800/60">
         <div class="flex items-start justify-between mb-4">
           <h4 class="font-medium text-gray-900 dark:text-slate-100">Award {{ index + 1 }}</h4>
-          <button @click="remove(a.id)" class="p-1 text-red-400 hover:text-red-600">
+          <button @click="remove(a.id)" aria-label="Remove" class="p-1 text-red-400 hover:text-red-600">
             <TrashIcon class="w-4 h-4" />
           </button>
         </div>
@@ -67,10 +67,8 @@ export default {
       this.resumeStore.updateAward(id, { [field]: value })
     },
     remove(id) {
-      if (confirm('Remove this award?')) {
-        this.resumeStore.removeAward(id)
-        this.toast.success('Award removed')
-      }
+      this.resumeStore.removeAward(id)
+      this.toast.success('Removed. Use Undo to restore.')
     }
   }
 }

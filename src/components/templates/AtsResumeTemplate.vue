@@ -4,6 +4,7 @@
     <header class="ats-header">
       <h1 class="ats-name">{{ resumeStore.fullName }}</h1>
       <div v-if="personalInfo.title" class="ats-title">{{ personalInfo.title }}</div>
+      <div v-if="personalInfo.headerTagline" class="ats-tagline">{{ personalInfo.headerTagline }}</div>
       <div class="ats-contact">
         <span v-for="(item, i) in contactItems" :key="'c' + i">
           <span v-if="i > 0" class="ats-sep">|</span>{{ item }}
@@ -17,13 +18,13 @@
     </header>
 
     <!-- Summary -->
-    <section v-if="enabled.summary && personalInfo.summary" class="ats-section print-avoid-break">
+    <section v-if="enabled.summary && personalInfo.summary" class="ats-section print-avoid-break" :style="{ order: ord('summary') }">
       <h2 class="ats-heading">Summary</h2>
       <p class="ats-summary">{{ personalInfo.summary }}</p>
     </section>
 
     <!-- Experience -->
-    <section v-if="enabled.experience && experience.length" class="ats-section">
+    <section v-if="enabled.experience && experience.length" class="ats-section" :style="{ order: ord('experience') }">
       <h2 class="ats-heading">Experience</h2>
       <div v-for="exp in resumeStore.sortedExperience" :key="exp.id" class="ats-entry print-avoid-break">
         <div class="ats-entry-row">
@@ -43,7 +44,7 @@
     </section>
 
     <!-- Projects -->
-    <section v-if="enabled.projects && projects.length" class="ats-section">
+    <section v-if="enabled.projects && projects.length" class="ats-section" :style="{ order: ord('projects') }">
       <h2 class="ats-heading">Projects</h2>
       <div v-for="p in projects" :key="p.id" class="ats-entry print-avoid-break">
         <div class="ats-entry-row">
@@ -59,7 +60,7 @@
     </section>
 
     <!-- Education -->
-    <section v-if="enabled.education && education.length" class="ats-section print-avoid-break">
+    <section v-if="enabled.education && education.length" class="ats-section print-avoid-break" :style="{ order: ord('education') }">
       <h2 class="ats-heading">Education</h2>
       <div v-for="edu in education" :key="edu.id" class="ats-entry">
         <div class="ats-entry-row">
@@ -74,7 +75,7 @@
     </section>
 
     <!-- Skills -->
-    <section v-if="enabled.skills && skills.length" class="ats-section print-avoid-break">
+    <section v-if="enabled.skills && skills.length" class="ats-section print-avoid-break" :style="{ order: ord('skills') }">
       <h2 class="ats-heading">Skills</h2>
       <div class="ats-skill-grid">
         <template v-for="(list, cat) in resumeStore.skillsByCategory" :key="cat">
@@ -85,7 +86,7 @@
     </section>
 
     <!-- Certifications -->
-    <section v-if="enabled.certifications && certifications.length" class="ats-section print-avoid-break">
+    <section v-if="enabled.certifications && certifications.length" class="ats-section print-avoid-break" :style="{ order: ord('certifications') }">
       <h2 class="ats-heading">Certifications</h2>
       <div v-for="c in certifications" :key="c.id" class="ats-cert">
         <span class="ats-entry-title">{{ c.name }}</span><span v-if="c.issuer"> - {{ c.issuer }}</span>
@@ -94,7 +95,7 @@
     </section>
 
     <!-- Languages -->
-    <section v-if="enabled.languages && languages.length" class="ats-section print-avoid-break">
+    <section v-if="enabled.languages && languages.length" class="ats-section print-avoid-break" :style="{ order: ord('languages') }">
       <h2 class="ats-heading">Languages</h2>
       <div class="ats-lang">
         <span v-for="(l, i) in languages" :key="l.id">
@@ -142,10 +143,17 @@ export default {
       if (p.linkedin) out.push({ label: 'LinkedIn', value: p.linkedin })
       if (p.github) out.push({ label: 'GitHub', value: p.github })
       if (p.website) out.push({ label: 'Portfolio', value: p.website })
+      for (const l of this.resumeStore.customLinks || []) {
+        if (l && l.label && l.url) out.push({ label: l.label, value: l.url })
+      }
       return out
     }
   },
   methods: {
+    ord(key) {
+      const i = this.settings.sectionsOrder.indexOf(key)
+      return i === -1 ? 99 : i
+    },
     hasAchievements(exp) {
       return exp.achievements && exp.achievements.some(a => a && a.trim())
     },
@@ -182,10 +190,14 @@ export default {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   line-height: 1.4;
+  /* Sections are ordered via CSS `order` from settings.sectionsOrder. */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Header */
 .ats-header {
+  order: -1;
   text-align: center;
   padding-bottom: 12px;
   border-bottom: 1.5px solid var(--text);
@@ -203,6 +215,12 @@ export default {
   color: var(--primary);
   font-weight: 600;
   margin-top: 2px;
+}
+
+.ats-tagline {
+  font-size: 0.9em;
+  color: #4b5563;
+  margin-top: 3px;
 }
 
 .ats-contact {

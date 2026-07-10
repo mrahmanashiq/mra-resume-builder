@@ -3,6 +3,7 @@
     <!-- Header -->
     <header class="ap-header">
       <h1 class="ap-name">{{ resumeStore.fullName }}</h1>
+      <div v-if="personalInfo.headerTagline" class="ap-tagline">{{ personalInfo.headerTagline }}</div>
       <div v-if="personalInfo.researchInterests" class="ap-interests">
         <span class="ap-interests-label">Research Interests:</span> {{ personalInfo.researchInterests }}
       </div>
@@ -16,6 +17,9 @@
         <div v-if="personalInfo.website" class="ap-info">Website: {{ personalInfo.website }}</div>
         <div v-if="personalInfo.github" class="ap-info">GitHub: {{ personalInfo.github }}</div>
         <div v-if="personalInfo.scholar" class="ap-info">Scholar: {{ personalInfo.scholar }}</div>
+        <div v-for="(link, i) in customLinkEntries" :key="i" class="ap-info">
+          <a :href="link.href" target="_blank" rel="noopener" class="ap-clink">{{ link.label }}</a>
+        </div>
       </div>
     </section>
 
@@ -182,9 +186,18 @@ export default {
     },
     enabled() {
       return this.settings.sectionsEnabled
+    },
+    customLinkEntries() {
+      return (this.resumeStore.customLinks || [])
+        .filter(l => l && l.label && l.url)
+        .map(l => ({ label: l.label, href: this.formatUrl(l.url) }))
     }
   },
   methods: {
+    formatUrl(url) {
+      if (!url) return ''
+      return /^https?:\/\//i.test(url) || url.startsWith('mailto:') ? url : `https://${url}`
+    },
     formatDate(v) {
       if (!v) return ''
       try {
@@ -248,10 +261,21 @@ export default {
   line-height: 1.1;
 }
 
+.ap-tagline {
+  margin-top: 6px;
+  font-size: 0.9em;
+  color: #333;
+}
+
 .ap-interests {
   margin-top: 6px;
   font-size: 0.9em;
   color: #333;
+}
+
+.ap-clink {
+  color: var(--primary);
+  text-decoration: none;
 }
 
 .ap-interests-label {

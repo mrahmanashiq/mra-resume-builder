@@ -103,27 +103,38 @@
 
     <!-- Section Management -->
     <div class="card">
-      <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-4">Section Visibility</h4>
-      <div class="space-y-3">
-        <div v-for="section in sectionsConfig" 
-             :key="section.id"
-             class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-800/60 rounded-lg">
-          <div class="flex items-center space-x-3">
-            <component :is="section.icon" class="w-5 h-5 text-gray-600 dark:text-slate-400" />
-            <span class="font-medium">{{ section.name }}</span>
-          </div>
-          <button @click="toggleSection(section.id)"
-                  :class="['w-12 h-6 rounded-full transition-colors duration-200',
-                           resumeStore.settings.sectionsEnabled[section.id] 
-                             ? 'bg-primary-600' 
-                             : 'bg-gray-300']">
-            <div :class="['w-4 h-4 bg-white dark:bg-slate-800 rounded-full shadow transition-transform duration-200',
-                          resumeStore.settings.sectionsEnabled[section.id] 
-                            ? 'translate-x-7' 
-                            : 'translate-x-1']"></div>
-          </button>
+      <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-1">Sections</h4>
+      <p class="text-xs text-gray-600 dark:text-slate-400 mb-4">
+        Drag <span class="font-medium">⠿</span> to reorder · toggle to show or hide. Order applies to single-column templates (Developer, Clean ATS).
+      </p>
+
+      <!-- Personal Info is the header: always first, not reorderable -->
+      <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-800/60 rounded-lg mb-3">
+        <div class="flex items-center space-x-3 min-w-0">
+          <LockClosedIcon class="w-5 h-5 text-gray-300 dark:text-slate-600 flex-shrink-0" />
+          <UserIcon class="w-5 h-5 text-gray-600 dark:text-slate-400 flex-shrink-0" />
+          <span class="font-medium truncate">Personal Info</span>
+          <span class="text-xs text-gray-400 dark:text-slate-500 flex-shrink-0">header</span>
         </div>
       </div>
+
+      <draggable v-model="orderedSections" item-key="id" handle=".drag-handle" class="space-y-3">
+        <template #item="{ element }">
+          <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-800/60 rounded-lg">
+            <div class="flex items-center space-x-3 min-w-0">
+              <Bars3Icon class="drag-handle w-5 h-5 text-gray-400 dark:text-slate-500 cursor-move flex-shrink-0" />
+              <component :is="element.icon" class="w-5 h-5 text-gray-600 dark:text-slate-400 flex-shrink-0" />
+              <span class="font-medium truncate">{{ element.name }}</span>
+            </div>
+            <button @click="toggleSection(element.id)" :aria-label="`Toggle ${element.name}`"
+                    :class="['w-12 h-6 rounded-full flex items-center flex-shrink-0 transition-colors duration-200',
+                             resumeStore.settings.sectionsEnabled[element.id] ? 'bg-primary-600' : 'bg-gray-300']">
+              <div :class="['w-4 h-4 bg-white dark:bg-slate-800 rounded-full shadow transition-transform duration-200',
+                            resumeStore.settings.sectionsEnabled[element.id] ? 'translate-x-7' : 'translate-x-1']"></div>
+            </button>
+          </div>
+        </template>
+      </draggable>
     </div>
 
     <!-- Actions -->
@@ -141,8 +152,11 @@
 <script>
 import { useResumeStore } from '../../stores/resume'
 import { useToast } from 'vue-toastification'
+import draggable from 'vuedraggable'
 import {
   UserIcon,
+  Bars3Icon,
+  LockClosedIcon,
   BriefcaseIcon,
   AcademicCapIcon,
   WrenchScrewdriverIcon,
@@ -163,7 +177,10 @@ import {
 export default {
   name: 'SettingsEditor',
   components: {
+    draggable,
     UserIcon,
+    Bars3Icon,
+    LockClosedIcon,
     BriefcaseIcon,
     AcademicCapIcon,
     WrenchScrewdriverIcon,
@@ -220,6 +237,12 @@ export default {
           preview: 'bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600'
         },
         {
+          id: 'developer',
+          name: 'Developer',
+          description: 'Compact single-column: links row, skills by category, projects',
+          preview: 'bg-gradient-to-br from-slate-100 to-white dark:from-slate-700 dark:to-slate-800 border border-gray-300 dark:border-slate-600'
+        },
+        {
           id: 'sidebar',
           name: 'Sidebar',
           description: 'Two-column with side panel',
@@ -265,6 +288,7 @@ export default {
       ],
       sectionsConfig: [
         { id: 'personalInfo', name: 'Personal Info', icon: 'UserIcon' },
+        { id: 'summary', name: 'Summary', icon: 'DocumentTextIcon' },
         { id: 'experience', name: 'Experience', icon: 'BriefcaseIcon' },
         { id: 'education', name: 'Education', icon: 'AcademicCapIcon' },
         { id: 'publications', name: 'Publications', icon: 'BookOpenIcon' },
@@ -283,6 +307,22 @@ export default {
         { id: 'references', name: 'References', icon: 'UserGroupIcon' },
         { id: 'declaration', name: 'Declaration', icon: 'DocumentTextIcon' }
       ]
+    }
+  },
+  computed: {
+    // Reorderable body sections in the user's saved order (drag reorders
+    // settings.sectionsOrder). Personal Info is the header - always first and
+    // not reorderable - so it is excluded here and pinned separately.
+    orderedSections: {
+      get() {
+        const meta = Object.fromEntries(this.sectionsConfig.map((s) => [s.id, s]))
+        return this.resumeStore.settings.sectionsOrder
+          .filter((id) => id !== 'personalInfo')
+          .map((id) => meta[id] || { id, name: id, icon: 'DocumentTextIcon' })
+      },
+      set(list) {
+        this.resumeStore.reorderSections(['personalInfo', ...list.map((s) => s.id)])
+      }
     }
   },
   methods: {

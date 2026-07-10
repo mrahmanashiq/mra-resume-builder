@@ -16,7 +16,7 @@
         
         <div class="flex items-start justify-between mb-4">
           <h4 class="font-medium text-gray-900 dark:text-slate-100">Education {{ index + 1 }}</h4>
-          <button @click="removeEducation(education.id)" 
+          <button @click="removeEducation(education.id)" aria-label="Remove"
                   class="p-1 text-red-400 hover:text-red-600">
             <TrashIcon class="w-4 h-4" />
           </button>
@@ -170,11 +170,8 @@ export default {
     },
     
     removeEducation(id) {
-      const confirmDelete = confirm('Are you sure you want to remove this education?')
-      if (confirmDelete) {
-        this.resumeStore.removeEducation(id)
-        this.toast.success('Education removed')
-      }
+      this.resumeStore.removeEducation(id)
+      this.toast.success('Removed. Use Undo to restore.')
     },
     
     clearAll() {

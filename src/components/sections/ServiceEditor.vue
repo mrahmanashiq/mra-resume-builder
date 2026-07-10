@@ -13,7 +13,7 @@
            class="border border-gray-200 dark:border-slate-700 rounded-lg p-6 bg-gray-50 dark:bg-slate-800/60">
         <div class="flex items-start justify-between mb-4">
           <h4 class="font-medium text-gray-900 dark:text-slate-100">Service {{ index + 1 }}</h4>
-          <button @click="remove(s.id)" class="p-1 text-red-400 hover:text-red-600">
+          <button @click="remove(s.id)" aria-label="Remove" class="p-1 text-red-400 hover:text-red-600">
             <TrashIcon class="w-4 h-4" />
           </button>
         </div>
@@ -63,10 +63,8 @@ export default {
       this.resumeStore.updateService(id, { [field]: value })
     },
     remove(id) {
-      if (confirm('Remove this entry?')) {
-        this.resumeStore.removeService(id)
-        this.toast.success('Entry removed')
-      }
+      this.resumeStore.removeService(id)
+      this.toast.success('Removed. Use Undo to restore.')
     }
   }
 }
