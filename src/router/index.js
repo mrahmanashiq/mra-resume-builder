@@ -8,6 +8,7 @@ const Templates = () => import('../views/Templates.vue')
 const Settings = () => import('../views/Settings.vue')
 const BiodataEditor = () => import('../views/BiodataEditor.vue')
 const BiodataTemplates = () => import('../views/BiodataTemplates.vue')
+const CoverLetterEditor = () => import('../views/CoverLetterEditor.vue')
 const LandingPage = () => import('../views/landing/LandingPage.vue')
 
 // SEO keyword landing pages, generated from the landing config.
@@ -84,6 +85,18 @@ const router = createRouter({
           title: 'Marriage Biodata Templates & Formats - MRA Builder',
           description:
             'Free marriage biodata templates and formats. Pick a design, fill in your details, and download a print-ready biodata PDF.'
+        }
+      }
+    },
+    {
+      path: '/cover-letter',
+      name: 'cover-letter',
+      component: CoverLetterEditor,
+      meta: {
+        seo: {
+          title: 'Free Cover Letter Builder - MRA Builder',
+          description:
+            'Write a professional cover letter for free. Auto-fill your details from your resume, edit with a live preview, and download a print-ready PDF. No sign-up.'
         }
       }
     },

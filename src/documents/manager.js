@@ -18,8 +18,8 @@ const docKey = (id) => `mra-doc-${id}-${VERSION}`
 const activeKey = (type) => `mra-active-${type}-${VERSION}`
 const legacyKey = (type) => `mra-${type}-${VERSION}`
 
-const TYPES = ['resume', 'biodata']
-const DEFAULT_NAMES = { resume: 'My Resume', biodata: 'My Biodata' }
+const TYPES = ['resume', 'biodata', 'coverLetter']
+const DEFAULT_NAMES = { resume: 'My Resume', biodata: 'My Biodata', coverLetter: 'My Cover Letter' }
 
 const state = reactive({ docs: [], activeIds: {} })
 let initialized = false

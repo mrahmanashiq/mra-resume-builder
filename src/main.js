@@ -17,7 +17,7 @@ useTheme().initTheme()
 const app = createApp(App)
 const pinia = createPinia()
 const head = createHead()
-pinia.use(createPersistedState({ stores: ['resume', 'biodata'] }))
+pinia.use(createPersistedState({ stores: ['resume', 'biodata', 'coverLetter'] }))
 
 app.component('BaseSelect', BaseSelect)
 app.component('BaseDatePicker', BaseDatePicker)

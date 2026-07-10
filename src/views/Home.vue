@@ -277,6 +277,7 @@
             <router-link to="/templates" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Templates</router-link>
             <router-link to="/editor" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Resume</router-link>
             <router-link to="/biodata" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Biodata</router-link>
+            <router-link to="/cover-letter" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Cover Letter</router-link>
           </div>
           <nav aria-label="Guides" class="mt-4 flex justify-center items-center flex-wrap gap-x-5 gap-y-2 text-sm">
             <router-link to="/marriage-biodata-format" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Marriage biodata format</router-link>
