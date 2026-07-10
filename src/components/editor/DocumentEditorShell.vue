@@ -161,22 +161,31 @@
       </aside>
 
       <!-- Main Content (stacks below the editor on mobile, side-by-side on desktop) -->
-      <main class="flex-1 overflow-hidden bg-gray-100 dark:bg-slate-900">
+      <main class="flex-1 overflow-hidden bg-gray-100 dark:bg-slate-900 relative">
+        <button type="button" @click="showGuides = !showGuides"
+                class="no-print absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg border shadow-sm bg-white dark:bg-slate-800 transition-colors"
+                :class="showGuides ? 'border-primary-400 text-primary-600 dark:text-primary-300 dark:border-primary-500' : 'border-gray-300 text-gray-600 dark:border-slate-600 dark:text-slate-300'"
+                title="Show A4 page-break lines on the preview">
+          Page guides: {{ showGuides ? 'On' : 'Off' }}
+        </button>
         <div class="mobile-pb lg:h-full overflow-y-auto overflow-x-auto p-4 sm:p-6 lg:p-8">
           <div class="max-w-4xl mx-auto">
             <!-- Document Preview -->
-            <div :id="config.previewElementId" class="document-preview bg-white shadow-lg">
-              <Suspense>
-                <component :is="config.template" />
-                <template #fallback>
-                  <div class="flex items-center justify-center p-16">
-                    <div class="text-center">
-                      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-                      <p class="text-gray-600">Loading template...</p>
+            <div class="preview-wrap relative">
+              <div :id="config.previewElementId" class="document-preview bg-white shadow-lg">
+                <Suspense>
+                  <component :is="config.template" />
+                  <template #fallback>
+                    <div class="flex items-center justify-center p-16">
+                      <div class="text-center">
+                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600">Loading template...</p>
+                      </div>
                     </div>
-                  </div>
-                </template>
-              </Suspense>
+                  </template>
+                </Suspense>
+              </div>
+              <PageGuides v-if="showGuides" :target-id="config.previewElementId" class="no-print" />
             </div>
           </div>
         </div>
@@ -269,6 +278,7 @@ import AtsMatchModal from './AtsMatchModal.vue'
 import ResumeTipsModal from './ResumeTipsModal.vue'
 import DocumentSwitcher from './DocumentSwitcher.vue'
 import DownloadPanel from './DownloadPanel.vue'
+import PageGuides from './PageGuides.vue'
 
 import {
   EyeIcon,
@@ -301,6 +311,7 @@ export default {
     ResumeTipsModal,
     DocumentSwitcher,
     DownloadPanel,
+    PageGuides,
     EyeIcon,
     CloudArrowDownIcon,
     ChevronDownIcon,
@@ -338,6 +349,7 @@ export default {
       showMobileExport: false,
       showAtsModal: false,
       showTipsModal: false,
+      showGuides: true,
       saveStatus: 'saved',
       formats: DOWNLOAD_FORMATS,
       showImportModal: false,
