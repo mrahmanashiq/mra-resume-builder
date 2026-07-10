@@ -69,6 +69,18 @@
                   </span>
                 </button>
 
+                <template v-if="supportsTextExport">
+                  <hr class="my-1 dark:border-slate-700">
+                  <button type="button" @click="openAtsCheck"
+                          class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3 dark:hover:bg-slate-700">
+                    <MagnifyingGlassIcon class="w-4 h-4 text-gray-600 flex-shrink-0 dark:text-slate-400" />
+                    <span class="flex-1 min-w-0">
+                      <span class="block font-medium text-gray-800 dark:text-slate-100">ATS match check</span>
+                      <span class="block text-xs text-gray-500 dark:text-slate-400">Compare with a job description</span>
+                    </span>
+                  </button>
+                </template>
+
                 <hr class="my-1 dark:border-slate-700">
                 <button @click="handlePrint"
                         class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2 dark:hover:bg-slate-700">
@@ -239,6 +251,16 @@
             <span class="block text-xs text-gray-500 dark:text-slate-400">{{ f.desc }}</span>
           </span>
         </button>
+        <template v-if="supportsTextExport">
+          <hr class="my-2 dark:border-slate-700">
+          <button type="button" @click="openAtsCheck" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
+            <MagnifyingGlassIcon class="w-5 h-5 text-gray-600 flex-shrink-0 dark:text-slate-400" />
+            <span class="flex-1 min-w-0">
+              <span class="block font-medium text-gray-800 dark:text-slate-100">ATS match check</span>
+              <span class="block text-xs text-gray-500 dark:text-slate-400">Compare with a job description</span>
+            </span>
+          </button>
+        </template>
         <hr class="my-2 dark:border-slate-700">
         <button @click="handlePrint" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600 dark:text-slate-100">
           <PrinterIcon class="w-5 h-5 text-gray-600 dark:text-slate-400" /> <span class="font-medium text-gray-800 dark:text-slate-100">Print</span>
@@ -269,6 +291,9 @@
         </div>
       </div>
     </div>
+
+    <!-- ATS match check (resume only) -->
+    <AtsMatchModal v-if="showAtsModal" :store="store" @close="showAtsModal = false" />
   </div>
 </template>
 
@@ -276,6 +301,7 @@
 import { useToast } from 'vue-toastification'
 import { useDocumentExport } from '../../composables/useDocumentExport'
 import AppLogo from '../AppLogo.vue'
+import AtsMatchModal from './AtsMatchModal.vue'
 
 import {
   EyeIcon,
@@ -288,7 +314,8 @@ import {
   DocumentTextIcon,
   ArrowUpTrayIcon,
   Bars3Icon,
-  ChevronLeftIcon
+  ChevronLeftIcon,
+  MagnifyingGlassIcon
 } from '@heroicons/vue/24/outline'
 
 // Download formats - each is a one-click download action.
@@ -302,6 +329,7 @@ export default {
   name: 'DocumentEditorShell',
   components: {
     AppLogo,
+    AtsMatchModal,
     EyeIcon,
     CloudArrowDownIcon,
     ChevronDownIcon,
@@ -312,7 +340,8 @@ export default {
     DocumentTextIcon,
     ArrowUpTrayIcon,
     Bars3Icon,
-    ChevronLeftIcon
+    ChevronLeftIcon,
+    MagnifyingGlassIcon
   },
   props: {
     config: {
@@ -336,6 +365,7 @@ export default {
     return {
       showExportMenu: false,
       showMobileExport: false,
+      showAtsModal: false,
       saveStatus: 'saved',
       formats: DOWNLOAD_FORMATS,
       showImportModal: false,
@@ -420,6 +450,12 @@ export default {
       this.showExportMenu = false
       this.showMobileExport = false
       this.exporter.printDocument()
+    },
+
+    openAtsCheck() {
+      this.showExportMenu = false
+      this.showMobileExport = false
+      this.showAtsModal = true
     },
 
     handleShare() {
