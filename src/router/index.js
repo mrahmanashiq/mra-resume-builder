@@ -9,6 +9,7 @@ const Settings = () => import('../views/Settings.vue')
 const BiodataEditor = () => import('../views/BiodataEditor.vue')
 const BiodataTemplates = () => import('../views/BiodataTemplates.vue')
 const CoverLetterEditor = () => import('../views/CoverLetterEditor.vue')
+const ShareViewer = () => import('../views/ShareViewer.vue')
 const Privacy = () => import('../views/Privacy.vue')
 const Terms = () => import('../views/Terms.vue')
 const LandingPage = () => import('../views/landing/LandingPage.vue')
@@ -101,6 +102,12 @@ const router = createRouter({
             'Write a professional cover letter for free. Auto-fill your details from your resume, edit with a live preview, and download a print-ready PDF. No sign-up.'
         }
       }
+    },
+    {
+      path: '/view',
+      name: 'view',
+      component: ShareViewer,
+      meta: { seo: { title: 'Shared document - Resume Builder', noindex: true } }
     },
     {
       path: '/privacy',

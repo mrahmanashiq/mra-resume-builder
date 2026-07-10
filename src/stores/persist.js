@@ -1,5 +1,11 @@
 import { docManager } from '../documents/manager'
 
+// Persistence can be suspended so a read-only view (e.g. a shared link) can load
+// data into a store WITHOUT overwriting the user's saved documents on disk.
+let suspended = false
+export function suspendPersistence() { suspended = true }
+export function resumePersistence() { suspended = false }
+
 /**
  * Document-aware Pinia persistence plugin.
  *
@@ -30,8 +36,10 @@ export function createPersistedState(options = {}) {
     // Persist changes to the active document, debounced.
     let timer = null
     store.$subscribe(() => {
+      if (suspended) return
       if (timer) clearTimeout(timer)
       timer = setTimeout(() => {
+        if (suspended) return
         try {
           docManager.saveActive(type, store.exportData())
         } catch (e) {

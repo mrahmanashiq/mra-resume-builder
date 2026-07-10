@@ -96,11 +96,10 @@
                   <PrinterIcon class="w-4 h-4" />
                   <span>Print</span>
                 </button>
-                <button @click="handleShare"
-                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2 text-gray-400 cursor-not-allowed dark:hover:bg-slate-700 dark:text-slate-500">
+                <button @click="handleCopyShareLink"
+                        class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-2 dark:hover:bg-slate-700 dark:text-slate-100">
                   <ShareIcon class="w-4 h-4" />
-                  <span>Share Link</span>
-                  <span class="ml-auto text-[10px] font-semibold uppercase tracking-wide bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded dark:bg-slate-700 dark:text-slate-400">Soon</span>
+                  <span>Copy share link</span>
                 </button>
                 <hr class="my-2 dark:border-slate-700">
                 <button @click="handleExportData"
@@ -282,6 +281,9 @@
         <button @click="handlePrint" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600 dark:text-slate-100">
           <PrinterIcon class="w-5 h-5 text-gray-600 dark:text-slate-400" /> <span class="font-medium text-gray-800 dark:text-slate-100">Print</span>
         </button>
+        <button @click="handleCopyShareLink" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
+          <ShareIcon class="w-5 h-5 text-gray-600 dark:text-slate-400" /> <span class="font-medium text-gray-800 dark:text-slate-100">Copy share link</span>
+        </button>
         <button @click="handleExportData" class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
           <DocumentTextIcon class="w-5 h-5 text-gray-600 dark:text-slate-400" /> <span class="font-medium text-gray-800 dark:text-slate-100">Export Data</span>
         </button>
@@ -317,6 +319,7 @@
 <script>
 import { useToast } from 'vue-toastification'
 import { useDocumentExport } from '../../composables/useDocumentExport'
+import { buildShareUrl } from '../../utils/shareLink'
 import AppLogo from '../AppLogo.vue'
 import AtsMatchModal from './AtsMatchModal.vue'
 import DocumentSwitcher from './DocumentSwitcher.vue'
@@ -483,10 +486,44 @@ export default {
       this.showAtsModal = true
     },
 
-    handleShare() {
+    async handleCopyShareLink() {
       this.showExportMenu = false
       this.showMobileExport = false
-      this.toast.info('Link sharing is coming soon')
+      try {
+        const data = JSON.parse(this.store.exportData())
+        const url = buildShareUrl(this.config.type, data)
+        const ok = await this.copyToClipboard(url)
+        if (ok) this.toast.success('Share link copied. The photo is not included in the link.')
+        else this.toast.error('Could not copy the link')
+      } catch (e) {
+        console.error('Share link failed:', e)
+        this.toast.error('Could not create the share link')
+      }
+    },
+
+    async copyToClipboard(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text)
+          return true
+        }
+      } catch (e) {
+        /* fall through to legacy path */
+      }
+      try {
+        const ta = document.createElement('textarea')
+        ta.value = text
+        ta.style.position = 'fixed'
+        ta.style.opacity = '0'
+        document.body.appendChild(ta)
+        ta.focus()
+        ta.select()
+        const ok = document.execCommand('copy')
+        document.body.removeChild(ta)
+        return ok
+      } catch (e) {
+        return false
+      }
     },
 
     handleExportData() {
