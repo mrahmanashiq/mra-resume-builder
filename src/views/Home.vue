@@ -128,6 +128,50 @@
       </div>
     </section>
 
+    <!-- Privacy & Open Source -->
+    <section class="privacy-section relative overflow-hidden py-20 border-t border-gray-100 dark:border-slate-800">
+      <div class="privacy-bg" aria-hidden="true"></div>
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <!-- Statement -->
+          <div class="reveal">
+            <span class="privacy-eyebrow inline-flex items-center gap-2">
+              <ShieldCheckIcon class="w-4 h-4" /> Private by design
+            </span>
+            <h2 class="section-title text-3xl sm:text-4xl font-bold text-gray-900 dark:text-slate-100 mt-4 mb-5">
+              Your data never leaves your device.
+            </h2>
+            <p class="text-lg text-gray-600 dark:text-slate-400 mb-6">
+              There is no account, no server, and no database. Everything you type stays in
+              your own browser and every export is generated right on your machine. We could
+              not read your résumé if we tried, because there is nowhere for it to be sent.
+            </p>
+            <div class="flex flex-wrap items-center gap-3">
+              <a :href="githubUrl" target="_blank" rel="noopener"
+                 class="inline-flex items-center gap-2 btn-outline text-sm px-4 py-2">
+                <CodeBracketIcon class="w-4 h-4" /> Read the source
+              </a>
+              <span class="inline-flex items-center gap-1.5 text-sm font-medium text-gray-600 dark:text-slate-400 border border-gray-200 dark:border-slate-700 rounded-lg px-3 py-2">
+                <span class="text-green-600 dark:text-green-400">✓</span> MIT licensed, free forever
+              </span>
+            </div>
+          </div>
+
+          <!-- Guarantees -->
+          <div class="reveal-grid grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div v-for="point in privacyPoints" :key="point.title"
+                 class="privacy-card reveal">
+              <div class="privacy-icon">
+                <component :is="point.icon" class="w-5 h-5" />
+              </div>
+              <h3 class="font-semibold text-gray-900 dark:text-slate-100 mb-1">{{ point.title }}</h3>
+              <p class="text-sm text-gray-600 dark:text-slate-400">{{ point.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Features Section -->
     <section class="py-20 bg-white dark:bg-slate-900">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -247,7 +291,7 @@
 
 <script>
 import { defineAsyncComponent } from 'vue'
-import { PaintBrushIcon, DocumentTextIcon, CloudArrowDownIcon, ShareIcon, EyeIcon, PrinterIcon, HeartIcon, AcademicCapIcon } from '@heroicons/vue/24/outline'
+import { PaintBrushIcon, DocumentTextIcon, CloudArrowDownIcon, ShareIcon, EyeIcon, PrinterIcon, HeartIcon, AcademicCapIcon, ShieldCheckIcon, ServerStackIcon, EyeSlashIcon, CodeBracketIcon, UserCircleIcon } from '@heroicons/vue/24/outline'
 import { documentCatalog } from '../documents/registry'
 import { useResumeStore } from '../stores/resume'
 import AppLogo from '../components/AppLogo.vue'
@@ -273,7 +317,12 @@ export default {
     EyeIcon,
     PrinterIcon,
     HeartIcon,
-    AcademicCapIcon
+    AcademicCapIcon,
+    ShieldCheckIcon,
+    ServerStackIcon,
+    EyeSlashIcon,
+    CodeBracketIcon,
+    UserCircleIcon
   },
   setup() {
     return { resumeStore: useResumeStore() }
@@ -284,6 +333,28 @@ export default {
       authorName: 'Mizanur Rahman Ashiq',
       authorUrl: 'https://mrahmanashiq.vercel.app',
       documentCatalog,
+      privacyPoints: [
+        {
+          title: 'No servers',
+          description: 'The app has no backend. Nothing you enter is ever uploaded anywhere.',
+          icon: 'ServerStackIcon'
+        },
+        {
+          title: 'No sign-up',
+          description: 'Start building instantly. We never ask who you are or for an email.',
+          icon: 'UserCircleIcon'
+        },
+        {
+          title: 'No tracking',
+          description: 'No analytics, no ads, and no third-party cookies following you around.',
+          icon: 'EyeSlashIcon'
+        },
+        {
+          title: 'Open and auditable',
+          description: 'Every line is public on GitHub, so you can verify these claims yourself.',
+          icon: 'CodeBracketIcon'
+        }
+      ],
       features: [
         {
           id: 1,
@@ -538,6 +609,58 @@ export default {
   inset: 0;
   background: radial-gradient(ellipse 60% 120% at 50% -10%, rgba(255, 255, 255, 0.18), transparent 70%);
   pointer-events: none;
+}
+
+/* ---------- Privacy & open source ---------- */
+/* Base (light). Dark-mode overrides live in main.css as global html.dark rules,
+   matching the hero-section precedent (scoped :global(html.dark) does not win here). */
+.privacy-section {
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+/* Faint shield-tinted bloom, echoing the hero blooms but calmer */
+.privacy-bg {
+  position: absolute;
+  top: -120px;
+  right: -80px;
+  width: 420px;
+  height: 420px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.14), transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.privacy-eyebrow {
+  font-family: 'Sora', 'Inter', system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #059669;
+}
+
+.privacy-card {
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 0 12px 30px -22px rgba(15, 23, 42, 0.35);
+  transition: opacity 0.6s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+}
+.privacy-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px -20px rgba(15, 23, 42, 0.4);
+}
+.privacy-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  margin-bottom: 0.85rem;
+  color: #059669;
+  background: rgba(16, 185, 129, 0.12);
 }
 
 /* Chips are decorative; drop them on small screens to keep the card clean */

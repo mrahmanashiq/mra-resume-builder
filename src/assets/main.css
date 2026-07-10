@@ -98,6 +98,22 @@ html.dark .hero-section {
   background: linear-gradient(180deg, #0f172a 0%, #0b1220 62%);
 }
 
+/* Landing privacy section: dark overrides (scoped :global(html.dark) does not win) */
+html.dark .privacy-section {
+  background: linear-gradient(180deg, #0b1220 0%, #0f172a 100%);
+}
+html.dark .privacy-eyebrow {
+  color: #34d399;
+}
+html.dark .privacy-card {
+  background: #1e293b;
+  border-color: rgba(148, 163, 184, 0.16);
+}
+html.dark .privacy-icon {
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.16);
+}
+
 /* Print styles */
 @media print {
   body {

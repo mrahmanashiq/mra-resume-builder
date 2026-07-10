@@ -1,4 +1,5 @@
 import { exportToPDF, exportToImage } from '../utils/pdfExport'
+import { exportResumePDF, exportResumeWord } from '../utils/textExport'
 import { saveAs } from 'file-saver'
 
 /**
@@ -46,6 +47,31 @@ export function useDocumentExport({ store, previewElementId, baseName, label, to
     }
   }
 
+  async function downloadTextPDF() {
+    try {
+      toast.info('Generating text PDF... Please wait')
+      await exportResumePDF(store, `${safeBase()}_${label}_ATS.pdf`)
+      toast.success('Selectable-text PDF exported!')
+      return true
+    } catch (error) {
+      console.error('Error exporting text PDF:', error)
+      toast.error('Failed to export text PDF')
+      return false
+    }
+  }
+
+  function downloadWord() {
+    try {
+      exportResumeWord(store, `${safeBase()}_${label}.doc`)
+      toast.success('Word document exported!')
+      return true
+    } catch (error) {
+      console.error('Error exporting Word:', error)
+      toast.error('Failed to export Word document')
+      return false
+    }
+  }
+
   function printDocument() {
     window.print()
   }
@@ -66,5 +92,5 @@ export function useDocumentExport({ store, previewElementId, baseName, label, to
     return false
   }
 
-  return { downloadPDF, downloadImage, printDocument, downloadData, importData }
+  return { downloadPDF, downloadImage, downloadTextPDF, downloadWord, printDocument, downloadData, importData }
 }

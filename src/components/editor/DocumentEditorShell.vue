@@ -40,6 +40,25 @@
                    class="absolute right-0 mt-2 w-60 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">
                 <!-- Download formats - one click each -->
                 <p class="px-4 pt-1 pb-1 text-[11px] font-semibold text-gray-500 uppercase tracking-wide dark:text-slate-400">Download as</p>
+                <template v-if="supportsTextExport">
+                  <button type="button" @click="handleTextPDF"
+                          class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3 dark:hover:bg-slate-700">
+                    <DocumentArrowDownIcon class="w-4 h-4 text-gray-600 flex-shrink-0 dark:text-slate-400" />
+                    <span class="flex-1 min-w-0">
+                      <span class="block font-medium text-gray-800 dark:text-slate-100">PDF · selectable text</span>
+                      <span class="block text-xs text-gray-500 dark:text-slate-400">ATS-friendly, searchable</span>
+                    </span>
+                  </button>
+                  <button type="button" @click="handleWord"
+                          class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3 dark:hover:bg-slate-700">
+                    <DocumentTextIcon class="w-4 h-4 text-gray-600 flex-shrink-0 dark:text-slate-400" />
+                    <span class="flex-1 min-w-0">
+                      <span class="block font-medium text-gray-800 dark:text-slate-100">Word (.doc)</span>
+                      <span class="block text-xs text-gray-500 dark:text-slate-400">Editable in Word / Google Docs</span>
+                    </span>
+                  </button>
+                  <hr class="my-1 dark:border-slate-700">
+                </template>
                 <button v-for="f in formats" :key="f.id" type="button"
                         @click="handleDownloadFormat(f.id)"
                         class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3 dark:hover:bg-slate-700">
@@ -192,6 +211,25 @@
       <div class="mobile-sheet absolute inset-x-0 bottom-0 bg-white rounded-t-2xl p-4 pb-6 shadow-2xl dark:bg-slate-800">
         <div class="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-4 dark:bg-slate-600"></div>
         <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 px-1 dark:text-slate-400">Download as</p>
+        <template v-if="supportsTextExport">
+          <button type="button" @click="handleTextPDF"
+                  class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
+            <DocumentArrowDownIcon class="w-5 h-5 text-gray-600 flex-shrink-0 dark:text-slate-400" />
+            <span class="flex-1 min-w-0">
+              <span class="block font-medium text-gray-800 dark:text-slate-100">PDF · selectable text</span>
+              <span class="block text-xs text-gray-500 dark:text-slate-400">ATS-friendly, searchable</span>
+            </span>
+          </button>
+          <button type="button" @click="handleWord"
+                  class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
+            <DocumentTextIcon class="w-5 h-5 text-gray-600 flex-shrink-0 dark:text-slate-400" />
+            <span class="flex-1 min-w-0">
+              <span class="block font-medium text-gray-800 dark:text-slate-100">Word (.doc)</span>
+              <span class="block text-xs text-gray-500 dark:text-slate-400">Editable in Word / Google Docs</span>
+            </span>
+          </button>
+          <hr class="my-2 dark:border-slate-700">
+        </template>
         <button v-for="f in formats" :key="f.id" type="button"
                 @click="handleDownloadFormat(f.id)"
                 class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
@@ -255,7 +293,7 @@ import {
 
 // Download formats - each is a one-click download action.
 const DOWNLOAD_FORMATS = [
-  { id: 'pdf', label: 'PDF', desc: 'Best for printing & sharing', icon: DocumentArrowDownIcon },
+  { id: 'pdf', label: 'PDF (image)', desc: 'Exact design, best for printing', icon: DocumentArrowDownIcon },
   { id: 'png', label: 'PNG', desc: 'High-quality image', icon: PhotoIcon },
   { id: 'jpg', label: 'JPG', desc: 'Smaller image file', icon: PhotoIcon }
 ]
@@ -318,6 +356,10 @@ export default {
     isMobile() {
       return this.windowWidth < 1024
     },
+    supportsTextExport() {
+      // Text/ATS export is built from the resume data model.
+      return this.config.type === 'resume'
+    },
     asideStyle() {
       // On mobile the editor takes the full width (single-panel, toggled by Preview).
       // On desktop, collapsing hides the pane entirely (see v-if), so width is just the set width.
@@ -350,6 +392,18 @@ export default {
 
     toggleExportMenu() {
       this.showExportMenu = !this.showExportMenu
+    },
+
+    async handleTextPDF() {
+      this.showExportMenu = false
+      this.showMobileExport = false
+      await this.exporter.downloadTextPDF()
+    },
+
+    handleWord() {
+      this.showExportMenu = false
+      this.showMobileExport = false
+      this.exporter.downloadWord()
     },
 
     async handleDownloadFormat(format) {

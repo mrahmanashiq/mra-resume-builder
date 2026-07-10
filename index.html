@@ -8,20 +8,24 @@
     <meta name="description" content="Create polished, print-ready resumes and marriage biodatas in minutes. Choose a template, customize everything, and export to PDF, PNG, or JPG.">
     <meta name="keywords" content="resume builder, CV maker, marriage biodata, biodata maker, professional resume, ATS-friendly, job application">
     <title>MRA Builder - Resume & Marriage Biodata Maker</title>
-    
+    <link rel="canonical" href="https://resume-builder.click/">
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="MRA Builder">
+    <meta property="og:url" content="https://resume-builder.click/">
     <meta property="og:title" content="MRA Builder - Resume & Marriage Biodata Maker">
     <meta property="og:description" content="Create polished, print-ready resumes and marriage biodatas in minutes. Choose a template, customize everything, and export to PDF, PNG, or JPG.">
-    <meta property="og:image" content="/og-image.png">
+    <meta property="og:image" content="https://resume-builder.click/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://resume-builder.click/">
     <meta property="twitter:title" content="MRA Builder - Resume & Marriage Biodata Maker">
     <meta property="twitter:description" content="Create polished, print-ready resumes and marriage biodatas in minutes. Choose a template, customize everything, and export to PDF, PNG, or JPG.">
-    <meta property="twitter:image" content="/og-image.png">
+    <meta property="twitter:image" content="https://resume-builder.click/og-image.png">
     
     <meta name="color-scheme" content="light dark">
 
@@ -30,13 +34,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Apply saved theme before paint to avoid a flash of the wrong theme -->
+    <!-- Apply saved theme before paint to avoid a flash of the wrong theme.
+         Light is the default; only an explicit saved 'dark' choice turns dark on. -->
     <script>
       (function () {
         try {
-          var t = localStorage.getItem('mra-theme') || 'system';
-          var dark = t === 'dark' || (t === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-          document.documentElement.classList.toggle('dark', dark);
+          document.documentElement.classList.toggle('dark', localStorage.getItem('mra-theme') === 'dark');
         } catch (e) { /* ignore */ }
       })();
     </script>
