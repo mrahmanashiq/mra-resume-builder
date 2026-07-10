@@ -107,6 +107,17 @@
       <p class="text-xs text-gray-600 dark:text-slate-400 mb-4">
         Drag <span class="font-medium">⠿</span> to reorder · toggle to show or hide. Order applies to single-column templates (Developer, Clean ATS).
       </p>
+
+      <!-- Personal Info is the header: always first, not reorderable -->
+      <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-800/60 rounded-lg mb-3">
+        <div class="flex items-center space-x-3 min-w-0">
+          <LockClosedIcon class="w-5 h-5 text-gray-300 dark:text-slate-600 flex-shrink-0" />
+          <UserIcon class="w-5 h-5 text-gray-600 dark:text-slate-400 flex-shrink-0" />
+          <span class="font-medium truncate">Personal Info</span>
+          <span class="text-xs text-gray-400 dark:text-slate-500 flex-shrink-0">header</span>
+        </div>
+      </div>
+
       <draggable v-model="orderedSections" item-key="id" handle=".drag-handle" class="space-y-3">
         <template #item="{ element }">
           <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-800/60 rounded-lg">
@@ -145,6 +156,7 @@ import draggable from 'vuedraggable'
 import {
   UserIcon,
   Bars3Icon,
+  LockClosedIcon,
   BriefcaseIcon,
   AcademicCapIcon,
   WrenchScrewdriverIcon,
@@ -168,6 +180,7 @@ export default {
     draggable,
     UserIcon,
     Bars3Icon,
+    LockClosedIcon,
     BriefcaseIcon,
     AcademicCapIcon,
     WrenchScrewdriverIcon,
@@ -297,16 +310,18 @@ export default {
     }
   },
   computed: {
-    // Sections in the user's saved order (drag reorders settings.sectionsOrder).
+    // Reorderable body sections in the user's saved order (drag reorders
+    // settings.sectionsOrder). Personal Info is the header - always first and
+    // not reorderable - so it is excluded here and pinned separately.
     orderedSections: {
       get() {
         const meta = Object.fromEntries(this.sectionsConfig.map((s) => [s.id, s]))
-        return this.resumeStore.settings.sectionsOrder.map(
-          (id) => meta[id] || { id, name: id, icon: 'DocumentTextIcon' }
-        )
+        return this.resumeStore.settings.sectionsOrder
+          .filter((id) => id !== 'personalInfo')
+          .map((id) => meta[id] || { id, name: id, icon: 'DocumentTextIcon' })
       },
       set(list) {
-        this.resumeStore.reorderSections(list.map((s) => s.id))
+        this.resumeStore.reorderSections(['personalInfo', ...list.map((s) => s.id)])
       }
     }
   },
