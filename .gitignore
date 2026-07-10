@@ -36,5 +36,4 @@ docs/*
 
 *.tsbuildinfo
 
-# Local-only project instructions (kept on disk, never pushed)
 /CLAUDE.md
