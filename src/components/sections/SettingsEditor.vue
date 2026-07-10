@@ -220,6 +220,12 @@ export default {
           preview: 'bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600'
         },
         {
+          id: 'developer',
+          name: 'Developer',
+          description: 'Compact single-column: links row, skills by category, projects',
+          preview: 'bg-gradient-to-br from-slate-100 to-white dark:from-slate-700 dark:to-slate-800 border border-gray-300 dark:border-slate-600'
+        },
+        {
           id: 'sidebar',
           name: 'Sidebar',
           description: 'Two-column with side panel',

@@ -5,6 +5,7 @@
   <CreativeTemplate v-else-if="resumeStore.settings.template === 'creative'" />
   <MinimalistTemplate v-else-if="resumeStore.settings.template === 'minimalist'" />
   <AtsResumeTemplate v-else-if="resumeStore.settings.template === 'ats'" />
+  <DeveloperResumeTemplate v-else-if="resumeStore.settings.template === 'developer'" />
   <SidebarResumeTemplate v-else-if="resumeStore.settings.template === 'sidebar'" />
   <AcademicResumeTemplate v-else-if="resumeStore.settings.template === 'academic'" />
   <ColorfulResumeTemplate v-else-if="resumeStore.settings.template === 'colorful'" />
@@ -264,6 +265,7 @@ const ClassicTemplate = defineAsyncComponent(() => import('./ClassicTemplate.vue
 const CreativeTemplate = defineAsyncComponent(() => import('./CreativeTemplate.vue'))
 const MinimalistTemplate = defineAsyncComponent(() => import('./MinimalistTemplate.vue'))
 const AtsResumeTemplate = defineAsyncComponent(() => import('./AtsResumeTemplate.vue'))
+const DeveloperResumeTemplate = defineAsyncComponent(() => import('./DeveloperResumeTemplate.vue'))
 const SidebarResumeTemplate = defineAsyncComponent(() => import('./SidebarResumeTemplate.vue'))
 const AcademicResumeTemplate = defineAsyncComponent(() => import('./AcademicResumeTemplate.vue'))
 const ColorfulResumeTemplate = defineAsyncComponent(() => import('./ColorfulResumeTemplate.vue'))
@@ -283,6 +285,7 @@ export default {
     CreativeTemplate,
     MinimalistTemplate,
     AtsResumeTemplate,
+    DeveloperResumeTemplate,
     SidebarResumeTemplate,
     AcademicResumeTemplate,
     ColorfulResumeTemplate,

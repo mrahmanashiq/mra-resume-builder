@@ -150,6 +150,7 @@ const templateComponents = {
   creative: defineAsyncComponent(() => import('../components/templates/CreativeTemplate.vue')),
   minimalist: defineAsyncComponent(() => import('../components/templates/MinimalistTemplate.vue')),
   ats: defineAsyncComponent(() => import('../components/templates/AtsResumeTemplate.vue')),
+  developer: defineAsyncComponent(() => import('../components/templates/DeveloperResumeTemplate.vue')),
   sidebar: defineAsyncComponent(() => import('../components/templates/SidebarResumeTemplate.vue')),
   academic: defineAsyncComponent(() => import('../components/templates/AcademicResumeTemplate.vue')),
   colorful: defineAsyncComponent(() => import('../components/templates/ColorfulResumeTemplate.vue')),
@@ -197,6 +198,13 @@ export default {
           description: 'Single-column, ATS-friendly layout with ruled headings.',
           categories: ['Professional', 'Modern', 'Minimalist'],
           features: ['ATS-Friendly', 'Single-column', 'Clean']
+        },
+        {
+          id: 'developer',
+          name: 'Developer',
+          description: 'Compact left-aligned resume: links row, skills by category, and project bullets.',
+          categories: ['Professional', 'Modern', 'Minimalist'],
+          features: ['ATS-Friendly', 'Single-column', 'Links row', 'Dev-focused']
         },
         {
           id: 'modern',
