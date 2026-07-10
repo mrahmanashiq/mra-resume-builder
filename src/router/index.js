@@ -130,4 +130,16 @@ const router = createRouter({
   ]
 })
 
+// Recover gracefully when a lazily-imported route chunk is stale - e.g. a tab
+// was open across a new deploy, so the old index.html points at chunk hashes
+// that no longer exist. Without this, clicking such a route silently does
+// nothing. Hard-load the target so the browser fetches the fresh build.
+router.onError((error, to) => {
+  const msg = (error && error.message) || ''
+  const staleChunk = /dynamically imported module|module script failed|Failed to fetch|Importing a module/i.test(msg)
+  if (staleChunk && to && to.fullPath) {
+    window.location.assign(to.fullPath)
+  }
+})
+
 export default router
