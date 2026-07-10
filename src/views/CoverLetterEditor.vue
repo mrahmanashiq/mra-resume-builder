@@ -49,7 +49,13 @@
         </div>
 
         <div>
-          <h2 class="section-title mb-3">Letter</h2>
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="section-title mb-0">Letter</h2>
+            <button type="button" @click="generateFromResume"
+                    class="inline-flex items-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700 dark:text-primary-300">
+              <SparklesIcon class="w-4 h-4" /> Generate from resume
+            </button>
+          </div>
           <div class="grid grid-cols-1 gap-3">
             <input v-model="store.greeting" class="input-field" placeholder="Greeting" />
             <textarea v-model="store.body" rows="10" class="textarea-field" placeholder="Body (separate paragraphs with a blank line)"></textarea>
@@ -92,16 +98,17 @@
 
 <script>
 import { useToast } from 'vue-toastification'
-import { EyeIcon, PrinterIcon, CloudArrowDownIcon } from '@heroicons/vue/24/outline'
+import { EyeIcon, PrinterIcon, CloudArrowDownIcon, SparklesIcon } from '@heroicons/vue/24/outline'
 import { useCoverLetterStore } from '../stores/coverLetter'
 import { useResumeStore } from '../stores/resume'
 import { exportToPDF } from '../utils/pdfExport'
+import { generateCoverLetter } from '../utils/coverLetterGen'
 import AppLogo from '../components/AppLogo.vue'
 import DocumentSwitcher from '../components/editor/DocumentSwitcher.vue'
 
 export default {
   name: 'CoverLetterEditor',
-  components: { AppLogo, DocumentSwitcher, EyeIcon, PrinterIcon, CloudArrowDownIcon },
+  components: { AppLogo, DocumentSwitcher, EyeIcon, PrinterIcon, CloudArrowDownIcon, SparklesIcon },
   setup() {
     return { store: useCoverLetterStore(), toast: useToast() }
   },
@@ -130,6 +137,13 @@ export default {
       if (!this.store.sender.email && p.email) this.store.sender.email = p.email
       if (!this.store.sender.phone && p.phone) this.store.sender.phone = p.phone
       if (!this.store.sender.location && p.address) this.store.sender.location = p.address
+    },
+    generateFromResume() {
+      const resume = useResumeStore()
+      this.prefillFromResume()
+      this.store.body = generateCoverLetter(resume, this.store.recipient.company)
+      if (!this.store.signature) this.store.signature = this.store.sender.name
+      this.toast.success('Draft generated from your resume. Personalize it before sending.')
     },
     printDoc() {
       window.print()
