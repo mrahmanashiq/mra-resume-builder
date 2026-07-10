@@ -5,10 +5,14 @@
       <div class="cm-head-text">
         <h1 class="cm-name">{{ resumeStore.fullName }}</h1>
         <div v-if="personalInfo.title" class="cm-title">{{ personalInfo.title }}</div>
+        <div v-if="personalInfo.headerTagline" class="cm-tagline">{{ personalInfo.headerTagline }}</div>
         <div class="cm-contact">
           <span v-for="(item, i) in contactItems" :key="i">
             <span v-if="i > 0" class="cm-sep">·</span>{{ item }}
           </span>
+          <template v-for="(link, i) in customLinkEntries" :key="'cl' + i">
+            <span v-if="contactItems.length || i > 0" class="cm-sep">·</span><a :href="link.href" target="_blank" rel="noopener" class="cm-clink">{{ link.label }}</a>
+          </template>
         </div>
       </div>
       <div v-if="settings.showProfileImage && personalInfo.profileImage"
@@ -139,11 +143,20 @@ export default {
     contactItems() {
       const p = this.personalInfo
       return [p.email, p.phone, p.address, p.linkedin, p.github, p.website].filter(Boolean)
+    },
+    customLinkEntries() {
+      return (this.resumeStore.customLinks || [])
+        .filter(l => l && l.label && l.url)
+        .map(l => ({ label: l.label, href: this.formatUrl(l.url) }))
     }
   },
   methods: {
     hasAchievements(exp) {
       return exp.achievements && exp.achievements.some(a => a && a.trim())
+    },
+    formatUrl(url) {
+      if (!url) return ''
+      return /^https?:\/\//i.test(url) || url.startsWith('mailto:') ? url : `https://${url}`
     },
     formatDate(v) {
       if (!v) return ''
@@ -203,6 +216,17 @@ export default {
   font-weight: 500;
   opacity: 0.92;
   margin-top: 2px;
+}
+
+.cm-tagline {
+  font-size: 0.9em;
+  opacity: 0.9;
+  margin-top: 3px;
+}
+
+.cm-clink {
+  color: #ffffff;
+  text-decoration: underline;
 }
 
 .cm-contact {

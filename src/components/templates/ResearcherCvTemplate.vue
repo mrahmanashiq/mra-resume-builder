@@ -3,6 +3,7 @@
     <!-- Header -->
     <header class="rc-header">
       <h1 class="rc-name">{{ resumeStore.fullName }}</h1>
+      <div v-if="personalInfo.headerTagline" class="rc-tagline">{{ personalInfo.headerTagline }}</div>
       <div v-if="personalInfo.researchInterests" class="rc-interests">
         {{ personalInfo.researchInterests }}
       </div>
@@ -10,6 +11,9 @@
         <span v-for="(item, i) in contactItems" :key="i">
           <span v-if="i > 0" class="rc-dot">·</span>{{ item }}
         </span>
+        <template v-for="(link, i) in customLinkEntries" :key="'cl' + i">
+          <span v-if="contactItems.length || i > 0" class="rc-dot">·</span><a :href="link.href" target="_blank" rel="noopener" class="rc-clink">{{ link.label }}</a>
+        </template>
       </div>
     </header>
 
@@ -171,9 +175,18 @@ export default {
     contactItems() {
       const p = this.personalInfo
       return [p.website, p.email, p.phone, p.github, p.linkedin, p.scholar].filter(Boolean)
+    },
+    customLinkEntries() {
+      return (this.resumeStore.customLinks || [])
+        .filter(l => l && l.label && l.url)
+        .map(l => ({ label: l.label, href: this.formatUrl(l.url) }))
     }
   },
   methods: {
+    formatUrl(url) {
+      if (!url) return ''
+      return /^https?:\/\//i.test(url) || url.startsWith('mailto:') ? url : `https://${url}`
+    },
     formatDate(v) {
       if (!v) return ''
       try {
@@ -236,10 +249,21 @@ export default {
   line-height: 1.1;
 }
 
+.rc-tagline {
+  margin-top: 4px;
+  font-size: 0.9em;
+  color: #444;
+}
+
 .rc-interests {
   margin-top: 6px;
   font-size: 0.92em;
   color: #444;
+}
+
+.rc-clink {
+  color: var(--primary);
+  text-decoration: none;
 }
 
 .rc-contact {

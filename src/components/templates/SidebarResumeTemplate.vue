@@ -8,6 +8,7 @@
 
       <h1 class="sb-name">{{ resumeStore.fullName }}</h1>
       <div v-if="personalInfo.title" class="sb-role">{{ personalInfo.title }}</div>
+      <div v-if="personalInfo.headerTagline" class="sb-tagline">{{ personalInfo.headerTagline }}</div>
 
       <div class="sb-block">
         <h2 class="sb-heading">Contact</h2>
@@ -17,6 +18,9 @@
         <div v-if="personalInfo.linkedin" class="sb-line">{{ personalInfo.linkedin }}</div>
         <div v-if="personalInfo.github" class="sb-line">{{ personalInfo.github }}</div>
         <div v-if="personalInfo.website" class="sb-line">{{ personalInfo.website }}</div>
+        <div v-for="(link, i) in customLinkEntries" :key="i" class="sb-line">
+          <a :href="link.href" target="_blank" rel="noopener" class="sb-link">{{ link.label }}</a>
+        </div>
       </div>
 
       <div v-if="enabled.skills && skills.length" class="sb-block">
@@ -124,11 +128,20 @@ export default {
     },
     enabled() {
       return this.settings.sectionsEnabled
+    },
+    customLinkEntries() {
+      return (this.resumeStore.customLinks || [])
+        .filter(l => l && l.label && l.url)
+        .map(l => ({ label: l.label, href: this.formatUrl(l.url) }))
     }
   },
   methods: {
     hasAchievements(exp) {
       return exp.achievements && exp.achievements.some(a => a && a.trim())
+    },
+    formatUrl(url) {
+      if (!url) return ''
+      return /^https?:\/\//i.test(url) || url.startsWith('mailto:') ? url : `https://${url}`
     },
     formatDate(v) {
       if (!v) return ''
@@ -199,6 +212,12 @@ export default {
   margin-bottom: 6px;
 }
 
+.sb-tagline {
+  font-size: 0.85em;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
 .sb-block {
   margin-top: 20px;
 }
@@ -222,6 +241,12 @@ export default {
 
 .sb-muted {
   color: #6b7280;
+}
+
+.sb-link {
+  color: var(--primary);
+  text-decoration: none;
+  word-break: break-word;
 }
 
 .sb-subcat {

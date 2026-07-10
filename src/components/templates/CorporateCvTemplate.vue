@@ -5,11 +5,17 @@
       <div class="cv-head-text">
         <h1 class="cv-name">{{ resumeStore.fullName }}</h1>
         <div v-if="personalInfo.title" class="cv-role">{{ personalInfo.title }}</div>
+        <div v-if="personalInfo.headerTagline" class="cv-tagline">{{ personalInfo.headerTagline }}</div>
         <div class="cv-contact">
           <div v-if="personalInfo.phone">{{ personalInfo.phone }}</div>
           <div v-if="personalInfo.email">{{ personalInfo.email }}</div>
           <div v-if="personalInfo.address">{{ personalInfo.address }}</div>
           <div v-if="linkLine">{{ linkLine }}</div>
+          <div v-if="customLinkEntries.length" class="cv-clinks">
+            <template v-for="(link, i) in customLinkEntries" :key="i">
+              <span v-if="i > 0"> | </span><a :href="link.href" target="_blank" rel="noopener" class="cv-clink">{{ link.label }}</a>
+            </template>
+          </div>
         </div>
       </div>
       <div v-if="settings.showProfileImage && personalInfo.profileImage"
@@ -225,6 +231,11 @@ export default {
       const p = this.personalInfo
       return [p.linkedin, p.github, p.website].filter(Boolean).join('  |  ')
     },
+    customLinkEntries() {
+      return (this.resumeStore.customLinks || [])
+        .filter(l => l && l.label && l.url)
+        .map(l => ({ label: l.label, href: this.formatUrl(l.url) }))
+    },
     personalRows() {
       const d = this.personalDetails || {}
       const rows = [
@@ -245,6 +256,10 @@ export default {
   methods: {
     hasAchievements(exp) {
       return exp.achievements && exp.achievements.some(a => a && a.trim())
+    },
+    formatUrl(url) {
+      if (!url) return ''
+      return /^https?:\/\//i.test(url) || url.startsWith('mailto:') ? url : `https://${url}`
     },
     formatMonth(v) {
       if (!v) return ''
@@ -319,10 +334,21 @@ export default {
   margin: 2px 0 8px;
 }
 
+.cv-tagline {
+  font-size: 0.85em;
+  opacity: 0.9;
+  margin-bottom: 8px;
+}
+
 .cv-contact {
   font-size: 0.85em;
   opacity: 0.95;
   line-height: 1.55;
+}
+
+.cv-clink {
+  color: #ffffff;
+  text-decoration: underline;
 }
 
 .cv-photo {
