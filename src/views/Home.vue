@@ -363,9 +363,8 @@ export default {
         {
           id: 5,
           title: 'Easy Sharing',
-          description: 'Share your resume online with employers or save it to cloud storage.',
-          icon: 'ShareIcon',
-          comingSoon: true
+          description: 'Share your resume with a private link. No account needed, and your data stays in your browser.',
+          icon: 'ShareIcon'
         },
         {
           id: 6,
