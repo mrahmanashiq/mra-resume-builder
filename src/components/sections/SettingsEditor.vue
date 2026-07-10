@@ -74,7 +74,12 @@
             @update:model-value="updateFont($event)"
             :options="[
               { value: 'Inter', label: 'Inter (Modern)' },
+              { value: 'Roboto', label: 'Roboto (Clean)' },
+              { value: 'Lato', label: 'Lato (Professional)' },
+              { value: 'Open Sans', label: 'Open Sans (Neutral)' },
               { value: 'Merriweather', label: 'Merriweather (Serif)' },
+              { value: 'Georgia', label: 'Georgia (Serif)' },
+              { value: 'EB Garamond', label: 'Garamond (Elegant)' },
               { value: 'JetBrains Mono', label: 'JetBrains Mono (Monospace)' },
               { value: 'Arial', label: 'Arial (Classic)' },
               { value: 'Times New Roman', label: 'Times New Roman (Traditional)' }
