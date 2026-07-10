@@ -95,11 +95,8 @@ export default {
     },
     
     removeLanguage(id) {
-      const confirmDelete = confirm('Are you sure you want to remove this language?')
-      if (confirmDelete) {
-        this.resumeStore.removeLanguage(id)
-        this.toast.success('Language removed')
-      }
+      this.resumeStore.removeLanguage(id)
+      this.toast.success('Removed. Use Undo to restore.')
     },
     
     clearAll() {

@@ -63,10 +63,8 @@ export default {
       this.resumeStore.updateService(id, { [field]: value })
     },
     remove(id) {
-      if (confirm('Remove this entry?')) {
-        this.resumeStore.removeService(id)
-        this.toast.success('Entry removed')
-      }
+      this.resumeStore.removeService(id)
+      this.toast.success('Removed. Use Undo to restore.')
     }
   }
 }

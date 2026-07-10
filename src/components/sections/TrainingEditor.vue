@@ -81,10 +81,8 @@ export default {
       this.resumeStore.updateTraining(id, { [field]: value })
     },
     remove(id) {
-      if (confirm('Remove this training?')) {
-        this.resumeStore.removeTraining(id)
-        this.toast.success('Training removed')
-      }
+      this.resumeStore.removeTraining(id)
+      this.toast.success('Removed. Use Undo to restore.')
     }
   }
 }

@@ -126,11 +126,8 @@ export default {
     },
     
     removeCertification(id) {
-      const confirmDelete = confirm('Are you sure you want to remove this certification?')
-      if (confirmDelete) {
-        this.resumeStore.removeCertification(id)
-        this.toast.success('Certification removed')
-      }
+      this.resumeStore.removeCertification(id)
+      this.toast.success('Removed. Use Undo to restore.')
     },
     
     clearAll() {

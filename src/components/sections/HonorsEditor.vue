@@ -67,10 +67,8 @@ export default {
       this.resumeStore.updateAward(id, { [field]: value })
     },
     remove(id) {
-      if (confirm('Remove this award?')) {
-        this.resumeStore.removeAward(id)
-        this.toast.success('Award removed')
-      }
+      this.resumeStore.removeAward(id)
+      this.toast.success('Removed. Use Undo to restore.')
     }
   }
 }

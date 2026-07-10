@@ -205,11 +205,8 @@ export default {
     },
     
     removeExperience(id) {
-      const confirmDelete = confirm('Are you sure you want to remove this experience?')
-      if (confirmDelete) {
-        this.resumeStore.removeExperience(id)
-        this.toast.success('Experience removed')
-      }
+      this.resumeStore.removeExperience(id)
+      this.toast.success('Removed. Use Undo to restore.')
     },
     
     addAchievement(experienceId) {

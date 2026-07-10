@@ -67,10 +67,8 @@ export default {
       this.resumeStore.updateTalk(id, { [field]: value })
     },
     remove(id) {
-      if (confirm('Remove this talk?')) {
-        this.resumeStore.removeTalk(id)
-        this.toast.success('Talk removed')
-      }
+      this.resumeStore.removeTalk(id)
+      this.toast.success('Removed. Use Undo to restore.')
     }
   }
 }

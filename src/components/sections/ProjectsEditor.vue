@@ -159,11 +159,8 @@ export default {
     },
     
     removeProject(id) {
-      const confirmDelete = confirm('Are you sure you want to remove this project?')
-      if (confirmDelete) {
-        this.resumeStore.removeProject(id)
-        this.toast.success('Project removed')
-      }
+      this.resumeStore.removeProject(id)
+      this.toast.success('Removed. Use Undo to restore.')
     },
     
     addTechnology(projectId) {

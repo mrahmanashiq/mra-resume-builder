@@ -205,11 +205,8 @@ export default {
     },
     
     removeSkill(id) {
-      const confirmDelete = confirm('Are you sure you want to remove this skill?')
-      if (confirmDelete) {
-        this.resumeStore.removeSkill(id)
-        this.toast.success('Skill removed')
-      }
+      this.resumeStore.removeSkill(id)
+      this.toast.success('Removed. Use Undo to restore.')
     },
     
     addSuggestedSkill(suggestion) {

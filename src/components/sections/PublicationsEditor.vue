@@ -89,10 +89,8 @@ export default {
       this.resumeStore.updatePublication(id, { [field]: value })
     },
     remove(id) {
-      if (confirm('Remove this publication?')) {
-        this.resumeStore.removePublication(id)
-        this.toast.success('Publication removed')
-      }
+      this.resumeStore.removePublication(id)
+      this.toast.success('Removed. Use Undo to restore.')
     }
   }
 }

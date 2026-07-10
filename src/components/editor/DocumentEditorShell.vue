@@ -20,7 +20,7 @@
           </div>
 
           <div class="flex items-center space-x-2 sm:space-x-4">
-            <!-- Undo / redo (document-wide history) -->
+            <!-- Undo / redo (document-wide history); on phones this lives in the bottom action bar -->
             <div class="hidden sm:flex items-center rounded-lg border border-gray-300 overflow-hidden dark:border-slate-600">
               <button type="button" @click="undo" :disabled="!canUndo"
                       class="px-2.5 py-1.5 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed dark:text-slate-300 dark:hover:bg-slate-700"
@@ -207,7 +207,17 @@
     </div>
 
     <!-- Mobile action bar (always reachable while editing) -->
-    <div class="mobile-actionbar lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-gray-200 flex items-center gap-3 px-4 py-2 no-print dark:bg-slate-800 dark:border-slate-700">
+    <div class="mobile-actionbar lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-gray-200 flex items-center gap-2 px-4 py-2 no-print dark:bg-slate-800 dark:border-slate-700">
+      <button @click="undo" :disabled="!canUndo"
+              class="btn-outline flex-none px-3 py-2.5 disabled:opacity-40 disabled:cursor-not-allowed"
+              title="Undo" aria-label="Undo">
+        <ArrowUturnLeftIcon class="w-4 h-4" />
+      </button>
+      <button @click="redo" :disabled="!canRedo"
+              class="btn-outline flex-none px-3 py-2.5 disabled:opacity-40 disabled:cursor-not-allowed"
+              title="Redo" aria-label="Redo">
+        <ArrowUturnRightIcon class="w-4 h-4" />
+      </button>
       <button @click="togglePreview"
               class="btn-outline flex-1 flex items-center justify-center gap-2 py-2.5">
         <EyeIcon class="w-4 h-4" />

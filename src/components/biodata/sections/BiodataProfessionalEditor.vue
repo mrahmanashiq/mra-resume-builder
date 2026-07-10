@@ -128,10 +128,8 @@ export default {
       this.biodataStore.updateProExperience(id, { [field]: value })
     },
     removeExperience(id) {
-      if (confirm('Remove this experience?')) {
-        this.biodataStore.removeProExperience(id)
-        this.toast.success('Experience removed')
-      }
+      this.biodataStore.removeProExperience(id)
+      this.toast.success('Removed. Use Undo to restore.')
     },
     updateIncome(value) {
       this.biodataStore.updateProfessional('income', value)

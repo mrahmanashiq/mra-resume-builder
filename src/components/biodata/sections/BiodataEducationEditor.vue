@@ -94,10 +94,8 @@ export default {
       this.biodataStore.updateEducation(id, { [field]: value })
     },
     removeRow(id) {
-      if (confirm('Remove this qualification?')) {
-        this.biodataStore.removeEducation(id)
-        this.toast.success('Qualification removed')
-      }
+      this.biodataStore.removeEducation(id)
+      this.toast.success('Removed. Use Undo to restore.')
     }
   }
 }

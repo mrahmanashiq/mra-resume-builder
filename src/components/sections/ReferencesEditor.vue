@@ -79,10 +79,8 @@ export default {
       this.resumeStore.updateReference(id, { [field]: value })
     },
     remove(id) {
-      if (confirm('Remove this reference?')) {
-        this.resumeStore.removeReference(id)
-        this.toast.success('Reference removed')
-      }
+      this.resumeStore.removeReference(id)
+      this.toast.success('Removed. Use Undo to restore.')
     }
   }
 }
