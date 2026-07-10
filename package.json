@@ -25,6 +25,7 @@
     "mammoth": "^1.6.0",
     "papaparse": "^5.4.1",
     "pinia": "^2.1.6",
+    "qrcode": "^1.5.4",
     "tailwindcss": "^3.3.3",
     "uuid": "^9.0.0",
     "vue": "^3.4.29",
