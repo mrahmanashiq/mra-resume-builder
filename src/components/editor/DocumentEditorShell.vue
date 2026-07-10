@@ -527,10 +527,34 @@ export default {
       }
     },
 
+    closeAllOverlays() {
+      this.showExportMenu = false
+      this.showMobileExport = false
+      this.showShareModal = false
+      this.showAtsModal = false
+      this.showTipsModal = false
+      this.showImportModal = false
+    },
+
     handleShortcuts(event) {
+      // Escape closes any open menu or modal.
+      if (event.key === 'Escape') {
+        this.closeAllOverlays()
+        return
+      }
+
       const mod = event.ctrlKey || event.metaKey
       if (!mod) return
       const key = event.key.toLowerCase()
+
+      // Ctrl/Cmd+S: we auto-save, so just reassure the user (and stop the
+      // browser's "save page" dialog).
+      if (key === 's') {
+        event.preventDefault()
+        this.toast.success('Your changes are saved in this browser.')
+        return
+      }
+
       const isUndo = key === 'z' && !event.shiftKey
       const isRedo = (key === 'z' && event.shiftKey) || key === 'y'
       if (!isUndo && !isRedo) return
