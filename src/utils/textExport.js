@@ -427,3 +427,46 @@ export function exportResumeWord(store, filename) {
   saveAs(blob, filename)
   return true
 }
+
+/* ---------------- Plain text (.txt) ---------------- */
+
+export function exportResumeText(store, filename) {
+  const c = buildResumeContent(store)
+  const lines = []
+  const push = (s = '') => lines.push(s)
+
+  push(c.name || '')
+  if (c.title) push(c.title)
+  if (c.researchInterests) push(c.researchInterests)
+  if (c.contacts.length) push(c.contacts.join(' | '))
+  push('')
+
+  if (c.summary) {
+    push('SUMMARY')
+    push(c.summary)
+    push('')
+  }
+
+  c.sections.forEach((sec) => {
+    push(sec.heading.toUpperCase())
+    sec.entries.forEach((e) => {
+      const headline = [e.title, e.right].filter(Boolean).join('  ')
+      if (headline) push(headline)
+      if (e.subtitle) push(e.subtitle)
+      ;(e.lines || []).forEach((l) => push(l))
+      ;(e.bullets || []).forEach((b) => push('- ' + b))
+      if (e.title || e.subtitle || (e.bullets && e.bullets.length)) push('')
+    })
+    push('')
+  })
+
+  if (c.declaration) {
+    push('DECLARATION')
+    push(c.declaration)
+  }
+
+  const text = lines.join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n'
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' })
+  saveAs(blob, filename)
+  return true
+}

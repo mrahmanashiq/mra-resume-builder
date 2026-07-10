@@ -58,6 +58,14 @@
                       <span class="block text-xs text-gray-500 dark:text-slate-400">Editable in Word / Google Docs</span>
                     </span>
                   </button>
+                  <button type="button" @click="handleText"
+                          class="w-full text-left px-4 py-2 hover:bg-gray-50 flex items-center space-x-3 dark:hover:bg-slate-700">
+                    <Bars3Icon class="w-4 h-4 text-gray-600 flex-shrink-0 dark:text-slate-400" />
+                    <span class="flex-1 min-w-0">
+                      <span class="block font-medium text-gray-800 dark:text-slate-100">Plain text (.txt)</span>
+                      <span class="block text-xs text-gray-500 dark:text-slate-400">Paste into online forms</span>
+                    </span>
+                  </button>
                   <hr class="my-1 dark:border-slate-700">
                 </template>
                 <button v-for="f in formats" :key="f.id" type="button"
@@ -239,6 +247,14 @@
             <span class="flex-1 min-w-0">
               <span class="block font-medium text-gray-800 dark:text-slate-100">Word (.doc)</span>
               <span class="block text-xs text-gray-500 dark:text-slate-400">Editable in Word / Google Docs</span>
+            </span>
+          </button>
+          <button type="button" @click="handleText"
+                  class="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-50 active:bg-gray-100 flex items-center gap-3 dark:hover:bg-slate-700 dark:active:bg-slate-600">
+            <Bars3Icon class="w-5 h-5 text-gray-600 flex-shrink-0 dark:text-slate-400" />
+            <span class="flex-1 min-w-0">
+              <span class="block font-medium text-gray-800 dark:text-slate-100">Plain text (.txt)</span>
+              <span class="block text-xs text-gray-500 dark:text-slate-400">Paste into online forms</span>
             </span>
           </button>
           <hr class="my-2 dark:border-slate-700">
@@ -437,6 +453,12 @@ export default {
       this.showExportMenu = false
       this.showMobileExport = false
       this.exporter.downloadWord()
+    },
+
+    handleText() {
+      this.showExportMenu = false
+      this.showMobileExport = false
+      this.exporter.downloadText()
     },
 
     async handleDownloadFormat(format) {
