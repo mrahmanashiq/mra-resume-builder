@@ -23,7 +23,7 @@
         </div>
       </div>
 
-      <div v-if="enabled.skills && skills.length" class="sb-block">
+      <div v-if="enabled.skills && skills.length" class="sb-block" :style="{ order: ord('skills') }">
         <h2 class="sb-heading">Skills</h2>
         <template v-for="(list, cat) in resumeStore.skillsByCategory" :key="cat">
           <div class="sb-subcat">{{ cat }}</div>
@@ -33,7 +33,7 @@
         </template>
       </div>
 
-      <div v-if="enabled.education && education.length" class="sb-block">
+      <div v-if="enabled.education && education.length" class="sb-block" :style="{ order: ord('education') }">
         <h2 class="sb-heading">Education</h2>
         <div v-for="edu in education" :key="edu.id" class="sb-edu">
           <div class="sb-edu-degree">{{ edu.degree }}</div>
@@ -44,14 +44,14 @@
         </div>
       </div>
 
-      <div v-if="enabled.languages && languages.length" class="sb-block">
+      <div v-if="enabled.languages && languages.length" class="sb-block" :style="{ order: ord('languages') }">
         <h2 class="sb-heading">Languages</h2>
         <div v-for="l in languages" :key="l.id" class="sb-line">
           {{ l.name }}<span v-if="l.level" class="sb-muted"> - {{ l.level }}</span>
         </div>
       </div>
 
-      <div v-if="enabled.certifications && certifications.length" class="sb-block">
+      <div v-if="enabled.certifications && certifications.length" class="sb-block" :style="{ order: ord('certifications') }">
         <h2 class="sb-heading">Certifications</h2>
         <div v-for="c in certifications" :key="c.id" class="sb-cert">
           <div class="sb-cert-name">{{ c.name }}</div>
@@ -62,12 +62,12 @@
 
     <!-- Main column -->
     <main class="sb-main">
-      <section v-if="enabled.summary && personalInfo.summary" class="sb-section print-avoid-break">
+      <section v-if="enabled.summary && personalInfo.summary" class="sb-section print-avoid-break" :style="{ order: ord('summary') }">
         <h2 class="sb-main-heading">Profile</h2>
         <p class="sb-summary">{{ personalInfo.summary }}</p>
       </section>
 
-      <section v-if="enabled.experience && experience.length" class="sb-section">
+      <section v-if="enabled.experience && experience.length" class="sb-section" :style="{ order: ord('experience') }">
         <h2 class="sb-main-heading">Experience</h2>
         <div v-for="exp in resumeStore.sortedExperience" :key="exp.id" class="sb-entry print-avoid-break">
           <div class="sb-entry-row">
@@ -84,7 +84,7 @@
         </div>
       </section>
 
-      <section v-if="enabled.projects && projects.length" class="sb-section">
+      <section v-if="enabled.projects && projects.length" class="sb-section" :style="{ order: ord('projects') }">
         <h2 class="sb-main-heading">Projects</h2>
         <div v-for="p in projects" :key="p.id" class="sb-entry print-avoid-break">
           <div class="sb-entry-row">
@@ -136,6 +136,10 @@ export default {
     }
   },
   methods: {
+    ord(key) {
+      const i = this.settings.sectionsOrder.indexOf(key)
+      return i === -1 ? 99 : i
+    },
     hasAchievements(exp) {
       return exp.achievements && exp.achievements.some(a => a && a.trim())
     },
@@ -186,6 +190,9 @@ export default {
   background: var(--side-bg);
   padding: 30px 22px;
   box-sizing: border-box;
+  /* Sidebar blocks are ordered via CSS `order`; identity blocks keep order 0. */
+  display: flex;
+  flex-direction: column;
 }
 
 .sb-photo {
@@ -313,6 +320,9 @@ export default {
   min-width: 0;
   padding: 30px 28px;
   box-sizing: border-box;
+  /* Sections are ordered via CSS `order` from settings.sectionsOrder. */
+  display: flex;
+  flex-direction: column;
 }
 
 .sb-section {

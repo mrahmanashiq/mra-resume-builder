@@ -107,11 +107,11 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
         
         <!-- Left Column -->
-        <div class="space-y-10">
+        <div class="flex flex-col gap-10">
           
           <!-- Education -->
           <section v-if="resumeStore.settings.sectionsEnabled.education && resumeStore.education.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('education') }">
             <h3 class="section-title text-xl font-serif font-bold text-gray-900 mb-6 text-center border-b border-gray-300 pb-2">
               Education
             </h3>
@@ -133,7 +133,7 @@
 
           <!-- Certifications -->
           <section v-if="resumeStore.settings.sectionsEnabled.certifications && resumeStore.certifications.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('certifications') }">
             <h3 class="section-title text-xl font-serif font-bold text-gray-900 mb-6 text-center border-b border-gray-300 pb-2">
               Certifications
             </h3>
@@ -153,11 +153,11 @@
         </div>
 
         <!-- Right Column -->
-        <div class="space-y-10">
+        <div class="flex flex-col gap-10">
           
           <!-- Skills -->
           <section v-if="resumeStore.settings.sectionsEnabled.skills && resumeStore.skills.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('skills') }">
             <h3 class="section-title text-xl font-serif font-bold text-gray-900 mb-6 text-center border-b border-gray-300 pb-2">
               Core Competencies
             </h3>
@@ -178,7 +178,7 @@
 
           <!-- Projects -->
           <section v-if="resumeStore.settings.sectionsEnabled.projects && resumeStore.projects.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('projects') }">
             <h3 class="section-title text-xl font-serif font-bold text-gray-900 mb-6 text-center border-b border-gray-300 pb-2">
               Notable Projects
             </h3>
@@ -209,7 +209,7 @@
 
           <!-- Languages -->
           <section v-if="resumeStore.settings.sectionsEnabled.languages && resumeStore.languages.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('languages') }">
             <h3 class="section-title text-xl font-serif font-bold text-gray-900 mb-6 text-center border-b border-gray-300 pb-2">
               Languages
             </h3>
@@ -265,6 +265,10 @@ export default {
     }
   },
   methods: {
+    ord(key) {
+      const i = this.resumeStore.settings.sectionsOrder.indexOf(key)
+      return i === -1 ? 99 : i
+    },
     formatUrl(url) {
       if (!url) return ''
       return /^https?:\/\//i.test(url) || url.startsWith('mailto:') ? url : `https://${url}`

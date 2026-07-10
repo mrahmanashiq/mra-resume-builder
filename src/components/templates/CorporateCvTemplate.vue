@@ -25,13 +25,13 @@
 
     <div class="cv-body">
       <!-- Career Objective -->
-      <section v-if="enabled.summary && personalInfo.summary" class="cv-section print-avoid-break">
+      <section v-if="enabled.summary && personalInfo.summary" class="cv-section print-avoid-break" :style="{ order: ord('summary') }">
         <h2 class="cv-heading">Career Objective</h2>
         <p class="cv-text">{{ personalInfo.summary }}</p>
       </section>
 
       <!-- Employment History -->
-      <section v-if="enabled.experience && experience.length" class="cv-section">
+      <section v-if="enabled.experience && experience.length" class="cv-section" :style="{ order: ord('experience') }">
         <h2 class="cv-heading">Employment History</h2>
         <div v-for="exp in resumeStore.sortedExperience" :key="exp.id" class="cv-entry print-avoid-break">
           <div class="cv-entry-row">
@@ -49,7 +49,7 @@
       </section>
 
       <!-- Projects (optional) -->
-      <section v-if="enabled.projects && projects.length" class="cv-section">
+      <section v-if="enabled.projects && projects.length" class="cv-section" :style="{ order: ord('projects') }">
         <h2 class="cv-heading">Projects</h2>
         <div v-for="p in projects" :key="p.id" class="cv-entry print-avoid-break">
           <div class="cv-entry-row">
@@ -62,7 +62,7 @@
       </section>
 
       <!-- Academic Qualification -->
-      <section v-if="enabled.education && education.length" class="cv-section print-avoid-break">
+      <section v-if="enabled.education && education.length" class="cv-section print-avoid-break" :style="{ order: ord('education') }">
         <h2 class="cv-heading">Academic Qualification</h2>
         <table class="cv-table">
           <thead>
@@ -80,7 +80,7 @@
       </section>
 
       <!-- Training Summary -->
-      <section v-if="enabled.training && training.length" class="cv-section print-avoid-break">
+      <section v-if="enabled.training && training.length" class="cv-section print-avoid-break" :style="{ order: ord('training') }">
         <h2 class="cv-heading">Training Summary</h2>
         <table class="cv-table">
           <thead>
@@ -96,7 +96,7 @@
       </section>
 
       <!-- Key Skills -->
-      <section v-if="enabled.skills && skills.length" class="cv-section print-avoid-break">
+      <section v-if="enabled.skills && skills.length" class="cv-section print-avoid-break" :style="{ order: ord('skills') }">
         <h2 class="cv-heading">Key Skills</h2>
         <ul class="cv-skill-grid">
           <li v-for="s in skills" :key="s.id"><span class="cv-bullet">•</span><span>{{ s.name }}</span></li>
@@ -104,7 +104,7 @@
       </section>
 
       <!-- Professional Qualification (from certifications) -->
-      <section v-if="enabled.certifications && certifications.length" class="cv-section print-avoid-break">
+      <section v-if="enabled.certifications && certifications.length" class="cv-section print-avoid-break" :style="{ order: ord('certifications') }">
         <h2 class="cv-heading">Professional Qualification</h2>
         <table class="cv-table">
           <thead>
@@ -121,7 +121,7 @@
       </section>
 
       <!-- Accomplishments & Awards -->
-      <section v-if="enabled.accomplishments && accomplishmentList.length" class="cv-section print-avoid-break">
+      <section v-if="enabled.accomplishments && accomplishmentList.length" class="cv-section print-avoid-break" :style="{ order: ord('accomplishments') }">
         <h2 class="cv-heading">Accomplishments &amp; Awards</h2>
         <ul class="cv-list">
           <li v-for="a in accomplishmentList" :key="a.id"><span class="cv-bullet">•</span><span>{{ a.text }}</span></li>
@@ -129,7 +129,7 @@
       </section>
 
       <!-- Extra-Curricular Activities -->
-      <section v-if="enabled.extracurricular && extracurricularList.length" class="cv-section print-avoid-break">
+      <section v-if="enabled.extracurricular && extracurricularList.length" class="cv-section print-avoid-break" :style="{ order: ord('extracurricular') }">
         <h2 class="cv-heading">Extra-Curricular Activities</h2>
         <ul class="cv-list">
           <li v-for="e in extracurricularList" :key="e.id"><span class="cv-bullet">•</span><span>{{ e.text }}</span></li>
@@ -137,7 +137,7 @@
       </section>
 
       <!-- Language Proficiency -->
-      <section v-if="enabled.languages && languages.length" class="cv-section print-avoid-break">
+      <section v-if="enabled.languages && languages.length" class="cv-section print-avoid-break" :style="{ order: ord('languages') }">
         <h2 class="cv-heading">Language Proficiency</h2>
         <table class="cv-table">
           <thead>
@@ -150,7 +150,7 @@
       </section>
 
       <!-- Personal Details -->
-      <section v-if="enabled.personalDetails && personalRows.length" class="cv-section print-avoid-break">
+      <section v-if="enabled.personalDetails && personalRows.length" class="cv-section print-avoid-break" :style="{ order: ord('personalDetails') }">
         <h2 class="cv-heading">Personal Details</h2>
         <div class="cv-pd-grid">
           <template v-for="row in personalRows" :key="row.label">
@@ -161,7 +161,7 @@
       </section>
 
       <!-- References -->
-      <section v-if="enabled.references && references.length" class="cv-section print-avoid-break">
+      <section v-if="enabled.references && references.length" class="cv-section print-avoid-break" :style="{ order: ord('references') }">
         <h2 class="cv-heading">References</h2>
         <div class="cv-ref-grid">
           <div v-for="r in references" :key="r.id" class="cv-ref">
@@ -176,7 +176,7 @@
       </section>
 
       <!-- Declaration -->
-      <section v-if="enabled.declaration && declaration.text" class="cv-section print-avoid-break">
+      <section v-if="enabled.declaration && declaration.text" class="cv-section print-avoid-break" :style="{ order: ord('declaration') }">
         <p class="cv-declaration">{{ declaration.text }}</p>
         <div class="cv-sign">
           <div class="cv-sign-name">{{ resumeStore.fullName }}</div>
@@ -254,6 +254,10 @@ export default {
     }
   },
   methods: {
+    ord(key) {
+      const i = this.settings.sectionsOrder.indexOf(key)
+      return i === -1 ? 99 : i
+    },
     hasAchievements(exp) {
       return exp.achievements && exp.achievements.some(a => a && a.trim())
     },
@@ -363,6 +367,9 @@ export default {
 /* Body */
 .cv-body {
   padding: 24px 36px 40px;
+  /* Sections are ordered via CSS `order` from settings.sectionsOrder. */
+  display: flex;
+  flex-direction: column;
 }
 
 .cv-section {

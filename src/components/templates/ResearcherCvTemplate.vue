@@ -18,7 +18,7 @@
     </header>
 
     <!-- Research Experience -->
-    <section v-if="enabled.experience && experience.length" class="rc-section">
+    <section v-if="enabled.experience && experience.length" class="rc-section" :style="{ order: ord('experience') }">
       <h2 class="rc-heading">Research Experience</h2>
       <div v-for="exp in resumeStore.sortedExperience" :key="exp.id" class="rc-entry print-avoid-break">
         <div class="rc-row">
@@ -33,7 +33,7 @@
     </section>
 
     <!-- Education -->
-    <section v-if="enabled.education && education.length" class="rc-section">
+    <section v-if="enabled.education && education.length" class="rc-section" :style="{ order: ord('education') }">
       <h2 class="rc-heading">Education</h2>
       <div v-for="edu in education" :key="edu.id" class="rc-entry print-avoid-break">
         <div class="rc-row">
@@ -48,7 +48,7 @@
     </section>
 
     <!-- Publications -->
-    <section v-if="enabled.publications && publications.length" class="rc-section">
+    <section v-if="enabled.publications && publications.length" class="rc-section" :style="{ order: ord('publications') }">
       <h2 class="rc-heading">Publications</h2>
       <div v-for="pub in publications" :key="pub.id" class="rc-pub print-avoid-break">
         <div class="rc-pub-title">{{ pub.title }}</div>
@@ -64,7 +64,7 @@
     </section>
 
     <!-- Teaching -->
-    <section v-if="enabled.teaching && teaching.length" class="rc-section print-avoid-break">
+    <section v-if="enabled.teaching && teaching.length" class="rc-section print-avoid-break" :style="{ order: ord('teaching') }">
       <h2 class="rc-heading">Teaching</h2>
       <div v-for="t in teaching" :key="t.id" class="rc-entry">
         <div class="rc-row">
@@ -76,7 +76,7 @@
     </section>
 
     <!-- Honors & Awards -->
-    <section v-if="enabled.awards && awards.length" class="rc-section print-avoid-break">
+    <section v-if="enabled.awards && awards.length" class="rc-section print-avoid-break" :style="{ order: ord('awards') }">
       <h2 class="rc-heading">Honors &amp; Awards</h2>
       <div v-for="a in awards" :key="a.id" class="rc-line">
         <div class="rc-row">
@@ -88,7 +88,7 @@
     </section>
 
     <!-- Academic Service -->
-    <section v-if="enabled.service && service.length" class="rc-section print-avoid-break">
+    <section v-if="enabled.service && service.length" class="rc-section print-avoid-break" :style="{ order: ord('service') }">
       <h2 class="rc-heading">Academic Service</h2>
       <div v-for="s in service" :key="s.id" class="rc-line">
         <div class="rc-row">
@@ -99,7 +99,7 @@
     </section>
 
     <!-- Invited Talks -->
-    <section v-if="enabled.talks && talks.length" class="rc-section print-avoid-break">
+    <section v-if="enabled.talks && talks.length" class="rc-section print-avoid-break" :style="{ order: ord('talks') }">
       <h2 class="rc-heading">Invited Talks</h2>
       <div v-for="t in talks" :key="t.id" class="rc-line">
         <div class="rc-row">
@@ -110,7 +110,7 @@
     </section>
 
     <!-- Skills -->
-    <section v-if="enabled.skills && skills.length" class="rc-section print-avoid-break">
+    <section v-if="enabled.skills && skills.length" class="rc-section print-avoid-break" :style="{ order: ord('skills') }">
       <h2 class="rc-heading">Skills</h2>
       <div class="rc-skill-grid">
         <template v-for="(list, cat) in resumeStore.skillsByCategory" :key="cat">
@@ -121,13 +121,13 @@
     </section>
 
     <!-- Languages -->
-    <section v-if="enabled.languages && languages.length" class="rc-section print-avoid-break">
+    <section v-if="enabled.languages && languages.length" class="rc-section print-avoid-break" :style="{ order: ord('languages') }">
       <h2 class="rc-heading">Languages</h2>
       <div class="rc-lang">{{ languages.map(l => `${l.name} (${l.level})`).join('  ·  ') }}</div>
     </section>
 
     <!-- References -->
-    <section v-if="enabled.references && references.length" class="rc-section print-avoid-break">
+    <section v-if="enabled.references && references.length" class="rc-section print-avoid-break" :style="{ order: ord('references') }">
       <h2 class="rc-heading">References</h2>
       <div class="rc-ref-grid">
         <div v-for="r in references" :key="r.id" class="rc-ref">
@@ -183,6 +183,10 @@ export default {
     }
   },
   methods: {
+    ord(key) {
+      const i = this.settings.sectionsOrder.indexOf(key)
+      return i === -1 ? 99 : i
+    },
     formatUrl(url) {
       if (!url) return ''
       return /^https?:\/\//i.test(url) || url.startsWith('mailto:') ? url : `https://${url}`
@@ -236,9 +240,13 @@ export default {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   line-height: 1.4;
+  /* Sections are ordered via CSS `order` from settings.sectionsOrder. */
+  display: flex;
+  flex-direction: column;
 }
 
 .rc-header {
+  order: -1;
   margin-bottom: 22px;
 }
 

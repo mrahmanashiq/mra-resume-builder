@@ -24,7 +24,7 @@
     </section>
 
     <!-- Positions -->
-    <section v-if="enabled.experience && experience.length" class="ap-section">
+    <section v-if="enabled.experience && experience.length" class="ap-section" :style="{ order: ord('experience') }">
       <div class="ap-label">Positions</div>
       <div class="ap-content">
         <div v-for="exp in resumeStore.sortedExperience" :key="exp.id" class="ap-entry print-avoid-break">
@@ -39,7 +39,7 @@
     </section>
 
     <!-- Education -->
-    <section v-if="enabled.education && education.length" class="ap-section">
+    <section v-if="enabled.education && education.length" class="ap-section" :style="{ order: ord('education') }">
       <div class="ap-label">Education</div>
       <div class="ap-content">
         <div v-for="edu in education" :key="edu.id" class="ap-entry print-avoid-break">
@@ -55,7 +55,7 @@
     </section>
 
     <!-- Publications -->
-    <section v-if="enabled.publications && publications.length" class="ap-section">
+    <section v-if="enabled.publications && publications.length" class="ap-section" :style="{ order: ord('publications') }">
       <div class="ap-label">Publications</div>
       <div class="ap-content">
         <div v-for="(pub, i) in publications" :key="pub.id" class="ap-pub print-avoid-break">
@@ -79,7 +79,7 @@
     </section>
 
     <!-- Teaching -->
-    <section v-if="enabled.teaching && teaching.length" class="ap-section print-avoid-break">
+    <section v-if="enabled.teaching && teaching.length" class="ap-section print-avoid-break" :style="{ order: ord('teaching') }">
       <div class="ap-label">Teaching</div>
       <div class="ap-content">
         <div v-for="t in teaching" :key="t.id" class="ap-entry">
@@ -93,7 +93,7 @@
     </section>
 
     <!-- Invited Talks -->
-    <section v-if="enabled.talks && talks.length" class="ap-section print-avoid-break">
+    <section v-if="enabled.talks && talks.length" class="ap-section print-avoid-break" :style="{ order: ord('talks') }">
       <div class="ap-label">Invited Talks</div>
       <div class="ap-content">
         <div v-for="(t, i) in talks" :key="t.id" class="ap-entry">
@@ -106,7 +106,7 @@
     </section>
 
     <!-- Honors & Awards -->
-    <section v-if="enabled.awards && awards.length" class="ap-section print-avoid-break">
+    <section v-if="enabled.awards && awards.length" class="ap-section print-avoid-break" :style="{ order: ord('awards') }">
       <div class="ap-label">Honors &amp; Awards</div>
       <div class="ap-content">
         <div v-for="a in awards" :key="a.id" class="ap-entry">
@@ -120,7 +120,7 @@
     </section>
 
     <!-- Service -->
-    <section v-if="enabled.service && service.length" class="ap-section print-avoid-break">
+    <section v-if="enabled.service && service.length" class="ap-section print-avoid-break" :style="{ order: ord('service') }">
       <div class="ap-label">Service</div>
       <div class="ap-content">
         <div v-for="s in service" :key="s.id" class="ap-entry">
@@ -133,7 +133,7 @@
     </section>
 
     <!-- Skills -->
-    <section v-if="enabled.skills && skills.length" class="ap-section print-avoid-break">
+    <section v-if="enabled.skills && skills.length" class="ap-section print-avoid-break" :style="{ order: ord('skills') }">
       <div class="ap-label">Skills</div>
       <div class="ap-content">
         <div v-for="(list, cat) in resumeStore.skillsByCategory" :key="cat" class="ap-entry">
@@ -143,7 +143,7 @@
     </section>
 
     <!-- References -->
-    <section v-if="enabled.references && references.length" class="ap-section print-avoid-break">
+    <section v-if="enabled.references && references.length" class="ap-section print-avoid-break" :style="{ order: ord('references') }">
       <div class="ap-label">References</div>
       <div class="ap-content">
         <div v-for="r in references" :key="r.id" class="ap-entry">
@@ -194,6 +194,10 @@ export default {
     }
   },
   methods: {
+    ord(key) {
+      const i = this.settings.sectionsOrder.indexOf(key)
+      return i === -1 ? 99 : i
+    },
     formatUrl(url) {
       if (!url) return ''
       return /^https?:\/\//i.test(url) || url.startsWith('mailto:') ? url : `https://${url}`
@@ -247,9 +251,13 @@ export default {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   line-height: 1.4;
+  /* Sections are ordered via CSS `order` from settings.sectionsOrder. */
+  display: flex;
+  flex-direction: column;
 }
 
 .ap-header {
+  order: -1;
   border-bottom: 1.5px solid #111;
   padding-bottom: 10px;
   margin-bottom: 20px;

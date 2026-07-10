@@ -66,11 +66,11 @@
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
         
         <!-- Left Column -->
-        <div class="lg:col-span-2 space-y-10">
+        <div class="lg:col-span-2 flex flex-col gap-10">
           
           <!-- Experience (compact) -->
           <section v-if="resumeStore.settings.sectionsEnabled.experience && resumeStore.experience.length"
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('experience') }">
             <h3 class="section-title text-xl font-bold text-blue-600 mb-4 border-b-2 border-blue-600 pb-1">
               Professional Experience
             </h3>
@@ -108,7 +108,7 @@
 
           <!-- Projects -->
           <section v-if="resumeStore.settings.sectionsEnabled.projects && resumeStore.projects.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('projects') }">
             <h3 class="section-title text-2xl font-bold text-purple-600 mb-6 border-b-2 border-purple-600 pb-2">
               Featured Projects
             </h3>
@@ -139,11 +139,11 @@
         </div>
 
         <!-- Right Column -->
-        <div class="space-y-8">
+        <div class="flex flex-col gap-8">
           
           <!-- Skills -->
           <section v-if="resumeStore.settings.sectionsEnabled.skills && resumeStore.skills.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('skills') }">
             <h3 class="section-title text-xl font-bold text-gray-900 mb-4">Skills</h3>
             <div class="space-y-6">
               <div v-for="(skills, category) in resumeStore.skillsByCategory" 
@@ -167,7 +167,7 @@
 
           <!-- Education -->
           <section v-if="resumeStore.settings.sectionsEnabled.education && resumeStore.education.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('education') }">
             <h3 class="section-title text-xl font-bold text-gray-900 mb-4">Education</h3>
             <div class="space-y-4">
               <div v-for="edu in resumeStore.education" 
@@ -187,7 +187,7 @@
 
           <!-- Certifications -->
           <section v-if="resumeStore.settings.sectionsEnabled.certifications && resumeStore.certifications.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('certifications') }">
             <h3 class="section-title text-xl font-bold text-gray-900 mb-4">Certifications</h3>
             <div class="space-y-3">
               <div v-for="cert in resumeStore.activeCertifications" 
@@ -205,7 +205,7 @@
 
           <!-- Languages -->
           <section v-if="resumeStore.settings.sectionsEnabled.languages && resumeStore.languages.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('languages') }">
             <h3 class="section-title text-xl font-bold text-gray-900 mb-4">Languages</h3>
             <div class="space-y-3">
               <div v-for="lang in resumeStore.languages" 
@@ -265,6 +265,10 @@ export default {
     }
   },
   methods: {
+    ord(key) {
+      const i = this.resumeStore.settings.sectionsOrder.indexOf(key)
+      return i === -1 ? 99 : i
+    },
     formatUrl(url) {
       if (!url) return ''
       if (/^https?:\/\//i.test(url) || url.startsWith('mailto:')) return url

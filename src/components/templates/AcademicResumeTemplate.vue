@@ -21,13 +21,13 @@
     </header>
 
     <!-- Summary / Research Interests -->
-    <section v-if="enabled.summary && personalInfo.summary" class="ac-section print-avoid-break">
+    <section v-if="enabled.summary && personalInfo.summary" class="ac-section print-avoid-break" :style="{ order: ord('summary') }">
       <h2 class="ac-heading">Profile</h2>
       <p class="ac-summary">{{ personalInfo.summary }}</p>
     </section>
 
     <!-- Experience -->
-    <section v-if="enabled.experience && experience.length" class="ac-section">
+    <section v-if="enabled.experience && experience.length" class="ac-section" :style="{ order: ord('experience') }">
       <h2 class="ac-heading">Experience</h2>
       <div v-for="exp in resumeStore.sortedExperience" :key="exp.id" class="ac-entry print-avoid-break">
         <div class="ac-date">{{ dateRange(exp.startDate, exp.endDate, exp.current) }}</div>
@@ -44,7 +44,7 @@
     </section>
 
     <!-- Education -->
-    <section v-if="enabled.education && education.length" class="ac-section">
+    <section v-if="enabled.education && education.length" class="ac-section" :style="{ order: ord('education') }">
       <h2 class="ac-heading">Education</h2>
       <div v-for="edu in education" :key="edu.id" class="ac-entry print-avoid-break">
         <div class="ac-date">{{ dateRange(edu.startDate, edu.endDate) }}</div>
@@ -59,7 +59,7 @@
     </section>
 
     <!-- Selected Projects -->
-    <section v-if="enabled.projects && projects.length" class="ac-section">
+    <section v-if="enabled.projects && projects.length" class="ac-section" :style="{ order: ord('projects') }">
       <h2 class="ac-heading">Selected Projects</h2>
       <div v-for="p in projects" :key="p.id" class="ac-entry print-avoid-break">
         <div class="ac-date">{{ dateRange(p.startDate, p.endDate) }}</div>
@@ -73,7 +73,7 @@
     </section>
 
     <!-- Certifications -->
-    <section v-if="enabled.certifications && certifications.length" class="ac-section print-avoid-break">
+    <section v-if="enabled.certifications && certifications.length" class="ac-section print-avoid-break" :style="{ order: ord('certifications') }">
       <h2 class="ac-heading">Certifications</h2>
       <div v-for="c in certifications" :key="c.id" class="ac-entry">
         <div class="ac-date">{{ formatDate(c.date) }}</div>
@@ -84,7 +84,7 @@
     </section>
 
     <!-- Skills -->
-    <section v-if="enabled.skills && skills.length" class="ac-section print-avoid-break">
+    <section v-if="enabled.skills && skills.length" class="ac-section print-avoid-break" :style="{ order: ord('skills') }">
       <h2 class="ac-heading">Skills</h2>
       <div class="ac-skill-grid">
         <template v-for="(list, cat) in resumeStore.skillsByCategory" :key="cat">
@@ -95,7 +95,7 @@
     </section>
 
     <!-- Languages -->
-    <section v-if="enabled.languages && languages.length" class="ac-section print-avoid-break">
+    <section v-if="enabled.languages && languages.length" class="ac-section print-avoid-break" :style="{ order: ord('languages') }">
       <h2 class="ac-heading">Languages</h2>
       <div class="ac-skill-grid">
         <template v-for="l in languages" :key="l.id">
@@ -145,6 +145,10 @@ export default {
     }
   },
   methods: {
+    ord(key) {
+      const i = this.settings.sectionsOrder.indexOf(key)
+      return i === -1 ? 99 : i
+    },
     hasAchievements(exp) {
       return exp.achievements && exp.achievements.some(a => a && a.trim())
     },
@@ -186,9 +190,13 @@ export default {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   line-height: 1.45;
+  /* Sections are ordered via CSS `order` from settings.sectionsOrder. */
+  display: flex;
+  flex-direction: column;
 }
 
 .ac-header {
+  order: -1;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;

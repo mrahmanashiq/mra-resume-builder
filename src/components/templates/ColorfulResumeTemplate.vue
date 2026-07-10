@@ -22,13 +22,13 @@
 
     <div class="cm-body">
       <!-- Summary -->
-      <section v-if="enabled.summary && personalInfo.summary" class="cm-section print-avoid-break">
+      <section v-if="enabled.summary && personalInfo.summary" class="cm-section print-avoid-break" :style="{ order: ord('summary') }">
         <h2 class="cm-heading">Profile</h2>
         <p class="cm-summary">{{ personalInfo.summary }}</p>
       </section>
 
       <!-- Experience -->
-      <section v-if="enabled.experience && experience.length" class="cm-section">
+      <section v-if="enabled.experience && experience.length" class="cm-section" :style="{ order: ord('experience') }">
         <h2 class="cm-heading">Experience</h2>
         <div v-for="exp in resumeStore.sortedExperience" :key="exp.id" class="cm-entry print-avoid-break">
           <div class="cm-entry-row">
@@ -46,7 +46,7 @@
       </section>
 
       <!-- Projects -->
-      <section v-if="enabled.projects && projects.length" class="cm-section">
+      <section v-if="enabled.projects && projects.length" class="cm-section" :style="{ order: ord('projects') }">
         <h2 class="cm-heading">Projects</h2>
         <div v-for="p in projects" :key="p.id" class="cm-entry print-avoid-break">
           <div class="cm-entry-row">
@@ -62,7 +62,7 @@
       </section>
 
       <!-- Skills with bars -->
-      <section v-if="enabled.skills && skills.length" class="cm-section print-avoid-break">
+      <section v-if="enabled.skills && skills.length" class="cm-section print-avoid-break" :style="{ order: ord('skills') }">
         <h2 class="cm-heading">Skills</h2>
         <div class="cm-skill-cols">
           <div v-for="s in skills" :key="s.id" class="cm-skill">
@@ -78,7 +78,7 @@
       </section>
 
       <!-- Education -->
-      <section v-if="enabled.education && education.length" class="cm-section print-avoid-break">
+      <section v-if="enabled.education && education.length" class="cm-section print-avoid-break" :style="{ order: ord('education') }">
         <h2 class="cm-heading">Education</h2>
         <div v-for="edu in education" :key="edu.id" class="cm-entry">
           <div class="cm-entry-row">
@@ -91,8 +91,8 @@
       </section>
 
       <!-- Certifications + Languages in two columns -->
-      <div class="cm-two-col">
-        <section v-if="enabled.certifications && certifications.length" class="cm-section print-avoid-break">
+      <div class="cm-two-col" :style="{ order: ord('certifications') }">
+        <section v-if="enabled.certifications && certifications.length" class="cm-section print-avoid-break" :style="{ order: ord('certifications') }">
           <h2 class="cm-heading">Certifications</h2>
           <div v-for="c in certifications" :key="c.id" class="cm-mini">
             <div class="cm-mini-name">{{ c.name }}</div>
@@ -100,7 +100,7 @@
           </div>
         </section>
 
-        <section v-if="enabled.languages && languages.length" class="cm-section print-avoid-break">
+        <section v-if="enabled.languages && languages.length" class="cm-section print-avoid-break" :style="{ order: ord('languages') }">
           <h2 class="cm-heading">Languages</h2>
           <div v-for="l in languages" :key="l.id" class="cm-lang-row">
             <span>{{ l.name }}</span><span class="cm-muted">{{ l.level }}</span>
@@ -151,6 +151,10 @@ export default {
     }
   },
   methods: {
+    ord(key) {
+      const i = this.settings.sectionsOrder.indexOf(key)
+      return i === -1 ? 99 : i
+    },
     hasAchievements(exp) {
       return exp.achievements && exp.achievements.some(a => a && a.trim())
     },
@@ -253,6 +257,9 @@ export default {
 /* Body */
 .cm-body {
   padding: 26px 40px 40px;
+  /* Sections are ordered via CSS `order` from settings.sectionsOrder. */
+  display: flex;
+  flex-direction: column;
 }
 
 .cm-section {

@@ -7,10 +7,10 @@
     <div class="grid grid-cols-1 lg:grid-cols-5 min-h-screen">
       
       <!-- Left Sidebar -->
-      <div class="lg:col-span-2 bg-gradient-to-br from-purple-600 via-pink-500 to-red-500 text-white p-8">
-        
-        <!-- Profile Section -->
-        <div class="text-center mb-8">
+      <div class="lg:col-span-2 bg-gradient-to-br from-purple-600 via-pink-500 to-red-500 text-white p-8 flex flex-col gap-8">
+
+        <!-- Profile Section (identity - stays pinned at top) -->
+        <div class="text-center">
           <!-- Profile Image -->
           <div v-if="resumeStore.settings.showProfileImage && resumeStore.personalInfo.profileImage" 
                class="mb-6">
@@ -59,7 +59,7 @@
         </div>
 
         <!-- Summary -->
-        <section v-if="resumeStore.personalInfo.summary" class="mb-8">
+        <section v-if="resumeStore.personalInfo.summary" :style="{ order: ord('summary') }">
           <h3 class="text-xl font-bold mb-4 border-b-2 border-white/30 pb-2">About Me</h3>
           <p class="text-white/90 leading-relaxed text-sm">
             {{ resumeStore.personalInfo.summary }}
@@ -68,7 +68,7 @@
 
         <!-- Skills -->
         <section v-if="resumeStore.settings.sectionsEnabled.skills && resumeStore.skills.length" 
-                 class="resume-section mb-8">
+                 class="resume-section" :style="{ order: ord('skills') }">
           <h3 class="text-xl font-bold mb-4 border-b-2 border-white/30 pb-2">Skills</h3>
           <div class="space-y-4">
             <div v-for="(skills, category) in resumeStore.skillsByCategory" 
@@ -92,7 +92,7 @@
 
         <!-- Languages -->
         <section v-if="resumeStore.settings.sectionsEnabled.languages && resumeStore.languages.length" 
-                 class="resume-section mb-8">
+                 class="resume-section" :style="{ order: ord('languages') }">
           <h3 class="text-xl font-bold mb-4 border-b-2 border-white/30 pb-2">Languages</h3>
           <div class="space-y-2">
             <div v-for="lang in resumeStore.languages" 
@@ -106,7 +106,7 @@
 
         <!-- Certifications -->
         <section v-if="resumeStore.settings.sectionsEnabled.certifications && resumeStore.certifications.length" 
-                 class="resume-section">
+                 class="resume-section" :style="{ order: ord('certifications') }">
           <h3 class="text-xl font-bold mb-4 border-b-2 border-white/30 pb-2">Certifications</h3>
           <div class="space-y-3">
             <div v-for="cert in resumeStore.activeCertifications" 
@@ -123,11 +123,11 @@
       </div>
 
       <!-- Right Content Area -->
-      <div class="lg:col-span-3 p-8">
+      <div class="lg:col-span-3 p-8 flex flex-col gap-12">
         
         <!-- Experience -->
         <section v-if="resumeStore.settings.sectionsEnabled.experience && resumeStore.experience.length" 
-                 class="resume-section mb-12">
+                 class="resume-section" :style="{ order: ord('experience') }">
           <h3 class="section-title text-3xl font-bold text-gray-900 mb-8 relative">
             <span class="bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
               Experience
@@ -178,7 +178,7 @@
 
         <!-- Projects -->
         <section v-if="resumeStore.settings.sectionsEnabled.projects && resumeStore.projects.length" 
-                 class="resume-section mb-12">
+                 class="resume-section" :style="{ order: ord('projects') }">
           <h3 class="section-title text-3xl font-bold text-gray-900 mb-8 relative">
             <span class="bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
               Projects
@@ -213,7 +213,7 @@
 
         <!-- Education -->
         <section v-if="resumeStore.settings.sectionsEnabled.education && resumeStore.education.length" 
-                 class="resume-section">
+                 class="resume-section" :style="{ order: ord('education') }">
           <h3 class="section-title text-3xl font-bold text-gray-900 mb-8 relative">
             <span class="bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
               Education
@@ -278,6 +278,10 @@ export default {
     }
   },
   methods: {
+    ord(key) {
+      const i = this.resumeStore.settings.sectionsOrder.indexOf(key)
+      return i === -1 ? 99 : i
+    },
     formatUrl(url) {
       if (!url) return ''
       return /^https?:\/\//i.test(url) || url.startsWith('mailto:') ? url : `https://${url}`

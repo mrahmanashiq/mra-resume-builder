@@ -111,11 +111,11 @@
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
         
         <!-- Left Column -->
-        <div class="lg:col-span-2 space-y-16">
+        <div class="lg:col-span-2 flex flex-col gap-16">
           
           <!-- Projects -->
           <section v-if="resumeStore.settings.sectionsEnabled.projects && resumeStore.projects.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('projects') }">
             <h3 class="section-title text-sm font-medium text-gray-900 mb-8 uppercase tracking-wider">
               Projects
             </h3>
@@ -146,7 +146,7 @@
 
           <!-- Education -->
           <section v-if="resumeStore.settings.sectionsEnabled.education && resumeStore.education.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('education') }">
             <h3 class="section-title text-sm font-medium text-gray-900 mb-8 uppercase tracking-wider">
               Education
             </h3>
@@ -168,11 +168,11 @@
         </div>
 
         <!-- Right Column -->
-        <div class="space-y-16">
+        <div class="flex flex-col gap-16">
           
           <!-- Skills -->
           <section v-if="resumeStore.settings.sectionsEnabled.skills && resumeStore.skills.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('skills') }">
             <h3 class="section-title text-sm font-medium text-gray-900 mb-8 uppercase tracking-wider">
               Skills
             </h3>
@@ -191,7 +191,7 @@
 
           <!-- Certifications -->
           <section v-if="resumeStore.settings.sectionsEnabled.certifications && resumeStore.certifications.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('certifications') }">
             <h3 class="section-title text-sm font-medium text-gray-900 mb-8 uppercase tracking-wider">
               Certifications
             </h3>
@@ -210,7 +210,7 @@
 
           <!-- Languages -->
           <section v-if="resumeStore.settings.sectionsEnabled.languages && resumeStore.languages.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('languages') }">
             <h3 class="section-title text-sm font-medium text-gray-900 mb-8 uppercase tracking-wider">
               Languages
             </h3>
@@ -256,6 +256,10 @@ export default {
     }
   },
   methods: {
+    ord(key) {
+      const i = this.resumeStore.settings.sectionsOrder.indexOf(key)
+      return i === -1 ? 99 : i
+    },
     formatUrl(url) {
       if (!url) return ''
       return /^https?:\/\//i.test(url) || url.startsWith('mailto:') ? url : `https://${url}`
