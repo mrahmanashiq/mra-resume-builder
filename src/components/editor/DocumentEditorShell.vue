@@ -16,6 +16,7 @@
                     :class="saveStatus === 'saving' ? 'save-dot-saving' : 'save-dot-saved'"
                     :title="saveStatus === 'saving' ? 'Saving…' : 'Saved to this browser'"></span>
             </div>
+            <DocumentSwitcher :store="store" :type="config.type" :label="config.documentLabel" />
           </div>
 
           <div class="flex items-center space-x-2 sm:space-x-4">
@@ -302,6 +303,7 @@ import { useToast } from 'vue-toastification'
 import { useDocumentExport } from '../../composables/useDocumentExport'
 import AppLogo from '../AppLogo.vue'
 import AtsMatchModal from './AtsMatchModal.vue'
+import DocumentSwitcher from './DocumentSwitcher.vue'
 
 import {
   EyeIcon,
@@ -330,6 +332,7 @@ export default {
   components: {
     AppLogo,
     AtsMatchModal,
+    DocumentSwitcher,
     EyeIcon,
     CloudArrowDownIcon,
     ChevronDownIcon,
