@@ -5,7 +5,7 @@
       <div class="w-full px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16 gap-2">
           <div class="flex items-center space-x-3 min-w-0">
-            <router-link to="/" class="flex items-center"><AppLogo title="Cover Letter" /></router-link>
+            <router-link to="/" class="flex items-center"><AppLogo /></router-link>
             <DocumentSwitcher :store="store" type="coverLetter" label="Cover Letter" />
           </div>
           <div class="flex items-center gap-2 sm:gap-3">

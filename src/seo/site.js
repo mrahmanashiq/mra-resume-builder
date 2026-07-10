@@ -7,9 +7,9 @@
  * 'https://resume-builder.click' and update public/robots.txt + sitemap.xml.
  */
 export const SITE_URL = 'https://www.resume-builder.click'
-export const SITE_NAME = 'MRA Builder'
+export const SITE_NAME = 'Resume Builder'
 
-export const DEFAULT_TITLE = 'Free Resume & Marriage Biodata Maker - MRA Builder'
+export const DEFAULT_TITLE = 'Free Resume & Marriage Biodata Maker - Resume Builder'
 export const DEFAULT_DESCRIPTION =
   'Build an ATS-friendly resume or a marriage biodata for free. Pick a template, edit with a live preview, and download a print-ready PDF. No sign-up, open source, and your data never leaves your browser.'
 export const OG_IMAGE = `${SITE_URL}/og-image.png`

@@ -5,7 +5,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16 gap-2">
           <div class="flex items-center min-w-0">
-            <AppLogo title="MRA Builder" />
+            <AppLogo />
           </div>
           <div class="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
             <ThemeToggle />
@@ -262,36 +262,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-12">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center">
-          <h3 class="text-xl font-bold mb-2">MRA Builder</h3>
-          <p class="text-gray-400 dark:text-slate-500 mb-4">
-            Free &amp; open source résumé and marriage biodata builder.
-          </p>
-          <div class="flex justify-center items-center flex-wrap gap-x-6 gap-y-2">
-            <a :href="githubUrl" target="_blank" rel="noopener"
-               class="text-gray-300 hover:text-white transition-colors duration-200 font-medium">
-              ★ Open source on GitHub
-            </a>
-            <router-link to="/templates" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Templates</router-link>
-            <router-link to="/editor" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Resume</router-link>
-            <router-link to="/biodata" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Biodata</router-link>
-            <router-link to="/cover-letter" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Cover Letter</router-link>
-          </div>
-          <nav aria-label="Guides" class="mt-4 flex justify-center items-center flex-wrap gap-x-5 gap-y-2 text-sm">
-            <router-link to="/marriage-biodata-format" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Marriage biodata format</router-link>
-            <router-link to="/software-engineer-resume-template" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Software engineer resume</router-link>
-            <router-link to="/free-ats-resume-builder" class="text-gray-400 dark:text-slate-500 hover:text-white transition-colors duration-200">Free ATS resume builder</router-link>
-          </nav>
-          <p class="text-gray-500 dark:text-slate-400 text-sm mt-6">
-            Released under the MIT License · Built by
-            <a :href="authorUrl" target="_blank" rel="noopener"
-               class="text-gray-300 hover:text-white underline underline-offset-2">{{ authorName }}</a>
-          </p>
-        </div>
-      </div>
-    </footer>
+    <SiteFooter />
   </div>
 </template>
 
@@ -302,6 +273,7 @@ import { documentCatalog } from '../documents/registry'
 import { useResumeStore } from '../stores/resume'
 import AppLogo from '../components/AppLogo.vue'
 import TemplateThumbnail from '../components/TemplateThumbnail.vue'
+import SiteFooter from '../components/SiteFooter.vue'
 
 // Live preview components for the featured templates on the landing page.
 const homeTemplateComponents = {
@@ -316,6 +288,7 @@ export default {
   components: {
     AppLogo,
     TemplateThumbnail,
+    SiteFooter,
     PaintBrushIcon,
     DocumentTextIcon,
     CloudArrowDownIcon,

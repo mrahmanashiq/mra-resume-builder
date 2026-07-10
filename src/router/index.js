@@ -9,6 +9,8 @@ const Settings = () => import('../views/Settings.vue')
 const BiodataEditor = () => import('../views/BiodataEditor.vue')
 const BiodataTemplates = () => import('../views/BiodataTemplates.vue')
 const CoverLetterEditor = () => import('../views/CoverLetterEditor.vue')
+const Privacy = () => import('../views/Privacy.vue')
+const Terms = () => import('../views/Terms.vue')
 const LandingPage = () => import('../views/landing/LandingPage.vue')
 
 // SEO keyword landing pages, generated from the landing config.
@@ -28,7 +30,7 @@ const router = createRouter({
       component: Home,
       meta: {
         seo: {
-          title: 'Free Resume & Marriage Biodata Maker - MRA Builder',
+          title: 'Free Resume & Marriage Biodata Maker - Resume Builder',
           description:
             'Build an ATS-friendly resume or a marriage biodata for free. Pick a template, edit with a live preview, and download a print-ready PDF. No sign-up, open source, and your data never leaves your browser.'
         }
@@ -40,7 +42,7 @@ const router = createRouter({
       component: Editor,
       meta: {
         seo: {
-          title: 'Free Resume Builder - Create an ATS Resume Online - MRA Builder',
+          title: 'Free Resume Builder - Create an ATS Resume Online - Resume Builder',
           description:
             'Create a professional, ATS-friendly resume online for free. Live preview, customizable templates, and instant PDF, Word, PNG and JPG export. No sign-up.'
         }
@@ -52,7 +54,7 @@ const router = createRouter({
       component: Templates,
       meta: {
         seo: {
-          title: 'Free Resume Templates (ATS-Friendly) - MRA Builder',
+          title: 'Free Resume Templates (ATS-Friendly) - Resume Builder',
           description:
             'Browse free, ATS-friendly resume and CV templates. Customize colors, fonts, and sections, then download as PDF, PNG, or Word. No sign-up.'
         }
@@ -62,7 +64,7 @@ const router = createRouter({
       path: '/settings',
       name: 'settings',
       component: Settings,
-      meta: { seo: { title: 'Settings - MRA Builder', noindex: true } }
+      meta: { seo: { title: 'Settings - Resume Builder', noindex: true } }
     },
     {
       path: '/biodata',
@@ -70,7 +72,7 @@ const router = createRouter({
       component: BiodataEditor,
       meta: {
         seo: {
-          title: 'Marriage Biodata Maker - Create a Biodata for Marriage - MRA Builder',
+          title: 'Marriage Biodata Maker - Create a Biodata for Marriage - Resume Builder',
           description:
             'Create a formal marriage biodata for free. Add personal, family, education, and contact details, choose a template, and download a print-ready PDF. No sign-up.'
         }
@@ -82,7 +84,7 @@ const router = createRouter({
       component: BiodataTemplates,
       meta: {
         seo: {
-          title: 'Marriage Biodata Templates & Formats - MRA Builder',
+          title: 'Marriage Biodata Templates & Formats - Resume Builder',
           description:
             'Free marriage biodata templates and formats. Pick a design, fill in your details, and download a print-ready biodata PDF.'
         }
@@ -94,9 +96,33 @@ const router = createRouter({
       component: CoverLetterEditor,
       meta: {
         seo: {
-          title: 'Free Cover Letter Builder - MRA Builder',
+          title: 'Free Cover Letter Builder - Resume Builder',
           description:
             'Write a professional cover letter for free. Auto-fill your details from your resume, edit with a live preview, and download a print-ready PDF. No sign-up.'
+        }
+      }
+    },
+    {
+      path: '/privacy',
+      name: 'privacy',
+      component: Privacy,
+      meta: {
+        seo: {
+          title: 'Privacy and your data - Resume Builder',
+          description:
+            'How Resume Builder handles your data: no account, no server, and everything stays in your browser. Learn where your data lives and how to keep a backup.'
+        }
+      }
+    },
+    {
+      path: '/terms',
+      name: 'terms',
+      component: Terms,
+      meta: {
+        seo: {
+          title: 'Terms of use - Resume Builder',
+          description:
+            'Resume Builder terms of use: a free, open source tool provided as is. You own everything you create, and your data stays in your browser.'
         }
       }
     },

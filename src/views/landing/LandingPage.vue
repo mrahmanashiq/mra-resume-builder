@@ -3,7 +3,7 @@
     <!-- Nav -->
     <header class="sticky top-0 z-40 bg-white/85 backdrop-blur-md border-b border-gray-200 dark:border-slate-700 dark:bg-slate-900/85">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16 gap-2">
-        <router-link to="/" aria-label="MRA Builder home"><AppLogo title="MRA Builder" /></router-link>
+        <router-link to="/" aria-label="Resume Builder home"><AppLogo /></router-link>
         <div class="flex items-center gap-3">
           <ThemeToggle />
           <router-link :to="page.ctaRoute" class="btn-primary text-sm px-4 py-2 whitespace-nowrap">{{ page.ctaLabel }}</router-link>
@@ -63,21 +63,7 @@
       </section>
     </main>
 
-    <!-- Footer with internal links -->
-    <footer class="bg-gray-900 text-white py-10 mt-8">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-        <p class="text-gray-400 mb-4">Free and open source resume and marriage biodata builder.</p>
-        <nav class="flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm text-gray-400">
-          <router-link to="/" class="hover:text-white transition-colors">Home</router-link>
-          <router-link to="/editor" class="hover:text-white transition-colors">Resume builder</router-link>
-          <router-link to="/templates" class="hover:text-white transition-colors">Resume templates</router-link>
-          <router-link to="/biodata" class="hover:text-white transition-colors">Biodata maker</router-link>
-          <router-link to="/marriage-biodata-format" class="hover:text-white transition-colors">Biodata format</router-link>
-          <router-link to="/software-engineer-resume-template" class="hover:text-white transition-colors">Software engineer resume</router-link>
-          <router-link to="/free-ats-resume-builder" class="hover:text-white transition-colors">Free ATS builder</router-link>
-        </nav>
-      </div>
-    </footer>
+    <SiteFooter />
   </div>
 </template>
 
@@ -86,12 +72,13 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useHead } from '@unhead/vue'
 import AppLogo from '../../components/AppLogo.vue'
+import SiteFooter from '../../components/SiteFooter.vue'
 import { getLandingPage, landingJsonLd } from '../../seo/landing'
 import { absoluteUrl } from '../../seo/site'
 
 export default {
   name: 'LandingPage',
-  components: { AppLogo },
+  components: { AppLogo, SiteFooter },
   setup() {
     const route = useRoute()
     const page = computed(() => getLandingPage(route.meta && route.meta.landing))

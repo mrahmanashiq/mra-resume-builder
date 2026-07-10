@@ -25,7 +25,7 @@ import {
  */
 export const resumeConfig = {
   type: 'resume',
-  headerTitle: 'MRA Resume Builder',
+  headerTitle: 'Resume Builder',
   sidebarTitle: 'Edit Resume',
   documentLabel: 'Resume',
   previewElementId: 'resume-preview',

@@ -18,7 +18,7 @@ import {
  */
 export const biodataConfig = {
   type: 'biodata',
-  headerTitle: 'MRA Biodata Builder',
+  headerTitle: 'Resume Builder',
   sidebarTitle: 'Edit Biodata',
   documentLabel: 'Biodata',
   previewElementId: 'biodata-preview',

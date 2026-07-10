@@ -7,7 +7,7 @@ export const LANDING_PAGES = {
   'marriage-biodata-format': {
     slug: 'marriage-biodata-format',
     seo: {
-      title: 'Marriage Biodata Format - What to Include & Free Maker - MRA Builder',
+      title: 'Marriage Biodata Format - What to Include & Free Maker - Resume Builder',
       description:
         'A clear marriage biodata format with the sections to include: personal, family, education, profession, and partner preferences. Fill it in and download a free print-ready PDF.'
     },
@@ -42,7 +42,7 @@ export const LANDING_PAGES = {
   'software-engineer-resume-template': {
     slug: 'software-engineer-resume-template',
     seo: {
-      title: 'Software Engineer Resume Template - Free & ATS-Friendly - MRA Builder',
+      title: 'Software Engineer Resume Template - Free & ATS-Friendly - Resume Builder',
       description:
         'A free, ATS-friendly software engineer resume template. Add a summary, quantified experience, a skills section, and projects, then export to PDF or Word.'
     },
@@ -78,7 +78,7 @@ export const LANDING_PAGES = {
   'free-ats-resume-builder': {
     slug: 'free-ats-resume-builder',
     seo: {
-      title: 'Free ATS Resume Builder - No Sign-Up - MRA Builder',
+      title: 'Free ATS Resume Builder - No Sign-Up - Resume Builder',
       description:
         'A free, private ATS resume builder with no sign-up and no watermark. Pick an ATS-friendly template, edit with a live preview, and download a selectable-text PDF or Word file.'
     },
