@@ -20,6 +20,9 @@ coverage
 # Playwright MCP test artifacts
 .playwright-mcp/
 
+
+docs/*
+
 # Editor directories and files
 .vscode/*
 .vscode
@@ -32,3 +35,6 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+# Local-only project instructions (kept on disk, never pushed)
+/CLAUDE.md
