@@ -16,7 +16,17 @@
 </template>
 
 <script>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { useHead } from '@unhead/vue'
+import { routeHead } from './seo/site'
+
 export default {
-  name: 'App'
+  name: 'App',
+  setup() {
+    const route = useRoute()
+    // Single source of head/SEO: driven by each route's meta.seo (see router).
+    useHead(computed(() => routeHead(route)))
+  }
 }
 </script>

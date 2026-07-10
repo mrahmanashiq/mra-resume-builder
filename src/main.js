@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { createHead } from '@unhead/vue'
 import Toast from 'vue-toastification'
 import router from './router'
 import './assets/main.css'
@@ -15,6 +16,7 @@ useTheme().initTheme()
 
 const app = createApp(App)
 const pinia = createPinia()
+const head = createHead()
 pinia.use(createPersistedState({ stores: ['resume', 'biodata'] }))
 
 app.component('BaseSelect', BaseSelect)
@@ -22,6 +24,7 @@ app.component('BaseDatePicker', BaseDatePicker)
 app.component('ThemeToggle', ThemeToggle)
 
 app.use(pinia)
+app.use(head)
 app.use(router)
 app.use(Toast, {
   transition: "Vue-Toastification__bounce",

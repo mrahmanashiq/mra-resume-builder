@@ -14,32 +14,68 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      meta: {
+        seo: {
+          title: 'Free Resume & Marriage Biodata Maker - MRA Builder',
+          description:
+            'Build an ATS-friendly resume or a marriage biodata for free. Pick a template, edit with a live preview, and download a print-ready PDF. No sign-up, open source, and your data never leaves your browser.'
+        }
+      }
     },
     {
       path: '/editor',
       name: 'editor',
-      component: Editor
+      component: Editor,
+      meta: {
+        seo: {
+          title: 'Free Resume Builder - Create an ATS Resume Online - MRA Builder',
+          description:
+            'Create a professional, ATS-friendly resume online for free. Live preview, customizable templates, and instant PDF, Word, PNG and JPG export. No sign-up.'
+        }
+      }
     },
     {
       path: '/templates',
       name: 'templates',
-      component: Templates
+      component: Templates,
+      meta: {
+        seo: {
+          title: 'Free Resume Templates (ATS-Friendly) - MRA Builder',
+          description:
+            'Browse free, ATS-friendly resume and CV templates. Customize colors, fonts, and sections, then download as PDF, PNG, or Word. No sign-up.'
+        }
+      }
     },
     {
       path: '/settings',
       name: 'settings',
-      component: Settings
+      component: Settings,
+      meta: { seo: { title: 'Settings - MRA Builder', noindex: true } }
     },
     {
       path: '/biodata',
       name: 'biodata',
-      component: BiodataEditor
+      component: BiodataEditor,
+      meta: {
+        seo: {
+          title: 'Marriage Biodata Maker - Create a Biodata for Marriage - MRA Builder',
+          description:
+            'Create a formal marriage biodata for free. Add personal, family, education, and contact details, choose a template, and download a print-ready PDF. No sign-up.'
+        }
+      }
     },
     {
       path: '/biodata/templates',
       name: 'biodata-templates',
-      component: BiodataTemplates
+      component: BiodataTemplates,
+      meta: {
+        seo: {
+          title: 'Marriage Biodata Templates & Formats - MRA Builder',
+          description:
+            'Free marriage biodata templates and formats. Pick a design, fill in your details, and download a print-ready biodata PDF.'
+        }
+      }
     }
   ]
 })
