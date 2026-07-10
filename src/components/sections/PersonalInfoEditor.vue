@@ -58,20 +58,24 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Email</label>
-          <input type="email" 
+          <input type="email"
                  v-model="resumeStore.personalInfo.email"
                  @input="updatePersonalInfo('email', $event.target.value)"
                  class="input-field"
+                 :aria-invalid="!!emailHint"
                  placeholder="john.doe@example.com">
+          <p v-if="emailHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ emailHint }}</p>
         </div>
-        
+
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Phone</label>
-          <input type="tel" 
+          <input type="tel"
                  v-model="resumeStore.personalInfo.phone"
                  @input="updatePersonalInfo('phone', $event.target.value)"
                  class="input-field"
+                 :aria-invalid="!!phoneHint"
                  placeholder="+1 (555) 123-4567">
+          <p v-if="phoneHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ phoneHint }}</p>
         </div>
       </div>
 
@@ -92,30 +96,36 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">LinkedIn</label>
-          <input type="url" 
+          <input type="url"
                  v-model="resumeStore.personalInfo.linkedin"
                  @input="updatePersonalInfo('linkedin', $event.target.value)"
                  class="input-field"
+                 :aria-invalid="!!linkedinHint"
                  placeholder="linkedin.com/in/johndoe">
+          <p v-if="linkedinHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ linkedinHint }}</p>
         </div>
-        
+
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">GitHub</label>
-          <input type="url" 
+          <input type="url"
                  v-model="resumeStore.personalInfo.github"
                  @input="updatePersonalInfo('github', $event.target.value)"
                  class="input-field"
+                 :aria-invalid="!!githubHint"
                  placeholder="github.com/johndoe">
+          <p v-if="githubHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ githubHint }}</p>
         </div>
       </div>
 
       <div>
         <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Website/Portfolio</label>
-        <input type="url" 
+        <input type="url"
                v-model="resumeStore.personalInfo.website"
                @input="updatePersonalInfo('website', $event.target.value)"
                class="input-field"
+               :aria-invalid="!!websiteHint"
                placeholder="johndoe.dev">
+        <p v-if="websiteHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ websiteHint }}</p>
       </div>
     </div>
 
@@ -174,6 +184,7 @@
 import { useResumeStore } from '../../stores/resume'
 import { useToast } from 'vue-toastification'
 import { CameraIcon } from '@heroicons/vue/24/outline'
+import { emailHint, phoneHint, urlHint } from '../../utils/validators'
 
 export default {
   name: 'PersonalInfoEditor',
@@ -183,8 +194,25 @@ export default {
   setup() {
     const resumeStore = useResumeStore()
     const toast = useToast()
-    
+
     return { resumeStore, toast }
+  },
+  computed: {
+    emailHint() {
+      return emailHint(this.resumeStore.personalInfo.email)
+    },
+    phoneHint() {
+      return phoneHint(this.resumeStore.personalInfo.phone)
+    },
+    linkedinHint() {
+      return urlHint(this.resumeStore.personalInfo.linkedin, 'linkedin.com/in/username')
+    },
+    githubHint() {
+      return urlHint(this.resumeStore.personalInfo.github, 'github.com/username')
+    },
+    websiteHint() {
+      return urlHint(this.resumeStore.personalInfo.website, 'yourname.dev')
+    }
   },
   methods: {
     updatePersonalInfo(field, value) {
