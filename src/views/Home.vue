@@ -96,11 +96,11 @@
         <div class="reveal text-center mb-12">
           <h2 class="section-title text-3xl font-bold text-gray-900 dark:text-slate-100 mb-4">What do you want to build?</h2>
           <p class="text-lg text-gray-600 dark:text-slate-400">
-            One builder for résumés and marriage biodata. Academic CV is coming next.
+            One builder for résumés, marriage biodata, academic CVs, and cover letters.
           </p>
         </div>
 
-        <div class="reveal-grid grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div class="reveal-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
           <component :is="doc.available ? 'router-link' : 'div'"
                      v-for="doc in documentCatalog"
                      :key="doc.type"
@@ -297,7 +297,7 @@
 
 <script>
 import { defineAsyncComponent } from 'vue'
-import { PaintBrushIcon, DocumentTextIcon, CloudArrowDownIcon, ShareIcon, EyeIcon, PrinterIcon, HeartIcon, AcademicCapIcon, ShieldCheckIcon, ServerStackIcon, EyeSlashIcon, CodeBracketIcon, UserCircleIcon } from '@heroicons/vue/24/outline'
+import { PaintBrushIcon, DocumentTextIcon, CloudArrowDownIcon, ShareIcon, EyeIcon, PrinterIcon, HeartIcon, AcademicCapIcon, EnvelopeIcon, ShieldCheckIcon, ServerStackIcon, EyeSlashIcon, CodeBracketIcon, UserCircleIcon } from '@heroicons/vue/24/outline'
 import { documentCatalog } from '../documents/registry'
 import { useResumeStore } from '../stores/resume'
 import AppLogo from '../components/AppLogo.vue'
@@ -324,6 +324,7 @@ export default {
     PrinterIcon,
     HeartIcon,
     AcademicCapIcon,
+    EnvelopeIcon,
     ShieldCheckIcon,
     ServerStackIcon,
     EyeSlashIcon,
