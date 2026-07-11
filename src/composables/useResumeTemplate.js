@@ -53,7 +53,14 @@ export function useResumeTemplate() {
       // --fs-scale (base / 14 default). calc()+var() resolve to concrete px, so
       // html2canvas captures the scaled sizes correctly in PDF export.
       '--fs-scale': base / 14,
-      fontSize: `${base}px`,
+      // Relative type-scale nudges (default 1). Templates multiply an element's
+      // size by the var for its group, so a change is a one-line settings edit.
+      '--fs-heading': settings.value.headingScale || 1,
+      '--fs-body': settings.value.bodyScale || 1,
+      '--fs-detail': settings.value.detailScale || 1,
+      // Root size folds in bodyScale so default (unclassed) body text scales
+      // with the Body control; headings/details keep their own explicit sizes.
+      fontSize: `${base * (settings.value.bodyScale || 1)}px`,
       fontFamily: settings.value.font
     }
   })

@@ -30,13 +30,13 @@
 }
 
 .ac-name {
-  font-size: calc(2rem * var(--fs-scale));
+  font-size: calc(2rem * var(--fs-scale) * var(--fs-heading, 1));
   font-weight: 700;
   line-height: 1.1;
 }
 
 .ac-title {
-  font-size: calc(1.05rem * var(--fs-scale));
+  font-size: calc(1.05rem * var(--fs-scale) * var(--fs-heading, 1));
   font-style: italic;
   color: var(--primary);
   margin-top: 2px;
@@ -218,7 +218,7 @@
     box-shadow: none;
   }
   .ac-name {
-    font-size: calc(1.6rem * var(--fs-scale));
+    font-size: calc(1.6rem * var(--fs-scale) * var(--fs-heading, 1));
   }
   .ac-entry {
     grid-template-columns: 74px 1fr;

@@ -24,14 +24,14 @@
 }
 
 .cv-name {
-  font-size: calc(1.9rem * var(--fs-scale));
+  font-size: calc(1.9rem * var(--fs-scale) * var(--fs-heading, 1));
   font-weight: 800;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 
 .cv-role {
-  font-size: calc(1.02rem * var(--fs-scale));
+  font-size: calc(1.02rem * var(--fs-scale) * var(--fs-heading, 1));
   font-weight: 500;
   opacity: 0.9;
   margin: 2px 0 8px;
@@ -280,7 +280,7 @@
     padding: 20px 16px 28px;
   }
   .cv-name {
-    font-size: calc(1.5rem * var(--fs-scale));
+    font-size: calc(1.5rem * var(--fs-scale) * var(--fs-heading, 1));
   }
   .cv-skill-grid,
   .cv-ref-grid {

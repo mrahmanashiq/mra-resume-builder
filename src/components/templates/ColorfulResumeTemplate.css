@@ -27,13 +27,13 @@
 }
 
 .cm-name {
-  font-size: calc(2.1rem * var(--fs-scale));
+  font-size: calc(2.1rem * var(--fs-scale) * var(--fs-heading, 1));
   font-weight: 800;
   line-height: 1.1;
 }
 
 .cm-title {
-  font-size: calc(1.1rem * var(--fs-scale));
+  font-size: calc(1.1rem * var(--fs-scale) * var(--fs-heading, 1));
   font-weight: 500;
   opacity: 0.92;
   margin-top: 2px;
@@ -263,7 +263,7 @@
     padding: 20px 18px 28px;
   }
   .cm-name {
-    font-size: calc(1.7rem * var(--fs-scale));
+    font-size: calc(1.7rem * var(--fs-scale) * var(--fs-heading, 1));
   }
   .cm-skill-cols,
   .cm-two-col {

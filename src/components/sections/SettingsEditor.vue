@@ -90,13 +90,48 @@
           <label class="block text-sm text-gray-700 dark:text-slate-300 mb-2">
             Font Size: {{ resumeStore.settings.fontSize }}px
           </label>
-          <input type="range" 
+          <input type="range"
                  :value="resumeStore.settings.fontSize"
                  @input="updateFontSize($event.target.value)"
-                 min="12" 
-                 max="18" 
+                 min="12"
+                 max="18"
                  step="1"
                  class="w-full">
+        </div>
+
+        <div class="pt-1">
+          <p class="text-xs text-gray-500 dark:text-slate-400 mb-3">
+            Fine-tune sizes relative to the base font size above. 100% keeps the template's own proportions.
+          </p>
+          <div class="space-y-3">
+            <div>
+              <label class="block text-sm text-gray-700 dark:text-slate-300 mb-2">
+                Headings: {{ Math.round((resumeStore.settings.headingScale || 1) * 100) }}%
+              </label>
+              <input type="range"
+                     :value="resumeStore.settings.headingScale || 1"
+                     @input="updateScale('headingScale', $event.target.value)"
+                     min="0.8" max="1.3" step="0.05" class="w-full">
+            </div>
+            <div>
+              <label class="block text-sm text-gray-700 dark:text-slate-300 mb-2">
+                Body text: {{ Math.round((resumeStore.settings.bodyScale || 1) * 100) }}%
+              </label>
+              <input type="range"
+                     :value="resumeStore.settings.bodyScale || 1"
+                     @input="updateScale('bodyScale', $event.target.value)"
+                     min="0.8" max="1.3" step="0.05" class="w-full">
+            </div>
+            <div>
+              <label class="block text-sm text-gray-700 dark:text-slate-300 mb-2">
+                Details (tags, dates, meta): {{ Math.round((resumeStore.settings.detailScale || 1) * 100) }}%
+              </label>
+              <input type="range"
+                     :value="resumeStore.settings.detailScale || 1"
+                     @input="updateScale('detailScale', $event.target.value)"
+                     min="0.8" max="1.3" step="0.05" class="w-full">
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -392,6 +427,10 @@ export default {
     updateFontSize(size) {
       this.resumeStore.updateSettings({ fontSize: parseInt(size) })
     },
+
+    updateScale(key, value) {
+      this.resumeStore.updateSettings({ [key]: parseFloat(value) })
+    },
     
     toggleSection(sectionId) {
       this.resumeStore.toggleSection(sectionId)
@@ -420,6 +459,9 @@ export default {
           },
           font: 'Inter',
           fontSize: 14,
+          headingScale: 1,
+          bodyScale: 1,
+          detailScale: 1,
           spacing: 'normal'
         })
         this.toast.success('Settings reset to default!')

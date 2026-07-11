@@ -121,9 +121,9 @@
                 
                 <div v-if="project.technologies && project.technologies.length" 
                      class="flex flex-wrap gap-2 mb-4">
-                  <span v-for="tech in project.technologies" 
+                  <span v-for="tech in project.technologies"
                         :key="tech"
-                        class="px-3 py-1 bg-purple-100 text-purple-800 text-sm rounded-full">
+                        class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">
                     {{ tech }}
                   </span>
                 </div>

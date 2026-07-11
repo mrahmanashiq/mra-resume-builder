@@ -322,7 +322,11 @@ export default {
         '--accent': colors.accent,
         '--text': colors.text,
         '--background': colors.background,
-        fontSize: `${this.resumeStore.settings.fontSize}px`,
+        '--fs-scale': this.resumeStore.settings.fontSize / 14,
+        '--fs-heading': this.resumeStore.settings.headingScale || 1,
+        '--fs-body': this.resumeStore.settings.bodyScale || 1,
+        '--fs-detail': this.resumeStore.settings.detailScale || 1,
+        fontSize: `${this.resumeStore.settings.fontSize * (this.resumeStore.settings.bodyScale || 1)}px`,
         fontFamily: this.resumeStore.settings.font
       }
     },

@@ -23,15 +23,18 @@
 
 /* Base font-size scaling: redefine the Tailwind text utilities this template
    uses so they scale with --fs-scale (Settings font size). Scoped via
-   <style scoped>, so only this template is affected - not the editor UI. */
-.text-xs { font-size: calc(0.75rem * var(--fs-scale)); }
-.text-sm { font-size: calc(0.875rem * var(--fs-scale)); }
-.text-base { font-size: calc(1rem * var(--fs-scale)); }
-.text-lg { font-size: calc(1.125rem * var(--fs-scale)); }
-.text-xl { font-size: calc(1.25rem * var(--fs-scale)); }
-.text-2xl { font-size: calc(1.5rem * var(--fs-scale)); }
-.text-4xl { font-size: calc(2.25rem * var(--fs-scale)); }
+   <style scoped>, so only this template is affected - not the editor UI.
+   Each tier also multiplies by its type-scale group so users can nudge
+   headings / body / details independently: small text = details, medium =
+   body, large = headings. Group vars default to 1 (no change). */
+.text-xs { font-size: calc(0.75rem * var(--fs-scale) * var(--fs-detail, 1)); }
+.text-sm { font-size: calc(0.875rem * var(--fs-scale) * var(--fs-detail, 1)); }
+.text-base { font-size: calc(1rem * var(--fs-scale) * var(--fs-body, 1)); }
+.text-lg { font-size: calc(1.125rem * var(--fs-scale) * var(--fs-body, 1)); }
+.text-xl { font-size: calc(1.25rem * var(--fs-scale) * var(--fs-heading, 1)); }
+.text-2xl { font-size: calc(1.5rem * var(--fs-scale) * var(--fs-heading, 1)); }
+.text-4xl { font-size: calc(2.25rem * var(--fs-scale) * var(--fs-heading, 1)); }
 @media (min-width: 768px) {
-  .md\:text-2xl { font-size: calc(1.5rem * var(--fs-scale)); }
-  .md\:text-5xl { font-size: calc(3rem * var(--fs-scale)); }
+  .md\:text-2xl { font-size: calc(1.5rem * var(--fs-scale) * var(--fs-heading, 1)); }
+  .md\:text-5xl { font-size: calc(3rem * var(--fs-scale) * var(--fs-heading, 1)); }
 }

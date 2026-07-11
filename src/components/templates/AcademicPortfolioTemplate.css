@@ -26,7 +26,7 @@
 }
 
 .ap-name {
-  font-size: calc(2.2rem * var(--fs-scale));
+  font-size: calc(2.2rem * var(--fs-scale) * var(--fs-heading, 1));
   font-weight: 400;
   line-height: 1.1;
 }
@@ -210,7 +210,7 @@
     box-shadow: none;
   }
   .ap-name {
-    font-size: calc(1.7rem * var(--fs-scale));
+    font-size: calc(1.7rem * var(--fs-scale) * var(--fs-heading, 1));
   }
   .ap-section {
     grid-template-columns: 96px 1fr;
