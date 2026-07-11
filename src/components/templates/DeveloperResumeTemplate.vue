@@ -102,82 +102,40 @@
 </template>
 
 <script>
-import { useResumeStore } from '../../stores/resume'
-import { storeToRefs } from 'pinia'
-import { format, parseISO } from 'date-fns'
 import LinkIcon from '../LinkIcon.vue'
 import { iconKeyFor } from '../../utils/linkIcons'
+import { useResumeTemplate } from '../../composables/useResumeTemplate'
 
 /**
  * Compact, left-aligned single-column resume aimed at software engineers:
  * a combined links + contact row in the header, skills grouped by category on
  * one line each, and projects as "Name: description" bullets. Uses border-bottom
  * headings and inline bullets so it captures cleanly to PDF (see project notes).
+ *
+ * Shared logic (dates, ord, formatUrl, colour vars, ...) comes from
+ * useResumeTemplate(); only the combined header row is template-specific.
  */
 export default {
   name: 'DeveloperResumeTemplate',
   components: { LinkIcon },
   setup() {
-    const resumeStore = useResumeStore()
-    const { personalInfo, skills, experience, education, projects, certifications, languages, settings } =
-      storeToRefs(resumeStore)
-    return { resumeStore, personalInfo, skills, experience, education, projects, certifications, languages, settings }
+    return useResumeTemplate()
   },
   computed: {
-    templateStyles() {
-      const c = this.settings.colorScheme
-      return {
-        '--primary': c.primary,
-        '--text': c.text,
-        '--background': c.background,
-        fontSize: `${this.settings.fontSize}px`,
-        fontFamily: this.settings.font
-      }
-    },
-    enabled() {
-      return this.settings.sectionsEnabled
-    },
+    // Developer shows links + contact as one combined row with its own labels.
     headerEntries() {
       const p = this.personalInfo
       const out = []
       if (p.github) out.push({ text: 'Github', href: this.formatUrl(p.github), icon: 'github' })
       if (p.linkedin) out.push({ text: 'Linkedin', href: this.formatUrl(p.linkedin), icon: 'linkedin' })
       if (p.website) out.push({ text: 'Portfolio', href: this.formatUrl(p.website), icon: 'website' })
-      for (const l of this.resumeStore.customLinks || []) {
+      for (const l of this.customLinks || []) {
         if (l && l.label && l.url) out.push({ text: l.label, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) })
       }
       if (p.email) out.push({ text: p.email, href: `mailto:${p.email}`, icon: 'email' })
       if (p.phone) out.push({ text: p.phone, href: null, icon: 'phone' })
       if (p.address) out.push({ text: p.address, href: null, icon: 'location' })
       return out
-    }
-  },
-  methods: {
-    ord(key) {
-      const i = this.settings.sectionsOrder.indexOf(key)
-      return i === -1 ? 99 : i
-    },
-    hasAchievements(exp) {
-      return exp.achievements && exp.achievements.some(a => a && a.trim())
-    },
-    formatUrl(url) {
-      if (!url) return ''
-      if (/^https?:\/\//i.test(url) || url.startsWith('mailto:')) return url
-      return `https://${url}`
-    },
-    formatDate(v) {
-      if (!v) return ''
-      try {
-        return format(parseISO(v + '-01'), 'MMM yyyy')
-      } catch {
-        return v
-      }
-    },
-    dateRange(start, end, current = false) {
-      const s = this.formatDate(start)
-      const e = current ? 'Present' : this.formatDate(end)
-      if (s && e) return `${s} - ${e}`
-      return s || e || ''
     }
   }
 }

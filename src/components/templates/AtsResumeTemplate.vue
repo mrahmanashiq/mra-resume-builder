@@ -10,8 +10,8 @@
           <span v-if="i > 0" class="ats-sep">|</span><LinkIcon v-if="settings.showLinkIcons" :name="item.icon" class="ats-entry-icon" />{{ item.text }}
         </span>
       </div>
-      <div v-if="links.length" class="ats-contact ats-links">
-        <span v-for="(link, i) in links" :key="'l' + i">
+      <div v-if="headerLinks.length" class="ats-contact ats-links">
+        <span v-for="(link, i) in headerLinks" :key="'l' + i">
           <span v-if="i > 0" class="ats-sep">|</span><LinkIcon v-if="settings.showLinkIcons" :name="link.icon" class="ats-entry-icon" />{{ link.label }}: {{ link.value }}
         </span>
       </div>
@@ -107,77 +107,14 @@
 </template>
 
 <script>
-import { useResumeStore } from '../../stores/resume'
-import { storeToRefs } from 'pinia'
-import { format, parseISO } from 'date-fns'
 import LinkIcon from '../LinkIcon.vue'
-import { iconKeyFor } from '../../utils/linkIcons'
+import { useResumeTemplate } from '../../composables/useResumeTemplate'
 
 export default {
   name: 'AtsResumeTemplate',
   components: { LinkIcon },
   setup() {
-    const resumeStore = useResumeStore()
-    const { personalInfo, skills, experience, education, projects, certifications, languages, settings } =
-      storeToRefs(resumeStore)
-    return { resumeStore, personalInfo, skills, experience, education, projects, certifications, languages, settings }
-  },
-  computed: {
-    templateStyles() {
-      const c = this.settings.colorScheme
-      return {
-        '--primary': c.primary,
-        '--text': c.text,
-        '--background': c.background,
-        fontSize: `${this.settings.fontSize}px`,
-        fontFamily: this.settings.font
-      }
-    },
-    enabled() {
-      return this.settings.sectionsEnabled
-    },
-    contactItems() {
-      const p = this.personalInfo
-      const out = []
-      if (p.email) out.push({ text: p.email, icon: 'email' })
-      if (p.phone) out.push({ text: p.phone, icon: 'phone' })
-      if (p.address) out.push({ text: p.address, icon: 'location' })
-      return out
-    },
-    links() {
-      const p = this.personalInfo
-      const out = []
-      if (p.linkedin) out.push({ label: 'LinkedIn', value: p.linkedin, icon: 'linkedin' })
-      if (p.github) out.push({ label: 'GitHub', value: p.github, icon: 'github' })
-      if (p.website) out.push({ label: 'Portfolio', value: p.website, icon: 'website' })
-      for (const l of this.resumeStore.customLinks || []) {
-        if (l && l.label && l.url) out.push({ label: l.label, value: l.url, icon: iconKeyFor(l.label, l.url) })
-      }
-      return out
-    }
-  },
-  methods: {
-    ord(key) {
-      const i = this.settings.sectionsOrder.indexOf(key)
-      return i === -1 ? 99 : i
-    },
-    hasAchievements(exp) {
-      return exp.achievements && exp.achievements.some(a => a && a.trim())
-    },
-    formatDate(v) {
-      if (!v) return ''
-      try {
-        return format(parseISO(v + '-01'), 'MMM yyyy')
-      } catch {
-        return v
-      }
-    },
-    dateRange(start, end, current = false) {
-      const s = this.formatDate(start)
-      const e = current ? 'Present' : this.formatDate(end)
-      if (s && e) return `${s} - ${e}`
-      return s || e || ''
-    }
+    return useResumeTemplate()
   }
 }
 </script>

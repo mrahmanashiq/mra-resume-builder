@@ -86,7 +86,7 @@
                     <span v-if="exp.location" class="text-gray-500 font-normal text-sm"> · {{ exp.location }}</span>
                   </h4>
                   <div class="text-gray-500 text-sm whitespace-nowrap flex-shrink-0">
-                    {{ formatDateRange(exp.startDate, exp.endDate, exp.current) }}
+                    {{ dateRange(exp.startDate, exp.endDate, exp.current) }}
                   </div>
                 </div>
 
@@ -177,7 +177,7 @@
                 <div class="text-blue-600 font-semibold">{{ edu.institution }}</div>
                 <div class="text-gray-600 text-sm">
                   <span v-if="edu.location">{{ edu.location }} • </span>
-                  {{ formatDateRange(edu.startDate, edu.endDate) }}
+                  {{ dateRange(edu.startDate, edu.endDate) }}
                   <span v-if="edu.gpa" class="ml-2 font-medium">GPA: {{ edu.gpa }}</span>
                 </div>
                 <p v-if="edu.description" class="text-gray-700 text-sm mt-2">{{ edu.description }}</p>
@@ -223,15 +223,13 @@
 </template>
 
 <script>
-import { useResumeStore } from '../../stores/resume'
-import { format, parseISO } from 'date-fns'
 import {
   EnvelopeIcon,
   PhoneIcon,
   MapPinIcon
 } from '@heroicons/vue/24/outline'
 import LinkIcon from '../LinkIcon.vue'
-import { iconKeyFor } from '../../utils/linkIcons'
+import { useResumeTemplate } from '../../composables/useResumeTemplate'
 
 export default {
   name: 'ModernTemplate',
@@ -242,64 +240,7 @@ export default {
     LinkIcon
   },
   setup() {
-    const resumeStore = useResumeStore()
-    return { resumeStore }
-  },
-  computed: {
-    templateStyles() {
-      const colors = this.resumeStore.settings.colorScheme
-      return {
-        '--primary': colors.primary,
-        '--secondary': colors.secondary,
-        fontSize: `${this.resumeStore.settings.fontSize}px`,
-        fontFamily: this.resumeStore.settings.font
-      }
-    },
-    headerLinks() {
-      const p = this.resumeStore.personalInfo
-      const out = []
-      if (p.linkedin) out.push({ label: 'LinkedIn', href: this.formatUrl(p.linkedin), icon: 'linkedin' })
-      if (p.github) out.push({ label: 'GitHub', href: this.formatUrl(p.github), icon: 'github' })
-      if (p.website) out.push({ label: 'Portfolio', href: this.formatUrl(p.website), icon: 'website' })
-      for (const l of this.resumeStore.customLinks || []) {
-        if (l && l.label && l.url) out.push({ label: l.label, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) })
-      }
-      return out
-    }
-  },
-  methods: {
-    ord(key) {
-      const i = this.resumeStore.settings.sectionsOrder.indexOf(key)
-      return i === -1 ? 99 : i
-    },
-    formatUrl(url) {
-      if (!url) return ''
-      if (/^https?:\/\//i.test(url) || url.startsWith('mailto:')) return url
-      return `https://${url}`
-    },
-    formatDate(dateString) {
-      if (!dateString) return ''
-      try {
-        const date = parseISO(dateString + '-01')
-        return format(date, 'MMM yyyy')
-      } catch {
-        return dateString
-      }
-    },
-    
-    formatDateRange(startDate, endDate, current = false) {
-      const start = startDate ? this.formatDate(startDate) : ''
-      const end = current ? 'Present' : (endDate ? this.formatDate(endDate) : '')
-      
-      if (start && end) {
-        return `${start} - ${end}`
-      } else if (start) {
-        return start
-      } else if (end && !current) {
-        return end
-      }
-      return ''
-    }
+    return useResumeTemplate()
   }
 }
 </script>
