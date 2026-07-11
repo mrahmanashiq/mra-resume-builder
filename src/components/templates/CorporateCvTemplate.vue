@@ -194,46 +194,25 @@
 </template>
 
 <script>
-import { useResumeStore } from '../../stores/resume'
-import { storeToRefs } from 'pinia'
 import { format, parseISO } from 'date-fns'
 import LinkIcon from '../LinkIcon.vue'
 import { iconKeyFor } from '../../utils/linkIcons'
+import { useResumeTemplate } from '../../composables/useResumeTemplate'
 
 export default {
   name: 'CorporateCvTemplate',
   components: { LinkIcon },
   setup() {
-    const resumeStore = useResumeStore()
-    const {
-      personalInfo, skills, experience, education, projects, certifications, languages,
-      personalDetails, training, accomplishments, extracurricular, references, declaration, settings
-    } = storeToRefs(resumeStore)
-    return {
-      resumeStore, personalInfo, skills, experience, education, projects, certifications, languages,
-      personalDetails, training, accomplishments, extracurricular, references, declaration, settings
-    }
+    return useResumeTemplate()
   },
   computed: {
-    templateStyles() {
-      const c = this.settings.colorScheme
-      return {
-        '--primary': c.primary,
-        '--text': c.text,
-        '--background': c.background,
-        fontSize: `${this.settings.fontSize}px`,
-        fontFamily: this.settings.font
-      }
-    },
-    enabled() {
-      return this.settings.sectionsEnabled
-    },
     accomplishmentList() {
       return (this.accomplishments || []).filter(a => a.text && a.text.trim())
     },
     extracurricularList() {
       return (this.extracurricular || []).filter(e => e.text && e.text.trim())
     },
+    // Corporate shows the fixed links as their own pipe-separated row (plain text).
     linkItems() {
       const p = this.personalInfo
       const out = []
@@ -265,17 +244,6 @@ export default {
     }
   },
   methods: {
-    ord(key) {
-      const i = this.settings.sectionsOrder.indexOf(key)
-      return i === -1 ? 99 : i
-    },
-    hasAchievements(exp) {
-      return exp.achievements && exp.achievements.some(a => a && a.trim())
-    },
-    formatUrl(url) {
-      if (!url) return ''
-      return /^https?:\/\//i.test(url) || url.startsWith('mailto:') ? url : `https://${url}`
-    },
     formatMonth(v) {
       if (!v) return ''
       try {
@@ -298,12 +266,6 @@ export default {
       if (!v) return ''
       const m = /^(\d{4})/.exec(v)
       return m ? m[1] : v
-    },
-    dateRange(start, end, current = false) {
-      const s = this.formatMonth(start)
-      const e = current ? 'Present' : this.formatMonth(end)
-      if (s && e) return `${s} - ${e}`
-      return s || e || ''
     }
   }
 }

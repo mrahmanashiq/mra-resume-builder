@@ -157,25 +157,20 @@
 </template>
 
 <script>
-import { useResumeStore } from '../../stores/resume'
-import { storeToRefs } from 'pinia'
-import { format, parseISO } from 'date-fns'
 import LinkIcon from '../LinkIcon.vue'
 import { iconKeyFor } from '../../utils/linkIcons'
+import { useResumeTemplate } from '../../composables/useResumeTemplate'
 
 export default {
   name: 'AcademicPortfolioTemplate',
   components: { LinkIcon },
   setup() {
-    const resumeStore = useResumeStore()
-    const {
-      personalInfo, skills, experience, education, languages,
-      publications, teaching, talks, awards, service, references, settings
-    } = storeToRefs(resumeStore)
-    return {
-      resumeStore, personalInfo, skills, experience, education, languages,
-      publications, teaching, talks, awards, service, references, settings
-    }
+    const shared = useResumeTemplate()
+    // Portfolio overrides these locally (fixed serif font, en-dash date ranges),
+    // so drop the shared versions to prevent them shadowing the locals.
+    delete shared.templateStyles
+    delete shared.dateRange
+    return shared
   },
   computed: {
     templateStyles() {
@@ -187,9 +182,6 @@ export default {
         fontSize: `${this.settings.fontSize}px`
       }
     },
-    enabled() {
-      return this.settings.sectionsEnabled
-    },
     customLinkEntries() {
       return (this.resumeStore.customLinks || [])
         .filter(l => l && l.label && l.url)
@@ -197,22 +189,7 @@ export default {
     }
   },
   methods: {
-    ord(key) {
-      const i = this.settings.sectionsOrder.indexOf(key)
-      return i === -1 ? 99 : i
-    },
-    formatUrl(url) {
-      if (!url) return ''
-      return /^https?:\/\//i.test(url) || url.startsWith('mailto:') ? url : `https://${url}`
-    },
-    formatDate(v) {
-      if (!v) return ''
-      try {
-        return format(parseISO(v + '-01'), 'MMM yyyy')
-      } catch {
-        return v
-      }
-    },
+    // Portfolio uses en-dash date ranges (differs from the shared hyphen version).
     dateRange(start, end, current = false) {
       const s = this.formatDate(start)
       const e = current ? 'Present' : this.formatDate(end)

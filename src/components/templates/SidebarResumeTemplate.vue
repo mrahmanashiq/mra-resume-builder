@@ -103,66 +103,22 @@
 </template>
 
 <script>
-import { useResumeStore } from '../../stores/resume'
-import { storeToRefs } from 'pinia'
-import { format, parseISO } from 'date-fns'
 import LinkIcon from '../LinkIcon.vue'
 import { iconKeyFor } from '../../utils/linkIcons'
+import { useResumeTemplate } from '../../composables/useResumeTemplate'
 
 export default {
   name: 'SidebarResumeTemplate',
   components: { LinkIcon },
   setup() {
-    const resumeStore = useResumeStore()
-    const { personalInfo, skills, experience, education, projects, certifications, languages, settings } =
-      storeToRefs(resumeStore)
-    return { resumeStore, personalInfo, skills, experience, education, projects, certifications, languages, settings }
+    return useResumeTemplate()
   },
   computed: {
-    templateStyles() {
-      const c = this.settings.colorScheme
-      return {
-        '--primary': c.primary,
-        '--text': c.text,
-        '--background': c.background,
-        fontSize: `${this.settings.fontSize}px`,
-        fontFamily: this.settings.font
-      }
-    },
-    enabled() {
-      return this.settings.sectionsEnabled
-    },
+    // Sidebar lists custom links after the fixed contact lines (as {label, href, icon}).
     customLinkEntries() {
       return (this.resumeStore.customLinks || [])
         .filter(l => l && l.label && l.url)
         .map(l => ({ label: l.label, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) }))
-    }
-  },
-  methods: {
-    ord(key) {
-      const i = this.settings.sectionsOrder.indexOf(key)
-      return i === -1 ? 99 : i
-    },
-    hasAchievements(exp) {
-      return exp.achievements && exp.achievements.some(a => a && a.trim())
-    },
-    formatUrl(url) {
-      if (!url) return ''
-      return /^https?:\/\//i.test(url) || url.startsWith('mailto:') ? url : `https://${url}`
-    },
-    formatDate(v) {
-      if (!v) return ''
-      try {
-        return format(parseISO(v + '-01'), 'MMM yyyy')
-      } catch {
-        return v
-      }
-    },
-    dateRange(start, end, current = false) {
-      const s = this.formatDate(start)
-      const e = current ? 'Present' : this.formatDate(end)
-      if (s && e) return `${s} - ${e}`
-      return s || e || ''
     }
   }
 }
