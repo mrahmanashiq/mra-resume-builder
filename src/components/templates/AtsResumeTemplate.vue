@@ -55,7 +55,8 @@
         <div v-if="p.technologies && p.technologies.length" class="ats-tech">
           {{ p.technologies.join(', ') }}
         </div>
-        <div v-if="p.url" class="ats-link-line">{{ p.url }}</div>
+        <a v-if="p.url" :href="formatUrl(p.url)" class="ats-link-line" target="_blank" rel="noopener">{{ p.url }}</a>
+        <a v-if="p.liveUrl" :href="formatUrl(p.liveUrl)" class="ats-link-line" target="_blank" rel="noopener">{{ p.liveUrl }}</a>
       </div>
     </section>
 

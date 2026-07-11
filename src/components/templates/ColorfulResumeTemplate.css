@@ -172,10 +172,16 @@
 }
 
 .cm-link {
+  display: block;
   font-size: 0.85em;
   color: var(--primary);
+  text-decoration: none;
   margin-top: 2px;
   overflow-wrap: anywhere;
+}
+
+.cm-link:hover {
+  text-decoration: underline;
 }
 
 .cm-contact {

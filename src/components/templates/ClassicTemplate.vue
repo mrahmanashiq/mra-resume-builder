@@ -198,10 +198,17 @@
                   </span>
                 </div>
                 
-                <a v-if="project.url" 
-                   :href="project.url"
+                <a v-if="project.url"
+                   :href="formatUrl(project.url)"
+                   target="_blank" rel="noopener"
                    class="text-gray-600 hover:text-gray-800 text-sm underline">
-                  View Project
+                  Code
+                </a>
+                <a v-if="project.liveUrl"
+                   :href="formatUrl(project.liveUrl)"
+                   target="_blank" rel="noopener"
+                   class="text-gray-600 hover:text-gray-800 text-sm underline ml-4">
+                  Live
                 </a>
               </div>
             </div>

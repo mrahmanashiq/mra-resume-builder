@@ -62,6 +62,8 @@
           </div>
           <p v-if="p.description" class="cv-desc">{{ p.description }}</p>
           <div v-if="p.technologies && p.technologies.length" class="cv-muted cv-tech">{{ p.technologies.join(', ') }}</div>
+          <a v-if="p.url" :href="formatUrl(p.url)" class="cv-link" target="_blank" rel="noopener">{{ p.url }}</a>
+          <a v-if="p.liveUrl" :href="formatUrl(p.liveUrl)" class="cv-link" target="_blank" rel="noopener">{{ p.liveUrl }}</a>
         </div>
       </section>
 

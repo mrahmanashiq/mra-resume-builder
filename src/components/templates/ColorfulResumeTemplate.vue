@@ -57,7 +57,8 @@
           <div v-if="p.technologies && p.technologies.length" class="cm-chips">
             <span v-for="t in p.technologies" :key="t" class="cm-chip">{{ t }}</span>
           </div>
-          <div v-if="p.url" class="cm-link">{{ p.url }}</div>
+          <a v-if="p.url" :href="formatUrl(p.url)" class="cm-link" target="_blank" rel="noopener">{{ p.url }}</a>
+          <a v-if="p.liveUrl" :href="formatUrl(p.liveUrl)" class="cm-link" target="_blank" rel="noopener">{{ p.liveUrl }}</a>
         </div>
       </section>
 

@@ -165,10 +165,17 @@
                   </span>
                 </div>
                 
-                <a v-if="project.url" 
-                   :href="project.url"
+                <a v-if="project.url"
+                   :href="formatUrl(project.url)"
+                   target="_blank" rel="noopener"
                    class="text-primary-600 hover:text-primary-700 text-sm">
-                  View Project →
+                  Code
+                </a>
+                <a v-if="project.liveUrl"
+                   :href="formatUrl(project.liveUrl)"
+                   target="_blank" rel="noopener"
+                   class="text-primary-600 hover:text-primary-700 text-sm ml-4">
+                  Live
                 </a>
               </div>
             </div>

@@ -136,6 +136,19 @@
   margin-top: 2px;
 }
 
+.cv-link {
+  display: block;
+  font-size: 0.85em;
+  color: var(--primary);
+  text-decoration: none;
+  margin-top: 2px;
+  overflow-wrap: anywhere;
+}
+
+.cv-link:hover {
+  text-decoration: underline;
+}
+
 .cv-bullets,
 .cv-list {
   list-style: none;

@@ -95,7 +95,8 @@
           <div v-if="p.technologies && p.technologies.length" class="sb-tech-chips">
             <span v-for="t in p.technologies" :key="t" class="sb-chip sb-chip-main">{{ t }}</span>
           </div>
-          <div v-if="p.url" class="sb-link-line">{{ p.url }}</div>
+          <a v-if="p.url" :href="formatUrl(p.url)" class="sb-link-line" target="_blank" rel="noopener">{{ p.url }}</a>
+          <a v-if="p.liveUrl" :href="formatUrl(p.liveUrl)" class="sb-link-line" target="_blank" rel="noopener">{{ p.liveUrl }}</a>
         </div>
       </section>
     </main>

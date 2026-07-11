@@ -230,9 +230,15 @@
 }
 
 .sb-link-line {
+  display: block;
   font-size: 0.85em;
   color: var(--primary);
+  text-decoration: none;
   margin-top: 2px;
+}
+
+.sb-link-line:hover {
+  text-decoration: underline;
 }
 
 /* export nudge for ruled headings */

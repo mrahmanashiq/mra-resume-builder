@@ -165,10 +165,16 @@
 }
 
 .ac-link {
+  display: block;
   font-size: 0.85em;
   color: var(--primary);
+  text-decoration: none;
   margin-top: 1px;
   overflow-wrap: anywhere;
+}
+
+.ac-link:hover {
+  text-decoration: underline;
 }
 
 /* Let grid/flex children shrink so long URLs wrap instead of overflowing */

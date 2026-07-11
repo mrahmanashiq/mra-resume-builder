@@ -67,7 +67,8 @@
           <div class="ac-entry-title"><span class="ac-marker"></span>{{ p.name }}</div>
           <p v-if="p.description" class="ac-desc">{{ p.description }}</p>
           <div v-if="p.technologies && p.technologies.length" class="ac-tech">{{ p.technologies.join(', ') }}</div>
-          <div v-if="p.url" class="ac-link">{{ p.url }}</div>
+          <a v-if="p.url" :href="formatUrl(p.url)" class="ac-link" target="_blank" rel="noopener">{{ p.url }}</a>
+          <a v-if="p.liveUrl" :href="formatUrl(p.liveUrl)" class="ac-link" target="_blank" rel="noopener">{{ p.liveUrl }}</a>
         </div>
       </div>
     </section>

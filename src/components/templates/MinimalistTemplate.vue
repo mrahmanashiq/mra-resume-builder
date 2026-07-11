@@ -135,10 +135,17 @@
                   </span>
                 </div>
                 
-                <a v-if="project.url" 
-                   :href="project.url"
-                   class="text-gray-500 hover:text-gray-700 text-sm font-light underline">
+                <a v-if="project.url"
+                   :href="formatUrl(project.url)"
+                   target="_blank" rel="noopener"
+                   class="block text-gray-500 hover:text-gray-700 text-sm font-light underline">
                   {{ project.url }}
+                </a>
+                <a v-if="project.liveUrl"
+                   :href="formatUrl(project.liveUrl)"
+                   target="_blank" rel="noopener"
+                   class="block text-gray-500 hover:text-gray-700 text-sm font-light underline mt-1">
+                  {{ project.liveUrl }}
                 </a>
               </div>
             </div>
