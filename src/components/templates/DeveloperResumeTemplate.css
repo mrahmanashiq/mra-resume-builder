@@ -223,3 +223,6 @@
     font-size: calc(1.55rem * var(--fs-scale));
   }
 }
+
+.dev-proj-sep { color: var(--c-gray-400); }
+.dev-proj-live { margin-left: 0.7em; }

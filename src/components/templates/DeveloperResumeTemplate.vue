@@ -57,7 +57,7 @@
           <span class="dev-bullet">•</span>
           <span>
             <span class="dev-proj-name">{{ p.name }}:</span>
-            <span v-if="p.description"> {{ p.description }}</span><span v-if="p.technologies && p.technologies.length" class="dev-proj-tech"> ({{ p.technologies.join(', ') }})</span>
+            <span v-if="p.description"> {{ p.description }}</span><span v-if="p.technologies && p.technologies.length" class="dev-proj-tech"> ({{ p.technologies.join(', ') }})</span><template v-if="p.url || p.liveUrl"><span class="dev-proj-sep"> · </span><a v-if="p.url" :href="formatUrl(p.url)" class="dev-link" target="_blank" rel="noopener">Code</a><a v-if="p.liveUrl" :href="formatUrl(p.liveUrl)" class="dev-link dev-proj-live" target="_blank" rel="noopener">Live</a></template>
           </span>
         </li>
       </ul>

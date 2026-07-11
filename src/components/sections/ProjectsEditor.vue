@@ -69,16 +69,28 @@
           </div>
         </div>
 
-        <!-- URL and Dates -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Links -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Project URL</label>
-            <input type="url" 
+            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">GitHub / Repository</label>
+            <input type="url"
                    :value="project.url"
                    @input="updateProject(project.id, 'url', $event.target.value)"
                    class="input-field"
-                   placeholder="https://github.com/username/project">
+                   placeholder="github.com/username/project">
           </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Live demo</label>
+            <input type="url"
+                   :value="project.liveUrl"
+                   @input="updateProject(project.id, 'liveUrl', $event.target.value)"
+                   class="input-field"
+                   placeholder="yourproject.com">
+          </div>
+        </div>
+
+        <!-- Dates -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Start Date</label>
             <BaseDatePicker mode="month"
@@ -149,6 +161,7 @@ export default {
         description: '',
         technologies: [],
         url: '',
+        liveUrl: '',
         startDate: '',
         endDate: ''
       })

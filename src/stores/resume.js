@@ -93,6 +93,7 @@ export const useResumeStore = defineStore('resume', {
         description: 'Full-stack e-commerce solution with React, Node.js, and MongoDB',
         technologies: ['React', 'Node.js', 'MongoDB', 'Stripe API'],
         url: 'https://github.com/johndoe/ecommerce',
+        liveUrl: 'https://shop.johndoe.dev',
         startDate: '2023-01',
         endDate: '2023-06'
       },
@@ -101,7 +102,8 @@ export const useResumeStore = defineStore('resume', {
         name: 'Task Management App',
         description: 'Real-time collaborative task management application',
         technologies: ['Vue.js', 'Express', 'Socket.io', 'PostgreSQL'],
-        url: 'https://taskmanager.johndoe.dev',
+        url: 'https://github.com/johndoe/taskmanager',
+        liveUrl: 'https://taskmanager.johndoe.dev',
         startDate: '2022-08',
         endDate: '2022-12'
       }
