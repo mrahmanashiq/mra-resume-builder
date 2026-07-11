@@ -13,8 +13,11 @@ export const useResumeStore = defineStore('resume', {
       phone: '+1 (555) 123-4567',
       address: 'San Francisco, CA',
       linkedin: 'linkedin.com/in/johndoe',
+      linkedinLabel: '',
       github: 'github.com/johndoe',
+      githubLabel: '',
       website: 'johndoe.dev',
+      websiteLabel: '',
       summary: 'Passionate full-stack developer with 5+ years of experience building scalable web applications using modern technologies. Expertise in React, Node.js, and cloud platforms.',
       researchInterests: 'Machine Learning, Computer Vision, Deep Learning, Human-Computer Interaction',
       scholar: 'scholar.google.com/citations',
@@ -42,6 +45,7 @@ export const useResumeStore = defineStore('resume', {
         title: 'Senior Full Stack Developer',
         company: 'Tech Innovations Inc.',
         location: 'San Francisco, CA',
+        url: 'https://techinnovations.example.com',
         startDate: '2022-01',
         endDate: '',
         current: true,
@@ -57,6 +61,7 @@ export const useResumeStore = defineStore('resume', {
         title: 'Full Stack Developer',
         company: 'StartupXYZ',
         location: 'Remote',
+        url: 'https://startupxyz.example.com',
         startDate: '2020-03',
         endDate: '2021-12',
         current: false,
@@ -76,6 +81,7 @@ export const useResumeStore = defineStore('resume', {
         degree: 'Bachelor of Science in Computer Science',
         institution: 'University of California, Berkeley',
         location: 'Berkeley, CA',
+        url: 'https://www.berkeley.edu',
         startDate: '2016-09',
         endDate: '2020-05',
         gpa: '3.8',
@@ -93,6 +99,7 @@ export const useResumeStore = defineStore('resume', {
         description: 'Full-stack e-commerce solution with React, Node.js, and MongoDB',
         technologies: ['React', 'Node.js', 'MongoDB', 'Stripe API'],
         url: 'https://github.com/johndoe/ecommerce',
+        liveUrl: 'https://shop.johndoe.dev',
         startDate: '2023-01',
         endDate: '2023-06'
       },
@@ -101,7 +108,8 @@ export const useResumeStore = defineStore('resume', {
         name: 'Task Management App',
         description: 'Real-time collaborative task management application',
         technologies: ['Vue.js', 'Express', 'Socket.io', 'PostgreSQL'],
-        url: 'https://taskmanager.johndoe.dev',
+        url: 'https://github.com/johndoe/taskmanager',
+        liveUrl: 'https://taskmanager.johndoe.dev',
         startDate: '2022-08',
         endDate: '2022-12'
       }
@@ -252,6 +260,8 @@ export const useResumeStore = defineStore('resume', {
       fontSize: 14,
       spacing: 'normal',
       showProfileImage: true,
+      showLinkIcons: false,
+      headerAlign: '', // '' = each template's own default; 'left' | 'center' override it (single-column templates)
       sectionsOrder: [
         'personalInfo',
         'summary',

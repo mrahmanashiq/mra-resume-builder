@@ -44,39 +44,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.app-logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.app-logo__mark {
-  width: 30px;
-  height: 30px;
-  flex-shrink: 0;
-  display: block;
-}
-
-.app-logo__text {
-  font-size: 1.25rem;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.01em;
-  color: #1d4ed8;
-  white-space: nowrap;
-}
-
-@media (max-width: 480px) {
-  .app-logo {
-    gap: 7px;
-  }
-  .app-logo__mark {
-    width: 26px;
-    height: 26px;
-  }
-  .app-logo__text {
-    font-size: 1.02rem;
-  }
-}
-</style>
+<style scoped src="./AppLogo.css"></style>

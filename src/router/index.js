@@ -13,6 +13,7 @@ const ShareViewer = () => import('../views/ShareViewer.vue')
 const Privacy = () => import('../views/Privacy.vue')
 const Terms = () => import('../views/Terms.vue')
 const LandingPage = () => import('../views/landing/LandingPage.vue')
+const NotFound = () => import('../views/NotFound.vue')
 
 // SEO keyword landing pages, generated from the landing config.
 const landingRoutes = Object.values(LANDING_PAGES).map((p) => ({
@@ -133,7 +134,14 @@ const router = createRouter({
         }
       }
     },
-    ...landingRoutes
+    ...landingRoutes,
+    {
+      // Catch-all: any unknown path renders the 404 page instead of a blank screen.
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: NotFound,
+      meta: { seo: { title: 'Page not found - Resume Builder', noindex: true } }
+    }
   ]
 })
 

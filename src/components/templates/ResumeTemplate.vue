@@ -66,23 +66,23 @@
               <a v-if="resumeStore.personalInfo.linkedin" 
                  :href="formatUrl(resumeStore.personalInfo.linkedin)"
                  class="flex items-center space-x-2 hover:text-primary-700">
-                <span class="text-sm">LinkedIn</span>
+                <span class="text-sm">{{ resumeStore.personalInfo.linkedinLabel || 'LinkedIn' }}</span>
               </a>
               <a v-if="resumeStore.personalInfo.github" 
                  :href="formatUrl(resumeStore.personalInfo.github)"
                  class="flex items-center space-x-2 hover:text-primary-700">
-                <span class="text-sm">GitHub</span>
+                <span class="text-sm">{{ resumeStore.personalInfo.githubLabel || 'GitHub' }}</span>
               </a>
               <a v-if="resumeStore.personalInfo.website"
                  :href="formatUrl(resumeStore.personalInfo.website)"
                  class="flex items-center space-x-2 hover:text-primary-700">
                 <GlobeAltIcon class="w-4 h-4" />
-                <span class="text-sm">Portfolio</span>
+                <span class="text-sm">{{ resumeStore.personalInfo.websiteLabel || 'Portfolio' }}</span>
               </a>
               <a v-for="link in customLinks" :key="link.id"
                  :href="formatUrl(link.url)"
                  class="flex items-center space-x-2 hover:text-primary-700">
-                <span class="text-sm">{{ link.label }}</span>
+                <span class="text-sm">{{ link.label || link.url }}</span>
               </a>
             </div>
           </div>
@@ -116,7 +116,7 @@
                   <div>
                     <h4 class="text-lg font-semibold text-gray-900">{{ exp.title }}</h4>
                     <div class="text-primary-600 font-medium">
-                      {{ exp.company }}
+                      <a v-if="exp.url" :href="formatUrl(exp.url)" class="doc-link" target="_blank" rel="noopener">{{ exp.company }}</a><template v-else>{{ exp.company }}</template>
                       <span v-if="exp.location" class="text-gray-600"> • {{ exp.location }}</span>
                     </div>
                   </div>
@@ -165,10 +165,17 @@
                   </span>
                 </div>
                 
-                <a v-if="project.url" 
-                   :href="project.url"
+                <a v-if="project.url"
+                   :href="formatUrl(project.url)"
+                   target="_blank" rel="noopener"
                    class="text-primary-600 hover:text-primary-700 text-sm">
-                  View Project →
+                  Code
+                </a>
+                <a v-if="project.liveUrl"
+                   :href="formatUrl(project.liveUrl)"
+                   target="_blank" rel="noopener"
+                   class="text-primary-600 hover:text-primary-700 text-sm ml-4">
+                  Live
                 </a>
               </div>
             </div>
@@ -210,7 +217,7 @@
               <div v-for="edu in resumeStore.education" 
                    :key="edu.id">
                 <h4 class="font-semibold text-gray-900">{{ edu.degree }}</h4>
-                <div class="text-primary-600 font-medium">{{ edu.institution }}</div>
+                <div class="text-primary-600 font-medium"><a v-if="edu.url" :href="formatUrl(edu.url)" class="doc-link" target="_blank" rel="noopener">{{ edu.institution }}</a><template v-else>{{ edu.institution }}</template></div>
                 <div class="text-gray-600 text-sm">
                   <span v-if="edu.location">{{ edu.location }} • </span>
                   {{ formatDateRange(edu.startDate, edu.endDate) }}
@@ -327,7 +334,7 @@ export default {
              this.customLinks.length
     },
     customLinks() {
-      return (this.resumeStore.customLinks || []).filter(l => l && l.label && l.url)
+      return (this.resumeStore.customLinks || []).filter(l => l && l.url)
     }
   },
   methods: {
@@ -366,97 +373,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.resume-template {
-  --primary: #3b82f6;
-  --secondary: #14b8a6;
-  --accent: #f59e0b;
-  --text: #1f2937;
-  --background: #ffffff;
-  
-  max-width: 210mm;
-  min-height: 297mm;
-  margin: 0 auto;
-  background: var(--background);
-  color: var(--text);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-}
-
-.resume-header {
-  border-bottom: 3px solid var(--primary);
-}
-
-.section-title {
-  color: var(--primary);
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--primary);
-  position: relative;
-}
-
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 30px;
-  height: 2px;
-  background: var(--secondary);
-}
-
-.resume-section {
-  margin-bottom: 2rem;
-}
-
-.text-primary-600 {
-  color: var(--primary) !important;
-}
-
-.text-primary-700 {
-  color: color-mix(in srgb, var(--primary) 90%, black) !important;
-}
-
-.bg-primary-600 {
-  background-color: var(--primary) !important;
-}
-
-.border-primary-500 {
-  border-color: var(--primary) !important;
-}
-
-.from-primary {
-  --tw-gradient-from: var(--primary);
-}
-
-.to-secondary {
-  --tw-gradient-to: var(--secondary);
-}
-
-/* Print optimizations */
-@media print {
-  .resume-template {
-    box-shadow: none;
-    max-width: none;
-    margin: 0;
-  }
-  
-  .print-avoid-break {
-    page-break-inside: avoid;
-  }
-  
-  .print-break {
-    page-break-before: always;
-  }
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .resume-template {
-    max-width: 100%;
-    margin: 0;
-    box-shadow: none;
-  }
-}
-</style>
+<style scoped src="./ResumeTemplate.css"></style>

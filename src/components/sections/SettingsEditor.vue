@@ -101,6 +101,43 @@
       </div>
     </div>
 
+    <!-- Display options -->
+    <div class="card">
+      <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-4">Display</h4>
+      <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-800/60 rounded-lg">
+        <div class="min-w-0 pr-3">
+          <span class="font-medium block">Show icons on links</span>
+          <span class="text-xs text-gray-500 dark:text-slate-400">Small icons next to LinkedIn, GitHub, website, blog, etc. They use the template colour. Off by default.</span>
+        </div>
+        <button @click="toggleLinkIcons"
+                :class="['w-12 h-6 rounded-full flex items-center flex-shrink-0 transition-colors duration-200',
+                         resumeStore.settings.showLinkIcons ? 'bg-primary-600' : 'bg-gray-300']"
+                :aria-pressed="resumeStore.settings.showLinkIcons" aria-label="Show icons on links">
+          <div :class="['w-4 h-4 bg-white dark:bg-slate-800 rounded-full shadow transition-transform duration-200',
+                        resumeStore.settings.showLinkIcons ? 'translate-x-7' : 'translate-x-1']"></div>
+        </button>
+      </div>
+
+      <div class="mt-3 p-3 bg-gray-50 dark:bg-slate-800/60 rounded-lg">
+        <div class="flex items-center justify-between gap-3">
+          <div class="min-w-0">
+            <span class="font-medium block">Header alignment</span>
+            <span class="text-xs text-gray-500 dark:text-slate-400">Name / contact block. Applies to single-column templates.</span>
+          </div>
+          <div class="flex flex-shrink-0 rounded-lg border border-gray-300 dark:border-slate-600 overflow-hidden">
+            <button v-for="opt in headerAlignOptions" :key="opt.value"
+                    @click="setHeaderAlign(opt.value)"
+                    :class="['px-3 py-1.5 text-sm transition-colors',
+                             (resumeStore.settings.headerAlign || '') === opt.value
+                               ? 'bg-primary-600 text-white'
+                               : 'text-gray-600 hover:bg-gray-100 dark:text-slate-300 dark:hover:bg-slate-700']">
+              {{ opt.label }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Section Management -->
     <div class="card">
       <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-1">Sections</h4>
@@ -286,6 +323,11 @@ export default {
         { name: 'Orange Fire', primary: '#f59e0b', secondary: '#ef4444' },
         { name: 'Gray Professional', primary: '#6b7280', secondary: '#374151' }
       ],
+      headerAlignOptions: [
+        { value: '', label: 'Default' },
+        { value: 'left', label: 'Left' },
+        { value: 'center', label: 'Center' }
+      ],
       sectionsConfig: [
         { id: 'personalInfo', name: 'Personal Info', icon: 'UserIcon' },
         { id: 'summary', name: 'Summary', icon: 'DocumentTextIcon' },
@@ -354,7 +396,15 @@ export default {
     toggleSection(sectionId) {
       this.resumeStore.toggleSection(sectionId)
     },
-    
+
+    toggleLinkIcons() {
+      this.resumeStore.updateSettings({ showLinkIcons: !this.resumeStore.settings.showLinkIcons })
+    },
+
+    setHeaderAlign(value) {
+      this.resumeStore.updateSettings({ headerAlign: value })
+    },
+
     resetSettings() {
       const confirmReset = confirm('Are you sure you want to reset all settings to default?')
       if (confirmReset) {

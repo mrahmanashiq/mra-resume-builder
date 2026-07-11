@@ -1,0 +1,16 @@
+.footer-h {
+  color: var(--c-gray-400);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.9rem;
+}
+.footer-link {
+  color: var(--c-gray-300);
+  font-size: 0.9rem;
+  transition: color 0.15s ease;
+}
+.footer-link:hover {
+  color: var(--c-white);
+}

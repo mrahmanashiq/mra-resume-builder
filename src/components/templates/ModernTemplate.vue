@@ -54,7 +54,7 @@
             <!-- Links (fixed + custom) -->
             <div v-if="headerLinks.length" class="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-1 mt-2 text-white opacity-90 text-sm">
               <a v-for="(l, i) in headerLinks" :key="i" :href="l.href" target="_blank" rel="noopener"
-                 class="underline hover:opacity-100">{{ l.label }}</a>
+                 class="underline hover:opacity-100 inline-flex items-center"><LinkIcon v-if="resumeStore.settings.showLinkIcons" :name="l.icon" class="mr-1" />{{ l.label }}</a>
             </div>
           </div>
         </div>
@@ -66,11 +66,11 @@
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
         
         <!-- Left Column -->
-        <div class="lg:col-span-2 space-y-10">
+        <div class="lg:col-span-2 flex flex-col gap-10">
           
           <!-- Experience (compact) -->
           <section v-if="resumeStore.settings.sectionsEnabled.experience && resumeStore.experience.length"
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('experience') }">
             <h3 class="section-title text-xl font-bold text-blue-600 mb-4 border-b-2 border-blue-600 pb-1">
               Professional Experience
             </h3>
@@ -82,11 +82,11 @@
                 <div class="flex flex-col md:flex-row md:justify-between md:items-baseline gap-x-3">
                   <h4 class="font-bold text-gray-900 leading-snug">
                     {{ exp.title }}
-                    <span class="text-blue-600 font-semibold">· {{ exp.company }}</span>
+                    <span class="text-blue-600 font-semibold">· <a v-if="exp.url" :href="formatUrl(exp.url)" class="doc-link" target="_blank" rel="noopener">{{ exp.company }}</a><template v-else>{{ exp.company }}</template></span>
                     <span v-if="exp.location" class="text-gray-500 font-normal text-sm"> · {{ exp.location }}</span>
                   </h4>
                   <div class="text-gray-500 text-sm whitespace-nowrap flex-shrink-0">
-                    {{ formatDateRange(exp.startDate, exp.endDate, exp.current) }}
+                    {{ dateRange(exp.startDate, exp.endDate, exp.current) }}
                   </div>
                 </div>
 
@@ -108,7 +108,7 @@
 
           <!-- Projects -->
           <section v-if="resumeStore.settings.sectionsEnabled.projects && resumeStore.projects.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('projects') }">
             <h3 class="section-title text-2xl font-bold text-purple-600 mb-6 border-b-2 border-purple-600 pb-2">
               Featured Projects
             </h3>
@@ -128,10 +128,17 @@
                   </span>
                 </div>
                 
-                <a v-if="project.url" 
-                   :href="project.url"
+                <a v-if="project.url"
+                   :href="formatUrl(project.url)"
+                   target="_blank" rel="noopener"
                    class="text-purple-600 hover:text-purple-700 font-medium">
-                  View Project →
+                  Code
+                </a>
+                <a v-if="project.liveUrl"
+                   :href="formatUrl(project.liveUrl)"
+                   target="_blank" rel="noopener"
+                   class="text-purple-600 hover:text-purple-700 font-medium ml-4">
+                  Live
                 </a>
               </div>
             </div>
@@ -139,11 +146,11 @@
         </div>
 
         <!-- Right Column -->
-        <div class="space-y-8">
+        <div class="flex flex-col gap-8">
           
           <!-- Skills -->
           <section v-if="resumeStore.settings.sectionsEnabled.skills && resumeStore.skills.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('skills') }">
             <h3 class="section-title text-xl font-bold text-gray-900 mb-4">Skills</h3>
             <div class="space-y-6">
               <div v-for="(skills, category) in resumeStore.skillsByCategory" 
@@ -167,17 +174,17 @@
 
           <!-- Education -->
           <section v-if="resumeStore.settings.sectionsEnabled.education && resumeStore.education.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('education') }">
             <h3 class="section-title text-xl font-bold text-gray-900 mb-4">Education</h3>
             <div class="space-y-4">
               <div v-for="edu in resumeStore.education" 
                    :key="edu.id"
                    class="border-l-4 border-blue-200 pl-4">
                 <h4 class="font-bold text-gray-900">{{ edu.degree }}</h4>
-                <div class="text-blue-600 font-semibold">{{ edu.institution }}</div>
+                <div class="text-blue-600 font-semibold"><a v-if="edu.url" :href="formatUrl(edu.url)" class="doc-link" target="_blank" rel="noopener">{{ edu.institution }}</a><template v-else>{{ edu.institution }}</template></div>
                 <div class="text-gray-600 text-sm">
                   <span v-if="edu.location">{{ edu.location }} • </span>
-                  {{ formatDateRange(edu.startDate, edu.endDate) }}
+                  {{ dateRange(edu.startDate, edu.endDate) }}
                   <span v-if="edu.gpa" class="ml-2 font-medium">GPA: {{ edu.gpa }}</span>
                 </div>
                 <p v-if="edu.description" class="text-gray-700 text-sm mt-2">{{ edu.description }}</p>
@@ -187,7 +194,7 @@
 
           <!-- Certifications -->
           <section v-if="resumeStore.settings.sectionsEnabled.certifications && resumeStore.certifications.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('certifications') }">
             <h3 class="section-title text-xl font-bold text-gray-900 mb-4">Certifications</h3>
             <div class="space-y-3">
               <div v-for="cert in resumeStore.activeCertifications" 
@@ -205,7 +212,7 @@
 
           <!-- Languages -->
           <section v-if="resumeStore.settings.sectionsEnabled.languages && resumeStore.languages.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('languages') }">
             <h3 class="section-title text-xl font-bold text-gray-900 mb-4">Languages</h3>
             <div class="space-y-3">
               <div v-for="lang in resumeStore.languages" 
@@ -223,101 +230,26 @@
 </template>
 
 <script>
-import { useResumeStore } from '../../stores/resume'
-import { format, parseISO } from 'date-fns'
-import { 
-  EnvelopeIcon, 
-  PhoneIcon, 
+import {
+  EnvelopeIcon,
+  PhoneIcon,
   MapPinIcon
 } from '@heroicons/vue/24/outline'
+import LinkIcon from '../LinkIcon.vue'
+import { useResumeTemplate } from '../../composables/useResumeTemplate'
 
 export default {
   name: 'ModernTemplate',
   components: {
     EnvelopeIcon,
     PhoneIcon,
-    MapPinIcon
+    MapPinIcon,
+    LinkIcon
   },
   setup() {
-    const resumeStore = useResumeStore()
-    return { resumeStore }
-  },
-  computed: {
-    templateStyles() {
-      const colors = this.resumeStore.settings.colorScheme
-      return {
-        '--primary': colors.primary,
-        '--secondary': colors.secondary,
-        fontSize: `${this.resumeStore.settings.fontSize}px`,
-        fontFamily: this.resumeStore.settings.font
-      }
-    },
-    headerLinks() {
-      const p = this.resumeStore.personalInfo
-      const out = []
-      if (p.linkedin) out.push({ label: 'LinkedIn', href: this.formatUrl(p.linkedin) })
-      if (p.github) out.push({ label: 'GitHub', href: this.formatUrl(p.github) })
-      if (p.website) out.push({ label: 'Portfolio', href: this.formatUrl(p.website) })
-      for (const l of this.resumeStore.customLinks || []) {
-        if (l && l.label && l.url) out.push({ label: l.label, href: this.formatUrl(l.url) })
-      }
-      return out
-    }
-  },
-  methods: {
-    formatUrl(url) {
-      if (!url) return ''
-      if (/^https?:\/\//i.test(url) || url.startsWith('mailto:')) return url
-      return `https://${url}`
-    },
-    formatDate(dateString) {
-      if (!dateString) return ''
-      try {
-        const date = parseISO(dateString + '-01')
-        return format(date, 'MMM yyyy')
-      } catch {
-        return dateString
-      }
-    },
-    
-    formatDateRange(startDate, endDate, current = false) {
-      const start = startDate ? this.formatDate(startDate) : ''
-      const end = current ? 'Present' : (endDate ? this.formatDate(endDate) : '')
-      
-      if (start && end) {
-        return `${start} - ${end}`
-      } else if (start) {
-        return start
-      } else if (end && !current) {
-        return end
-      }
-      return ''
-    }
+    return useResumeTemplate()
   }
 }
 </script>
 
-<style scoped>
-.modern-template {
-  max-width: 210mm;
-  min-height: 297mm;
-  margin: 0 auto;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-}
-
-@media print {
-  .modern-template {
-    box-shadow: none;
-    max-width: none;
-    margin: 0;
-  }
-}
-
-@media (max-width: 768px) {
-  .modern-template {
-    max-width: 100%;
-    margin: 0;
-    box-shadow: none;
-  }
-}
-</style>
+<style scoped src="./ModernTemplate.css"></style>

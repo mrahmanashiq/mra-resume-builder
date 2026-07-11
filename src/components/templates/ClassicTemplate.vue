@@ -46,12 +46,12 @@
           </div>
         </div>
 
-        <!-- Custom links -->
-        <div v-if="customLinkEntries.length"
+        <!-- Professional + custom links -->
+        <div v-if="headerLinks.length"
              class="flex flex-wrap justify-center gap-x-6 gap-y-1 mt-4 text-sm text-gray-700">
-          <a v-for="(link, i) in customLinkEntries" :key="i"
+          <a v-for="(link, i) in headerLinks" :key="i"
              :href="link.href" target="_blank" rel="noopener"
-             class="underline hover:text-gray-900">{{ link.label }}</a>
+             class="underline hover:text-gray-900 inline-flex items-center"><LinkIcon v-if="resumeStore.settings.showLinkIcons" :name="link.icon" class="mr-1" />{{ link.label }}</a>
         </div>
       </div>
     </header>
@@ -80,11 +80,11 @@
             <div class="text-center mb-4">
               <h4 class="text-xl font-serif font-bold text-gray-900">{{ exp.title }}</h4>
               <div class="text-lg text-gray-700 font-semibold mt-1">
-                {{ exp.company }}
+                <a v-if="exp.url" :href="formatUrl(exp.url)" class="doc-link" target="_blank" rel="noopener">{{ exp.company }}</a><template v-else>{{ exp.company }}</template>
                 <span v-if="exp.location" class="text-gray-600"> • {{ exp.location }}</span>
               </div>
               <div class="text-gray-600 mt-1 font-medium">
-                {{ formatDateRange(exp.startDate, exp.endDate, exp.current) }}
+                {{ dateRange(exp.startDate, exp.endDate, exp.current) }}
               </div>
             </div>
             
@@ -107,11 +107,11 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
         
         <!-- Left Column -->
-        <div class="space-y-10">
+        <div class="flex flex-col gap-10">
           
           <!-- Education -->
           <section v-if="resumeStore.settings.sectionsEnabled.education && resumeStore.education.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('education') }">
             <h3 class="section-title text-xl font-serif font-bold text-gray-900 mb-6 text-center border-b border-gray-300 pb-2">
               Education
             </h3>
@@ -120,10 +120,10 @@
                    :key="edu.id"
                    class="text-center">
                 <h4 class="font-serif font-bold text-gray-900">{{ edu.degree }}</h4>
-                <div class="text-gray-700 font-semibold">{{ edu.institution }}</div>
+                <div class="text-gray-700 font-semibold"><a v-if="edu.url" :href="formatUrl(edu.url)" class="doc-link" target="_blank" rel="noopener">{{ edu.institution }}</a><template v-else>{{ edu.institution }}</template></div>
                 <div class="text-gray-600 text-sm">
                   <span v-if="edu.location">{{ edu.location }} • </span>
-                  {{ formatDateRange(edu.startDate, edu.endDate) }}
+                  {{ dateRange(edu.startDate, edu.endDate) }}
                   <span v-if="edu.gpa" class="ml-2 font-medium">GPA: {{ edu.gpa }}</span>
                 </div>
                 <p v-if="edu.description" class="text-gray-700 text-sm mt-2 italic">{{ edu.description }}</p>
@@ -133,7 +133,7 @@
 
           <!-- Certifications -->
           <section v-if="resumeStore.settings.sectionsEnabled.certifications && resumeStore.certifications.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('certifications') }">
             <h3 class="section-title text-xl font-serif font-bold text-gray-900 mb-6 text-center border-b border-gray-300 pb-2">
               Certifications
             </h3>
@@ -153,11 +153,11 @@
         </div>
 
         <!-- Right Column -->
-        <div class="space-y-10">
+        <div class="flex flex-col gap-10">
           
           <!-- Skills -->
           <section v-if="resumeStore.settings.sectionsEnabled.skills && resumeStore.skills.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('skills') }">
             <h3 class="section-title text-xl font-serif font-bold text-gray-900 mb-6 text-center border-b border-gray-300 pb-2">
               Core Competencies
             </h3>
@@ -178,7 +178,7 @@
 
           <!-- Projects -->
           <section v-if="resumeStore.settings.sectionsEnabled.projects && resumeStore.projects.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('projects') }">
             <h3 class="section-title text-xl font-serif font-bold text-gray-900 mb-6 text-center border-b border-gray-300 pb-2">
               Notable Projects
             </h3>
@@ -198,10 +198,17 @@
                   </span>
                 </div>
                 
-                <a v-if="project.url" 
-                   :href="project.url"
+                <a v-if="project.url"
+                   :href="formatUrl(project.url)"
+                   target="_blank" rel="noopener"
                    class="text-gray-600 hover:text-gray-800 text-sm underline">
-                  View Project
+                  Code
+                </a>
+                <a v-if="project.liveUrl"
+                   :href="formatUrl(project.liveUrl)"
+                   target="_blank" rel="noopener"
+                   class="text-gray-600 hover:text-gray-800 text-sm underline ml-4">
+                  Live
                 </a>
               </div>
             </div>
@@ -209,7 +216,7 @@
 
           <!-- Languages -->
           <section v-if="resumeStore.settings.sectionsEnabled.languages && resumeStore.languages.length" 
-                   class="resume-section">
+                   class="resume-section" :style="{ order: ord('languages') }">
             <h3 class="section-title text-xl font-serif font-bold text-gray-900 mb-6 text-center border-b border-gray-300 pb-2">
               Languages
             </h3>
@@ -229,95 +236,26 @@
 </template>
 
 <script>
-import { useResumeStore } from '../../stores/resume'
-import { format, parseISO } from 'date-fns'
-import { 
-  EnvelopeIcon, 
-  PhoneIcon, 
+import {
+  EnvelopeIcon,
+  PhoneIcon,
   MapPinIcon
 } from '@heroicons/vue/24/outline'
+import LinkIcon from '../LinkIcon.vue'
+import { useResumeTemplate } from '../../composables/useResumeTemplate'
 
 export default {
   name: 'ClassicTemplate',
   components: {
     EnvelopeIcon,
     PhoneIcon,
-    MapPinIcon
+    MapPinIcon,
+    LinkIcon
   },
   setup() {
-    const resumeStore = useResumeStore()
-    return { resumeStore }
-  },
-  computed: {
-    templateStyles() {
-      const colors = this.resumeStore.settings.colorScheme
-      return {
-        '--primary': colors.primary,
-        '--secondary': colors.secondary,
-        fontSize: `${this.resumeStore.settings.fontSize}px`,
-        fontFamily: this.resumeStore.settings.font
-      }
-    },
-    customLinkEntries() {
-      return (this.resumeStore.customLinks || [])
-        .filter(l => l && l.label && l.url)
-        .map(l => ({ label: l.label, href: this.formatUrl(l.url) }))
-    }
-  },
-  methods: {
-    formatUrl(url) {
-      if (!url) return ''
-      return /^https?:\/\//i.test(url) || url.startsWith('mailto:') ? url : `https://${url}`
-    },
-    formatDate(dateString) {
-      if (!dateString) return ''
-      try {
-        const date = parseISO(dateString + '-01')
-        return format(date, 'MMM yyyy')
-      } catch {
-        return dateString
-      }
-    },
-    
-    formatDateRange(startDate, endDate, current = false) {
-      const start = startDate ? this.formatDate(startDate) : ''
-      const end = current ? 'Present' : (endDate ? this.formatDate(endDate) : '')
-      
-      if (start && end) {
-        return `${start} - ${end}`
-      } else if (start) {
-        return start
-      } else if (end && !current) {
-        return end
-      }
-      return ''
-    }
+    return useResumeTemplate()
   }
 }
 </script>
 
-<style scoped>
-.classic-template {
-  max-width: 210mm;
-  min-height: 297mm;
-  margin: 0 auto;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  font-family: Georgia, 'Times New Roman', serif;
-}
-
-@media print {
-  .classic-template {
-    box-shadow: none;
-    max-width: none;
-    margin: 0;
-  }
-}
-
-@media (max-width: 768px) {
-  .classic-template {
-    max-width: 100%;
-    margin: 0;
-    box-shadow: none;
-  }
-}
-</style>
+<style scoped src="./ClassicTemplate.css"></style>

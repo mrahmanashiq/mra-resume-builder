@@ -56,12 +56,22 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Location</label>
-            <input type="text" 
+            <input type="text"
                    :value="experience.location"
                    @input="updateExperience(experience.id, 'location', $event.target.value)"
                    class="input-field"
                    placeholder="San Francisco, CA">
           </div>
+        </div>
+
+        <!-- Company website (optional; makes the company name a link) -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Company website (optional)</label>
+          <input type="url"
+                 :value="experience.url"
+                 @input="updateExperience(experience.id, 'url', $event.target.value)"
+                 class="input-field"
+                 placeholder="company.com">
         </div>
 
         <!-- Dates -->
@@ -191,6 +201,7 @@ export default {
         title: '',
         company: '',
         location: '',
+        url: '',
         startDate: '',
         endDate: '',
         current: false,

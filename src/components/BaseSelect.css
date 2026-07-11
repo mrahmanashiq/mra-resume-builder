@@ -1,0 +1,178 @@
+.bs-wrap {
+  position: relative;
+  width: 100%;
+}
+
+/* Trigger inherits .input-field sizing; we add layout + affordances */
+.bs-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  text-align: left;
+  cursor: pointer;
+  background: var(--c-white);
+  color: var(--c-gray-900);
+}
+
+.bs-trigger.bs-open {
+  border-color: transparent;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.7);
+  outline: none;
+}
+
+.bs-placeholder .bs-label {
+  color: var(--c-gray-400);
+}
+
+.bs-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bs-chevron {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+  color: var(--c-gray-500);
+  transition: transform 0.2s ease;
+}
+
+.bs-open .bs-chevron {
+  transform: rotate(180deg);
+}
+
+.bs-disabled {
+  opacity: 0.6;
+}
+
+.bs-disabled .bs-trigger {
+  cursor: not-allowed;
+}
+
+/* Panel (teleported to body) */
+.bs-panel {
+  z-index: 60;
+  max-height: 240px;
+  overflow-y: auto;
+  padding: 0.25rem;
+  background: var(--c-white);
+  border: 1px solid var(--c-gray-200);
+  border-radius: 0.6rem;
+  box-shadow: 0 12px 28px -8px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(15, 23, 42, 0.03);
+}
+
+.bs-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.6rem;
+  border-radius: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--c-gray-800);
+  cursor: pointer;
+  background: transparent;
+  line-height: 1.25;
+}
+
+.bs-option-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bs-active {
+  background: var(--c-slate-100);
+}
+
+.bs-selected {
+  color: var(--bs-primary, var(--c-blue-700));
+  font-weight: 600;
+}
+
+.bs-selected.bs-active {
+  background: #eff6ff;
+}
+
+.bs-opt-placeholder {
+  color: var(--c-gray-400);
+}
+
+.bs-opt-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.bs-check {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  color: var(--bs-primary, var(--c-blue-700));
+}
+
+/* Dark mode (html.dark ancestor; teleported panel keeps this component's scope id) */
+html.dark .bs-trigger {
+  background: var(--c-slate-800);
+  color: var(--c-slate-200);
+}
+html.dark .bs-placeholder .bs-label {
+  color: var(--c-slate-400);
+}
+html.dark .bs-chevron {
+  color: var(--c-slate-400);
+}
+html.dark .bs-panel {
+  background: var(--c-slate-800);
+  border-color: var(--c-slate-700);
+  box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+html.dark .bs-option {
+  color: var(--c-slate-200);
+}
+html.dark .bs-active {
+  background: var(--c-slate-700);
+}
+html.dark .bs-selected {
+  color: var(--c-blue-300);
+}
+html.dark .bs-selected.bs-active {
+  background: var(--c-navy);
+}
+html.dark .bs-opt-placeholder {
+  color: var(--c-slate-400);
+}
+html.dark .bs-check {
+  color: var(--c-blue-300);
+}
+
+/* Open / close animation */
+.bs-pop-enter-active,
+.bs-pop-leave-active {
+  transition: opacity 0.14s ease, transform 0.14s ease;
+}
+
+.bs-pop-enter-from,
+.bs-pop-leave-to {
+  opacity: 0;
+  transform: translateY(-4px) scale(0.98);
+}
+
+.bs-panel-up.bs-pop-enter-from,
+.bs-panel-up.bs-pop-leave-to {
+  transform: translateY(4px) scale(0.98);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bs-chevron,
+  .bs-pop-enter-active,
+  .bs-pop-leave-active {
+    transition: none;
+  }
+}

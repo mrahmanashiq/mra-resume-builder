@@ -103,9 +103,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.landing-title {
-  font-family: 'Sora', 'Inter', system-ui, -apple-system, sans-serif;
-  letter-spacing: -0.02em;
-}
-</style>
+<style scoped src="./LandingPage.css"></style>

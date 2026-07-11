@@ -1,15 +1,15 @@
 <template>
   <div class="dev-resume" :style="templateStyles">
     <!-- Header: name, title, and a single links + contact row -->
-    <header class="dev-header">
+    <header class="dev-header" :style="headerStyle">
       <h1 class="dev-name">{{ resumeStore.fullName }}</h1>
       <div v-if="personalInfo.title" class="dev-title">{{ personalInfo.title }}</div>
       <div v-if="personalInfo.headerTagline" class="dev-tagline">{{ personalInfo.headerTagline }}</div>
       <div v-if="headerEntries.length" class="dev-contact">
         <template v-for="(e, i) in headerEntries" :key="i">
           <span v-if="i > 0" class="dev-sep">|</span>
-          <a v-if="e.href" :href="e.href" class="dev-link" target="_blank" rel="noopener">{{ e.text }}</a>
-          <span v-else>{{ e.text }}</span>
+          <a v-if="e.href" :href="e.href" class="dev-link" target="_blank" rel="noopener"><LinkIcon v-if="settings.showLinkIcons" :name="e.icon" class="dev-entry-icon" />{{ e.text }}</a>
+          <span v-else><LinkIcon v-if="settings.showLinkIcons" :name="e.icon" class="dev-entry-icon" />{{ e.text }}</span>
         </template>
       </div>
     </header>
@@ -36,7 +36,7 @@
       <div v-for="exp in resumeStore.sortedExperience" :key="exp.id" class="dev-entry print-avoid-break">
         <div class="dev-entry-row">
           <span class="dev-entry-head">
-            <span class="dev-entry-title">{{ exp.title }}</span><span v-if="exp.company" class="dev-entry-org"> - {{ exp.company }}</span><span v-if="exp.location" class="dev-entry-loc"> ({{ exp.location }})</span>
+            <span class="dev-entry-title">{{ exp.title }}</span><span v-if="exp.company" class="dev-entry-org"> - <a v-if="exp.url" :href="formatUrl(exp.url)" class="doc-link" target="_blank" rel="noopener">{{ exp.company }}</a><template v-else>{{ exp.company }}</template></span><span v-if="exp.location" class="dev-entry-loc"> ({{ exp.location }})</span>
           </span>
           <span class="dev-entry-date">{{ dateRange(exp.startDate, exp.endDate, exp.current) }}</span>
         </div>
@@ -57,7 +57,7 @@
           <span class="dev-bullet">•</span>
           <span>
             <span class="dev-proj-name">{{ p.name }}:</span>
-            <span v-if="p.description"> {{ p.description }}</span><span v-if="p.technologies && p.technologies.length" class="dev-proj-tech"> ({{ p.technologies.join(', ') }})</span>
+            <span v-if="p.description"> {{ p.description }}</span><span v-if="p.technologies && p.technologies.length" class="dev-proj-tech"> ({{ p.technologies.join(', ') }})</span><template v-if="p.url || p.liveUrl"><span class="dev-proj-sep"> · </span><a v-if="p.url" :href="formatUrl(p.url)" class="dev-link" target="_blank" rel="noopener">Code</a><a v-if="p.liveUrl" :href="formatUrl(p.liveUrl)" class="dev-link dev-proj-live" target="_blank" rel="noopener">Live</a></template>
           </span>
         </li>
       </ul>
@@ -69,7 +69,7 @@
       <div v-for="edu in education" :key="edu.id" class="dev-entry">
         <div class="dev-entry-row">
           <span class="dev-entry-head">
-            <span class="dev-entry-title">{{ edu.degree }}</span><span v-if="edu.institution" class="dev-entry-org"> - {{ edu.institution }}</span>
+            <span class="dev-entry-title">{{ edu.degree }}</span><span v-if="edu.institution" class="dev-entry-org"> - <a v-if="edu.url" :href="formatUrl(edu.url)" class="doc-link" target="_blank" rel="noopener">{{ edu.institution }}</a><template v-else>{{ edu.institution }}</template></span>
           </span>
           <span class="dev-entry-date">{{ dateRange(edu.startDate, edu.endDate) }}</span>
         </div>
@@ -102,306 +102,43 @@
 </template>
 
 <script>
-import { useResumeStore } from '../../stores/resume'
-import { storeToRefs } from 'pinia'
-import { format, parseISO } from 'date-fns'
+import LinkIcon from '../LinkIcon.vue'
+import { iconKeyFor } from '../../utils/linkIcons'
+import { useResumeTemplate } from '../../composables/useResumeTemplate'
 
 /**
  * Compact, left-aligned single-column resume aimed at software engineers:
  * a combined links + contact row in the header, skills grouped by category on
  * one line each, and projects as "Name: description" bullets. Uses border-bottom
  * headings and inline bullets so it captures cleanly to PDF (see project notes).
+ *
+ * Shared logic (dates, ord, formatUrl, colour vars, ...) comes from
+ * useResumeTemplate(); only the combined header row is template-specific.
  */
 export default {
   name: 'DeveloperResumeTemplate',
+  components: { LinkIcon },
   setup() {
-    const resumeStore = useResumeStore()
-    const { personalInfo, skills, experience, education, projects, certifications, languages, settings } =
-      storeToRefs(resumeStore)
-    return { resumeStore, personalInfo, skills, experience, education, projects, certifications, languages, settings }
+    return useResumeTemplate()
   },
   computed: {
-    templateStyles() {
-      const c = this.settings.colorScheme
-      return {
-        '--primary': c.primary,
-        '--text': c.text,
-        '--background': c.background,
-        fontSize: `${this.settings.fontSize}px`,
-        fontFamily: this.settings.font
-      }
-    },
-    enabled() {
-      return this.settings.sectionsEnabled
-    },
+    // Developer shows links + contact as one combined row with its own labels.
     headerEntries() {
       const p = this.personalInfo
       const out = []
-      if (p.github) out.push({ text: 'Github', href: this.formatUrl(p.github) })
-      if (p.linkedin) out.push({ text: 'Linkedin', href: this.formatUrl(p.linkedin) })
-      if (p.website) out.push({ text: 'Portfolio', href: this.formatUrl(p.website) })
-      for (const l of this.resumeStore.customLinks || []) {
-        if (l && l.label && l.url) out.push({ text: l.label, href: this.formatUrl(l.url) })
+      if (p.github) out.push({ text: p.githubLabel || 'Github', href: this.formatUrl(p.github), icon: 'github' })
+      if (p.linkedin) out.push({ text: p.linkedinLabel || 'Linkedin', href: this.formatUrl(p.linkedin), icon: 'linkedin' })
+      if (p.website) out.push({ text: p.websiteLabel || 'Portfolio', href: this.formatUrl(p.website), icon: 'website' })
+      for (const l of this.customLinks || []) {
+        if (l && l.url) out.push({ text: l.label || l.url, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) })
       }
-      if (p.email) out.push({ text: p.email, href: `mailto:${p.email}` })
-      if (p.phone) out.push({ text: p.phone, href: null })
-      if (p.address) out.push({ text: p.address, href: null })
+      if (p.email) out.push({ text: p.email, href: `mailto:${p.email}`, icon: 'email' })
+      if (p.phone) out.push({ text: p.phone, href: null, icon: 'phone' })
+      if (p.address) out.push({ text: p.address, href: null, icon: 'location' })
       return out
-    }
-  },
-  methods: {
-    ord(key) {
-      const i = this.settings.sectionsOrder.indexOf(key)
-      return i === -1 ? 99 : i
-    },
-    hasAchievements(exp) {
-      return exp.achievements && exp.achievements.some(a => a && a.trim())
-    },
-    formatUrl(url) {
-      if (!url) return ''
-      if (/^https?:\/\//i.test(url) || url.startsWith('mailto:')) return url
-      return `https://${url}`
-    },
-    formatDate(v) {
-      if (!v) return ''
-      try {
-        return format(parseISO(v + '-01'), 'MMM yyyy')
-      } catch {
-        return v
-      }
-    },
-    dateRange(start, end, current = false) {
-      const s = this.formatDate(start)
-      const e = current ? 'Present' : this.formatDate(end)
-      if (s && e) return `${s} - ${e}`
-      return s || e || ''
     }
   }
 }
 </script>
 
-<style scoped>
-.dev-resume {
-  --primary: #2563eb;
-  --text: #1f2937;
-  --background: #ffffff;
-
-  max-width: 210mm;
-  min-height: 297mm;
-  margin: 0 auto;
-  padding: 40px 46px;
-  background: var(--background);
-  color: var(--text);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-  line-height: 1.4;
-  /* Sections are ordered via CSS `order` from settings.sectionsOrder. */
-  display: flex;
-  flex-direction: column;
-}
-
-/* Header */
-.dev-header {
-  order: -1;
-  padding-bottom: 10px;
-  border-bottom: 1.5px solid var(--text);
-  margin-bottom: 16px;
-}
-
-.dev-name {
-  font-size: 1.9rem;
-  font-weight: 800;
-  letter-spacing: 0.3px;
-}
-
-.dev-title {
-  font-size: 1.02rem;
-  color: var(--primary);
-  font-weight: 600;
-  margin-top: 2px;
-}
-
-.dev-tagline {
-  font-size: 0.92em;
-  color: #4b5563;
-  margin-top: 3px;
-}
-
-.dev-contact {
-  margin-top: 7px;
-  font-size: 0.9em;
-  color: #374151;
-  line-height: 1.6;
-}
-
-.dev-link {
-  color: var(--primary);
-  text-decoration: none;
-}
-
-.dev-link:hover {
-  text-decoration: underline;
-}
-
-.dev-sep {
-  margin: 0 7px;
-  color: #9ca3af;
-}
-
-/* Sections */
-.dev-section {
-  margin-bottom: 15px;
-}
-
-.dev-heading {
-  font-size: 0.95em;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--text);
-  border-bottom: 1px solid #d1d5db;
-  padding-bottom: 3px;
-  margin-bottom: 8px;
-}
-
-.dev-summary {
-  line-height: 1.5;
-}
-
-/* Skills */
-.dev-skills {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.dev-skill-cat {
-  font-weight: 700;
-}
-
-/* Entries (experience, education) */
-.dev-entry {
-  margin-bottom: 11px;
-}
-
-.dev-entry:last-child {
-  margin-bottom: 0;
-}
-
-.dev-entry-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-}
-
-.dev-entry-title {
-  font-weight: 700;
-}
-
-.dev-entry-org {
-  font-weight: 600;
-  color: var(--primary);
-}
-
-.dev-entry-loc {
-  color: #6b7280;
-  font-weight: 400;
-}
-
-.dev-entry-date {
-  color: #6b7280;
-  font-size: 0.9em;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.dev-entry-meta {
-  font-size: 0.9em;
-  color: #6b7280;
-  margin-top: 1px;
-}
-
-.dev-desc {
-  margin-top: 3px;
-}
-
-.dev-bullets {
-  list-style: none;
-  margin-top: 4px;
-  padding-left: 2px;
-}
-
-.dev-bullets li {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 2px;
-  line-height: 1.4;
-}
-
-.dev-bullet {
-  color: var(--primary);
-  flex-shrink: 0;
-}
-
-/* Projects */
-.dev-proj-list {
-  list-style: none;
-  padding-left: 2px;
-}
-
-.dev-proj {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 4px;
-  line-height: 1.45;
-}
-
-.dev-proj-name {
-  font-weight: 700;
-}
-
-.dev-proj-tech {
-  color: #4b5563;
-  font-size: 0.92em;
-}
-
-/* Certifications */
-.dev-cert {
-  display: flex;
-  gap: 8px;
-  align-items: baseline;
-  margin-bottom: 3px;
-}
-
-.dev-cert .dev-entry-date {
-  margin-left: auto;
-}
-
-/* html2canvas draws text lower than the browser; nudge ruled headings up during export */
-.pdf-export .dev-heading {
-  padding-bottom: 6px;
-}
-
-@media print {
-  .dev-resume {
-    box-shadow: none;
-    max-width: none;
-    margin: 0;
-  }
-  .print-avoid-break {
-    page-break-inside: avoid;
-  }
-}
-
-@media (max-width: 768px) {
-  .dev-resume {
-    max-width: 100%;
-    padding: 22px 18px;
-    box-shadow: none;
-  }
-  .dev-name {
-    font-size: 1.55rem;
-  }
-}
-</style>
+<style scoped src="./DeveloperResumeTemplate.css"></style>

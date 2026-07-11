@@ -69,10 +69,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.cropper {
-  height: 55vh;
-  max-height: 460px;
-  width: 100%;
-}
-</style>
+<style scoped src="./ImageCropperModal.css"></style>

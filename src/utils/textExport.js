@@ -39,6 +39,13 @@ function hexToRgb(hex) {
   return m ? [parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16)] : [37, 99, 235]
 }
 
+/** Normalize a user-entered link to a full URL (adds https:// when missing). */
+function urlHref(u) {
+  if (!u) return ''
+  const s = String(u).trim()
+  return /^(https?:|mailto:|tel:)/i.test(s) ? s : `https://${s}`
+}
+
 /**
  * Turn the resume store into an ordered, normalized list of sections that both
  * renderers can consume. Honors sectionsOrder + sectionsEnabled and skips empties.
@@ -52,6 +59,20 @@ export function buildResumeContent(store) {
   const name = (store.fullName || `${p.firstName || ''} ${p.lastName || ''}`).trim()
   const contacts = [p.email, p.phone, p.address, p.website, p.linkedin, p.github, p.scholar]
     .filter(Boolean)
+
+  // Same items, with hrefs for the ones that are links (used by Word + text-PDF
+  // so exports carry clickable links). Custom header links are appended.
+  const contactLinks = []
+  if (p.email) contactLinks.push({ text: p.email, href: `mailto:${p.email}` })
+  if (p.phone) contactLinks.push({ text: p.phone, href: '' })
+  if (p.address) contactLinks.push({ text: p.address, href: '' })
+  if (p.website) contactLinks.push({ text: p.websiteLabel || p.website, href: urlHref(p.website) })
+  if (p.linkedin) contactLinks.push({ text: p.linkedinLabel || p.linkedin, href: urlHref(p.linkedin) })
+  if (p.github) contactLinks.push({ text: p.githubLabel || p.github, href: urlHref(p.github) })
+  if (p.scholar) contactLinks.push({ text: p.scholar, href: urlHref(p.scholar) })
+  for (const l of store.customLinks || []) {
+    if (l && l.url) contactLinks.push({ text: l.label || l.url, href: urlHref(l.url) })
+  }
 
   const sortedExp = () => {
     const list = [...(store.experience || [])]
@@ -72,7 +93,8 @@ export function buildResumeContent(store) {
         right: dateRange(e.startDate, e.endDate, e.current),
         subtitle: [e.company, e.location].filter(Boolean).join(' · '),
         lines: [e.description].filter(Boolean),
-        bullets: cleanBullets(e.achievements)
+        bullets: cleanBullets(e.achievements),
+        links: [e.url ? { label: 'Website', href: urlHref(e.url) } : null].filter(Boolean)
       }))
     }),
     education: () => ({
@@ -87,7 +109,8 @@ export function buildResumeContent(store) {
           e.advisor ? `Advisor: ${e.advisor}` : null,
           e.description
         ].filter(Boolean),
-        bullets: []
+        bullets: [],
+        links: [e.url ? { label: 'Website', href: urlHref(e.url) } : null].filter(Boolean)
       }))
     }),
     publications: () => ({
@@ -160,7 +183,11 @@ export function buildResumeContent(store) {
         title: pr.name,
         right: dateRange(pr.startDate, pr.endDate),
         subtitle: (pr.technologies || []).join(', '),
-        lines: [pr.description, pr.url].filter(Boolean),
+        lines: [pr.description].filter(Boolean),
+        links: [
+          pr.url ? { label: 'Code', href: urlHref(pr.url) } : null,
+          pr.liveUrl ? { label: 'Live', href: urlHref(pr.liveUrl) } : null
+        ].filter(Boolean),
         bullets: []
       }))
     }),
@@ -251,6 +278,7 @@ export function buildResumeContent(store) {
     title: p.title || '',
     researchInterests: p.researchInterests || '',
     contacts,
+    contactLinks,
     summary,
     sections,
     declaration,
@@ -307,7 +335,24 @@ export async function exportResumePDF(store, filename) {
 
   if (c.title) para(c.title, { size: 11.5, style: 'italic', color: [75, 85, 99], gap: 2 })
   if (c.researchInterests) para(`Research Interests: ${c.researchInterests}`, { size: 9.5, color: [75, 85, 99], gap: 2 })
-  if (c.contacts.length) para(c.contacts.join('  |  '), { size: 9.5, color: [75, 85, 99], gap: 6 })
+  if (c.contactLinks.length) {
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(9.5)
+    const lh = 9.5 * 1.3
+    const sep = '  |  '
+    let cx = mL
+    ensure(lh)
+    c.contactLinks.forEach((it, i) => {
+      const sepW = i > 0 ? doc.getTextWidth(sep) : 0
+      const itW = doc.getTextWidth(it.text)
+      if (cx + sepW + itW > mL + cw) { y += lh; cx = mL }
+      if (i > 0) { doc.setTextColor(156, 163, 175); doc.text(sep, cx, y); cx += sepW }
+      if (it.href) { doc.setTextColor(pr, pg, pb); doc.textWithLink(it.text, cx, y, { url: it.href }) }
+      else { doc.setTextColor(75, 85, 99); doc.text(it.text, cx, y) }
+      cx += itW
+    })
+    y += lh + 6
+  }
   if (c.summary) para(c.summary, { size: 10, color: [31, 41, 55], gap: 8 })
 
   const heading = (text) => {
@@ -349,6 +394,21 @@ export async function exportResumePDF(store, filename) {
     }
     if (e.subtitle) para(e.subtitle, { size: 9.5, style: 'italic', color: [55, 65, 81], gap: 1 })
     ;(e.lines || []).forEach((ln) => para(ln, { size: 9.5, color: [55, 65, 81], gap: 1 }))
+    if (e.links && e.links.length) {
+      doc.setFont('helvetica', 'normal')
+      doc.setFontSize(9)
+      const lh = 9 * 1.3
+      ensure(lh)
+      let lx = mL
+      const sep = '   ·   '
+      e.links.forEach((l, i) => {
+        if (i > 0) { doc.setTextColor(156, 163, 175); doc.text(sep, lx, y); lx += doc.getTextWidth(sep) }
+        doc.setTextColor(pr, pg, pb)
+        doc.textWithLink(l.label, lx, y, { url: l.href })
+        lx += doc.getTextWidth(l.label)
+      })
+      y += lh
+    }
     ;(e.bullets || []).forEach((b) => {
       doc.setFont('helvetica', 'normal')
       doc.setFontSize(9.5)
@@ -388,7 +448,7 @@ export function exportResumeWord(store, filename) {
   parts.push(`<h1 style="margin:0;font-size:24pt;color:${c.primary};">${esc(c.name)}</h1>`)
   if (c.title) parts.push(`<p style="margin:2pt 0;font-style:italic;color:#4b5563;">${esc(c.title)}</p>`)
   if (c.researchInterests) parts.push(`<p style="margin:2pt 0;font-size:10pt;color:#4b5563;"><b>Research Interests:</b> ${esc(c.researchInterests)}</p>`)
-  if (c.contacts.length) parts.push(`<p style="margin:2pt 0;font-size:10pt;color:#4b5563;">${c.contacts.map(esc).join(' &nbsp;|&nbsp; ')}</p>`)
+  if (c.contactLinks.length) parts.push(`<p style="margin:2pt 0;font-size:10pt;color:#4b5563;">${c.contactLinks.map((x) => (x.href ? `<a href="${esc(x.href)}" style="color:${c.primary};text-decoration:none;">${esc(x.text)}</a>` : esc(x.text))).join(' &nbsp;|&nbsp; ')}</p>`)
   if (c.summary) parts.push(`<p style="margin:8pt 0;font-size:11pt;">${esc(c.summary)}</p>`)
 
   const headingHtml = (t) => `<h2 style="margin:14pt 0 4pt;font-size:12pt;color:${c.primary};border-bottom:1px solid ${c.primary};padding-bottom:2pt;text-transform:uppercase;letter-spacing:0.5pt;">${esc(t)}</h2>`
@@ -403,6 +463,9 @@ export function exportResumeWord(store, filename) {
     }
     if (e.subtitle) h += `<p style="margin:0;font-style:italic;color:#374151;font-size:10pt;">${esc(e.subtitle)}</p>`
     ;(e.lines || []).forEach((ln) => { h += `<p style="margin:0;color:#374151;font-size:10pt;">${esc(ln)}</p>` })
+    if (e.links && e.links.length) {
+      h += `<p style="margin:0;font-size:10pt;">${e.links.map((l) => `<a href="${esc(l.href)}" style="color:${c.primary};">${esc(l.label)}</a>`).join(' &nbsp;·&nbsp; ')}</p>`
+    }
     if (e.bullets && e.bullets.length) {
       h += `<ul style="margin:2pt 0;padding-left:16pt;">`
       e.bullets.forEach((b) => { h += `<li style="font-size:10pt;">${esc(b)}</li>` })

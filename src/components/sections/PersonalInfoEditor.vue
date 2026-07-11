@@ -105,7 +105,10 @@
     <!-- Professional Links -->
     <div class="space-y-4">
       <h4 class="font-medium text-gray-900 dark:text-slate-100">Professional Links</h4>
-      
+      <p class="text-xs text-gray-500 dark:text-slate-400 -mt-2">
+        The link address is where clicks go. Add optional display text to show a friendly label instead (e.g. "My LinkedIn") while it still links to the address.
+      </p>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">LinkedIn</label>
@@ -116,6 +119,12 @@
                  :aria-invalid="!!linkedinHint"
                  placeholder="linkedin.com/in/johndoe">
           <p v-if="linkedinHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ linkedinHint }}</p>
+          <input type="text"
+                 v-model="resumeStore.personalInfo.linkedinLabel"
+                 @input="updatePersonalInfo('linkedinLabel', $event.target.value)"
+                 class="input-field mt-2 text-sm"
+                 aria-label="LinkedIn display text"
+                 placeholder="Display text (optional), e.g. My LinkedIn">
         </div>
 
         <div>
@@ -127,6 +136,12 @@
                  :aria-invalid="!!githubHint"
                  placeholder="github.com/johndoe">
           <p v-if="githubHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ githubHint }}</p>
+          <input type="text"
+                 v-model="resumeStore.personalInfo.githubLabel"
+                 @input="updatePersonalInfo('githubLabel', $event.target.value)"
+                 class="input-field mt-2 text-sm"
+                 aria-label="GitHub display text"
+                 placeholder="Display text (optional), e.g. My GitHub">
         </div>
       </div>
 
@@ -139,6 +154,12 @@
                :aria-invalid="!!websiteHint"
                placeholder="johndoe.dev">
         <p v-if="websiteHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ websiteHint }}</p>
+        <input type="text"
+               v-model="resumeStore.personalInfo.websiteLabel"
+               @input="updatePersonalInfo('websiteLabel', $event.target.value)"
+               class="input-field mt-2 text-sm"
+               aria-label="Website display text"
+               placeholder="Display text (optional), e.g. My Portfolio">
       </div>
 
       <!-- Custom links (user-defined label + URL) -->
@@ -151,16 +172,16 @@
           </button>
         </div>
         <p class="text-xs text-gray-500 dark:text-slate-400 mb-2">
-          Add your own labelled links (e.g. Portfolio, Blog, Twitter). They appear in the header next to LinkedIn / GitHub.
+          Add your own links (e.g. Portfolio, Blog, Twitter). They appear in the header next to LinkedIn / GitHub. Display text is optional - leave it empty to show the link address itself.
         </p>
         <div v-if="resumeStore.customLinks.length" class="space-y-2">
           <div v-for="link in resumeStore.customLinks" :key="link.id" class="flex gap-2 items-start">
             <input type="text" :value="link.label"
                    @input="updateLink(link.id, 'label', $event.target.value)"
-                   class="input-field flex-1" placeholder="Label (e.g. Portfolio)">
+                   class="input-field flex-1" placeholder="Display text (optional)">
             <input type="text" :value="link.url"
                    @input="updateLink(link.id, 'url', $event.target.value)"
-                   class="input-field flex-1" placeholder="yoursite.com">
+                   class="input-field flex-1" placeholder="Link address (e.g. yoursite.com)">
             <button type="button" @click="removeLink(link.id)"
                     class="mt-2 p-1 text-red-400 hover:text-red-600 flex-shrink-0" aria-label="Remove link">
               <TrashIcon class="w-4 h-4" />
@@ -299,8 +320,11 @@ export default {
         this.resumeStore.updatePersonalInfo('phone', '')
         this.resumeStore.updatePersonalInfo('address', '')
         this.resumeStore.updatePersonalInfo('linkedin', '')
+        this.resumeStore.updatePersonalInfo('linkedinLabel', '')
         this.resumeStore.updatePersonalInfo('github', '')
+        this.resumeStore.updatePersonalInfo('githubLabel', '')
         this.resumeStore.updatePersonalInfo('website', '')
+        this.resumeStore.updatePersonalInfo('websiteLabel', '')
         this.resumeStore.updatePersonalInfo('summary', '')
         this.resumeStore.updatePersonalInfo('headerTagline', '')
         this.resumeStore.updatePersonalInfo('profileImage', '/profile_pic.png')

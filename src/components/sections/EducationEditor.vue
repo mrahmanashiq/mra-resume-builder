@@ -44,12 +44,22 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Location</label>
-            <input type="text" 
+            <input type="text"
                    :value="education.location"
                    @input="updateEducation(education.id, 'location', $event.target.value)"
                    class="input-field"
                    placeholder="Berkeley, CA">
           </div>
+        </div>
+
+        <!-- Institution website (optional; makes the institution name a link) -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Institution website (optional)</label>
+          <input type="url"
+                 :value="education.url"
+                 @input="updateEducation(education.id, 'url', $event.target.value)"
+                 class="input-field"
+                 placeholder="university.edu">
         </div>
 
         <!-- Dates and GPA -->
