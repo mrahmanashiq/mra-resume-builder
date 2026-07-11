@@ -8,8 +8,8 @@
       <div v-if="headerEntries.length" class="dev-contact">
         <template v-for="(e, i) in headerEntries" :key="i">
           <span v-if="i > 0" class="dev-sep">|</span>
-          <a v-if="e.href" :href="e.href" class="dev-link" target="_blank" rel="noopener">{{ e.text }}</a>
-          <span v-else>{{ e.text }}</span>
+          <a v-if="e.href" :href="e.href" class="dev-link" target="_blank" rel="noopener"><LinkIcon v-if="settings.showLinkIcons" :name="e.icon" class="dev-entry-icon" />{{ e.text }}</a>
+          <span v-else><LinkIcon v-if="settings.showLinkIcons" :name="e.icon" class="dev-entry-icon" />{{ e.text }}</span>
         </template>
       </div>
     </header>
@@ -105,6 +105,8 @@
 import { useResumeStore } from '../../stores/resume'
 import { storeToRefs } from 'pinia'
 import { format, parseISO } from 'date-fns'
+import LinkIcon from '../LinkIcon.vue'
+import { iconKeyFor } from '../../utils/linkIcons'
 
 /**
  * Compact, left-aligned single-column resume aimed at software engineers:
@@ -114,6 +116,7 @@ import { format, parseISO } from 'date-fns'
  */
 export default {
   name: 'DeveloperResumeTemplate',
+  components: { LinkIcon },
   setup() {
     const resumeStore = useResumeStore()
     const { personalInfo, skills, experience, education, projects, certifications, languages, settings } =
@@ -137,15 +140,15 @@ export default {
     headerEntries() {
       const p = this.personalInfo
       const out = []
-      if (p.github) out.push({ text: 'Github', href: this.formatUrl(p.github) })
-      if (p.linkedin) out.push({ text: 'Linkedin', href: this.formatUrl(p.linkedin) })
-      if (p.website) out.push({ text: 'Portfolio', href: this.formatUrl(p.website) })
+      if (p.github) out.push({ text: 'Github', href: this.formatUrl(p.github), icon: 'github' })
+      if (p.linkedin) out.push({ text: 'Linkedin', href: this.formatUrl(p.linkedin), icon: 'linkedin' })
+      if (p.website) out.push({ text: 'Portfolio', href: this.formatUrl(p.website), icon: 'website' })
       for (const l of this.resumeStore.customLinks || []) {
-        if (l && l.label && l.url) out.push({ text: l.label, href: this.formatUrl(l.url) })
+        if (l && l.label && l.url) out.push({ text: l.label, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) })
       }
-      if (p.email) out.push({ text: p.email, href: `mailto:${p.email}` })
-      if (p.phone) out.push({ text: p.phone, href: null })
-      if (p.address) out.push({ text: p.address, href: null })
+      if (p.email) out.push({ text: p.email, href: `mailto:${p.email}`, icon: 'email' })
+      if (p.phone) out.push({ text: p.phone, href: null, icon: 'phone' })
+      if (p.address) out.push({ text: p.address, href: null, icon: 'location' })
       return out
     }
   },
@@ -246,6 +249,11 @@ export default {
 .dev-sep {
   margin: 0 7px;
   color: #9ca3af;
+}
+
+.dev-entry-icon {
+  margin-right: 0.35em;
+  opacity: 0.85;
 }
 
 /* Sections */

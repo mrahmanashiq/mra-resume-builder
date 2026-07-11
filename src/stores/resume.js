@@ -252,6 +252,7 @@ export const useResumeStore = defineStore('resume', {
       fontSize: 14,
       spacing: 'normal',
       showProfileImage: true,
+      showLinkIcons: false,
       sectionsOrder: [
         'personalInfo',
         'summary',

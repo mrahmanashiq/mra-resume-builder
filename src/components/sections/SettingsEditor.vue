@@ -101,6 +101,24 @@
       </div>
     </div>
 
+    <!-- Display options -->
+    <div class="card">
+      <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-4">Display</h4>
+      <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-slate-800/60 rounded-lg">
+        <div class="min-w-0 pr-3">
+          <span class="font-medium block">Show icons on links</span>
+          <span class="text-xs text-gray-500 dark:text-slate-400">Small icons next to LinkedIn, GitHub, website, blog, etc. They use the template colour. Off by default.</span>
+        </div>
+        <button @click="toggleLinkIcons"
+                :class="['w-12 h-6 rounded-full flex items-center flex-shrink-0 transition-colors duration-200',
+                         resumeStore.settings.showLinkIcons ? 'bg-primary-600' : 'bg-gray-300']"
+                :aria-pressed="resumeStore.settings.showLinkIcons" aria-label="Show icons on links">
+          <div :class="['w-4 h-4 bg-white dark:bg-slate-800 rounded-full shadow transition-transform duration-200',
+                        resumeStore.settings.showLinkIcons ? 'translate-x-7' : 'translate-x-1']"></div>
+        </button>
+      </div>
+    </div>
+
     <!-- Section Management -->
     <div class="card">
       <h4 class="font-medium text-gray-900 dark:text-slate-100 mb-1">Sections</h4>
@@ -354,7 +372,11 @@ export default {
     toggleSection(sectionId) {
       this.resumeStore.toggleSection(sectionId)
     },
-    
+
+    toggleLinkIcons() {
+      this.resumeStore.updateSettings({ showLinkIcons: !this.resumeStore.settings.showLinkIcons })
+    },
+
     resetSettings() {
       const confirmReset = confirm('Are you sure you want to reset all settings to default?')
       if (confirmReset) {
