@@ -225,8 +225,8 @@ export default {
     },
     customLinkEntries() {
       return (this.resumeStore.customLinks || [])
-        .filter(l => l && l.label && l.url)
-        .map(l => ({ label: l.label, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) }))
+        .filter(l => l && l.url)
+        .map(l => ({ label: l.label || l.url, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) }))
     },
     personalRows() {
       const d = this.personalDetails || {}

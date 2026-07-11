@@ -82,7 +82,7 @@
               <a v-for="link in customLinks" :key="link.id"
                  :href="formatUrl(link.url)"
                  class="flex items-center space-x-2 hover:text-primary-700">
-                <span class="text-sm">{{ link.label }}</span>
+                <span class="text-sm">{{ link.label || link.url }}</span>
               </a>
             </div>
           </div>
@@ -334,7 +334,7 @@ export default {
              this.customLinks.length
     },
     customLinks() {
-      return (this.resumeStore.customLinks || []).filter(l => l && l.label && l.url)
+      return (this.resumeStore.customLinks || []).filter(l => l && l.url)
     }
   },
   methods: {

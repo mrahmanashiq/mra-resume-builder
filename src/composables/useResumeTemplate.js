@@ -105,8 +105,9 @@ export function useResumeTemplate() {
     if (p.github) out.push({ label: p.githubLabel || 'GitHub', value: p.github, href: formatUrl(p.github), icon: 'github' })
     if (p.website) out.push({ label: p.websiteLabel || 'Portfolio', value: p.website, href: formatUrl(p.website), icon: 'website' })
     for (const l of customLinks.value || []) {
-      if (l && l.label && l.url) {
-        out.push({ label: l.label, value: l.url, href: formatUrl(l.url), icon: iconKeyFor(l.label, l.url) })
+      // Display text (label) is optional; fall back to the URL when empty.
+      if (l && l.url) {
+        out.push({ label: l.label || l.url, value: l.url, href: formatUrl(l.url), icon: iconKeyFor(l.label, l.url) })
       }
     }
     return out

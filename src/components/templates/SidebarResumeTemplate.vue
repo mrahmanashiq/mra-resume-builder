@@ -118,8 +118,8 @@ export default {
     // Sidebar lists custom links after the fixed contact lines (as {label, href, icon}).
     customLinkEntries() {
       return (this.resumeStore.customLinks || [])
-        .filter(l => l && l.label && l.url)
-        .map(l => ({ label: l.label, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) }))
+        .filter(l => l && l.url)
+        .map(l => ({ label: l.label || l.url, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) }))
     }
   }
 }

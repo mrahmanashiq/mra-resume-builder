@@ -71,7 +71,7 @@ export function buildResumeContent(store) {
   if (p.github) contactLinks.push({ text: p.githubLabel || p.github, href: urlHref(p.github) })
   if (p.scholar) contactLinks.push({ text: p.scholar, href: urlHref(p.scholar) })
   for (const l of store.customLinks || []) {
-    if (l && l.label && l.url) contactLinks.push({ text: l.label, href: urlHref(l.url) })
+    if (l && l.url) contactLinks.push({ text: l.label || l.url, href: urlHref(l.url) })
   }
 
   const sortedExp = () => {

@@ -172,16 +172,16 @@
           </button>
         </div>
         <p class="text-xs text-gray-500 dark:text-slate-400 mb-2">
-          Add your own labelled links (e.g. Portfolio, Blog, Twitter). They appear in the header next to LinkedIn / GitHub.
+          Add your own links (e.g. Portfolio, Blog, Twitter). They appear in the header next to LinkedIn / GitHub. Display text is optional - leave it empty to show the link address itself.
         </p>
         <div v-if="resumeStore.customLinks.length" class="space-y-2">
           <div v-for="link in resumeStore.customLinks" :key="link.id" class="flex gap-2 items-start">
             <input type="text" :value="link.label"
                    @input="updateLink(link.id, 'label', $event.target.value)"
-                   class="input-field flex-1" placeholder="Label (e.g. Portfolio)">
+                   class="input-field flex-1" placeholder="Display text (optional)">
             <input type="text" :value="link.url"
                    @input="updateLink(link.id, 'url', $event.target.value)"
-                   class="input-field flex-1" placeholder="yoursite.com">
+                   class="input-field flex-1" placeholder="Link address (e.g. yoursite.com)">
             <button type="button" @click="removeLink(link.id)"
                     class="mt-2 p-1 text-red-400 hover:text-red-600 flex-shrink-0" aria-label="Remove link">
               <TrashIcon class="w-4 h-4" />
