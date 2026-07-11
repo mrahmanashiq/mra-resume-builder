@@ -15,9 +15,9 @@
         <div v-if="personalInfo.email" class="sb-line"><LinkIcon v-if="settings.showLinkIcons" name="email" class="sb-entry-icon" />{{ personalInfo.email }}</div>
         <div v-if="personalInfo.phone" class="sb-line"><LinkIcon v-if="settings.showLinkIcons" name="phone" class="sb-entry-icon" />{{ personalInfo.phone }}</div>
         <div v-if="personalInfo.address" class="sb-line"><LinkIcon v-if="settings.showLinkIcons" name="location" class="sb-entry-icon" />{{ personalInfo.address }}</div>
-        <div v-if="personalInfo.linkedin" class="sb-line"><LinkIcon v-if="settings.showLinkIcons" name="linkedin" class="sb-entry-icon" />{{ personalInfo.linkedin }}</div>
-        <div v-if="personalInfo.github" class="sb-line"><LinkIcon v-if="settings.showLinkIcons" name="github" class="sb-entry-icon" />{{ personalInfo.github }}</div>
-        <div v-if="personalInfo.website" class="sb-line"><LinkIcon v-if="settings.showLinkIcons" name="website" class="sb-entry-icon" />{{ personalInfo.website }}</div>
+        <div v-if="personalInfo.linkedin" class="sb-line"><LinkIcon v-if="settings.showLinkIcons" name="linkedin" class="sb-entry-icon" />{{ personalInfo.linkedinLabel || personalInfo.linkedin }}</div>
+        <div v-if="personalInfo.github" class="sb-line"><LinkIcon v-if="settings.showLinkIcons" name="github" class="sb-entry-icon" />{{ personalInfo.githubLabel || personalInfo.github }}</div>
+        <div v-if="personalInfo.website" class="sb-line"><LinkIcon v-if="settings.showLinkIcons" name="website" class="sb-entry-icon" />{{ personalInfo.websiteLabel || personalInfo.website }}</div>
         <div v-for="(link, i) in customLinkEntries" :key="i" class="sb-line">
           <LinkIcon v-if="settings.showLinkIcons" :name="link.icon" class="sb-entry-icon" /><a :href="link.href" target="_blank" rel="noopener" class="sb-link">{{ link.label }}</a>
         </div>

@@ -99,9 +99,11 @@ export function useResumeTemplate() {
   const headerLinks = computed(() => {
     const p = personalInfo.value
     const out = []
-    if (p.linkedin) out.push({ label: 'LinkedIn', value: p.linkedin, href: formatUrl(p.linkedin), icon: 'linkedin' })
-    if (p.github) out.push({ label: 'GitHub', value: p.github, href: formatUrl(p.github), icon: 'github' })
-    if (p.website) out.push({ label: 'Portfolio', value: p.website, href: formatUrl(p.website), icon: 'website' })
+    // Display text defaults to the platform name but the user can override it
+    // per link (e.g. show "My LinkedIn" while still linking to the real URL).
+    if (p.linkedin) out.push({ label: p.linkedinLabel || 'LinkedIn', value: p.linkedin, href: formatUrl(p.linkedin), icon: 'linkedin' })
+    if (p.github) out.push({ label: p.githubLabel || 'GitHub', value: p.github, href: formatUrl(p.github), icon: 'github' })
+    if (p.website) out.push({ label: p.websiteLabel || 'Portfolio', value: p.website, href: formatUrl(p.website), icon: 'website' })
     for (const l of customLinks.value || []) {
       if (l && l.label && l.url) {
         out.push({ label: l.label, value: l.url, href: formatUrl(l.url), icon: iconKeyFor(l.label, l.url) })

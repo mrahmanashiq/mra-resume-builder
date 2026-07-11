@@ -218,9 +218,9 @@ export default {
     linkItems() {
       const p = this.personalInfo
       const out = []
-      if (p.linkedin) out.push({ text: p.linkedin, icon: 'linkedin' })
-      if (p.github) out.push({ text: p.github, icon: 'github' })
-      if (p.website) out.push({ text: p.website, icon: 'website' })
+      if (p.linkedin) out.push({ text: p.linkedinLabel || p.linkedin, icon: 'linkedin' })
+      if (p.github) out.push({ text: p.githubLabel || p.github, icon: 'github' })
+      if (p.website) out.push({ text: p.websiteLabel || p.website, icon: 'website' })
       return out
     },
     customLinkEntries() {

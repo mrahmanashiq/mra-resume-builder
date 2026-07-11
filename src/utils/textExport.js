@@ -66,9 +66,9 @@ export function buildResumeContent(store) {
   if (p.email) contactLinks.push({ text: p.email, href: `mailto:${p.email}` })
   if (p.phone) contactLinks.push({ text: p.phone, href: '' })
   if (p.address) contactLinks.push({ text: p.address, href: '' })
-  if (p.website) contactLinks.push({ text: p.website, href: urlHref(p.website) })
-  if (p.linkedin) contactLinks.push({ text: p.linkedin, href: urlHref(p.linkedin) })
-  if (p.github) contactLinks.push({ text: p.github, href: urlHref(p.github) })
+  if (p.website) contactLinks.push({ text: p.websiteLabel || p.website, href: urlHref(p.website) })
+  if (p.linkedin) contactLinks.push({ text: p.linkedinLabel || p.linkedin, href: urlHref(p.linkedin) })
+  if (p.github) contactLinks.push({ text: p.githubLabel || p.github, href: urlHref(p.github) })
   if (p.scholar) contactLinks.push({ text: p.scholar, href: urlHref(p.scholar) })
   for (const l of store.customLinks || []) {
     if (l && l.label && l.url) contactLinks.push({ text: l.label, href: urlHref(l.url) })

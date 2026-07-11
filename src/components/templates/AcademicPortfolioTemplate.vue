@@ -14,8 +14,8 @@
       <div class="ap-label">Personal Information</div>
       <div class="ap-content">
         <div v-if="personalInfo.email" class="ap-info"><LinkIcon v-if="settings.showLinkIcons" name="email" class="ap-entry-icon" />Email: {{ personalInfo.email }}</div>
-        <div v-if="personalInfo.website" class="ap-info"><LinkIcon v-if="settings.showLinkIcons" name="website" class="ap-entry-icon" />Website: {{ personalInfo.website }}</div>
-        <div v-if="personalInfo.github" class="ap-info"><LinkIcon v-if="settings.showLinkIcons" name="github" class="ap-entry-icon" />GitHub: {{ personalInfo.github }}</div>
+        <div v-if="personalInfo.website" class="ap-info"><LinkIcon v-if="settings.showLinkIcons" name="website" class="ap-entry-icon" />Website: {{ personalInfo.websiteLabel || personalInfo.website }}</div>
+        <div v-if="personalInfo.github" class="ap-info"><LinkIcon v-if="settings.showLinkIcons" name="github" class="ap-entry-icon" />GitHub: {{ personalInfo.githubLabel || personalInfo.github }}</div>
         <div v-if="personalInfo.scholar" class="ap-info"><LinkIcon v-if="settings.showLinkIcons" name="website" class="ap-entry-icon" />Scholar: {{ personalInfo.scholar }}</div>
         <div v-for="(link, i) in customLinkEntries" :key="i" class="ap-info">
           <LinkIcon v-if="settings.showLinkIcons" :name="link.icon" class="ap-entry-icon" /><a :href="link.href" target="_blank" rel="noopener" class="ap-clink">{{ link.label }}</a>

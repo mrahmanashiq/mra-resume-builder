@@ -126,9 +126,9 @@ export default {
     headerEntries() {
       const p = this.personalInfo
       const out = []
-      if (p.github) out.push({ text: 'Github', href: this.formatUrl(p.github), icon: 'github' })
-      if (p.linkedin) out.push({ text: 'Linkedin', href: this.formatUrl(p.linkedin), icon: 'linkedin' })
-      if (p.website) out.push({ text: 'Portfolio', href: this.formatUrl(p.website), icon: 'website' })
+      if (p.github) out.push({ text: p.githubLabel || 'Github', href: this.formatUrl(p.github), icon: 'github' })
+      if (p.linkedin) out.push({ text: p.linkedinLabel || 'Linkedin', href: this.formatUrl(p.linkedin), icon: 'linkedin' })
+      if (p.website) out.push({ text: p.websiteLabel || 'Portfolio', href: this.formatUrl(p.website), icon: 'website' })
       for (const l of this.customLinks || []) {
         if (l && l.label && l.url) out.push({ text: l.label, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) })
       }

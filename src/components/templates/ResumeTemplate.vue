@@ -66,18 +66,18 @@
               <a v-if="resumeStore.personalInfo.linkedin" 
                  :href="formatUrl(resumeStore.personalInfo.linkedin)"
                  class="flex items-center space-x-2 hover:text-primary-700">
-                <span class="text-sm">LinkedIn</span>
+                <span class="text-sm">{{ resumeStore.personalInfo.linkedinLabel || 'LinkedIn' }}</span>
               </a>
               <a v-if="resumeStore.personalInfo.github" 
                  :href="formatUrl(resumeStore.personalInfo.github)"
                  class="flex items-center space-x-2 hover:text-primary-700">
-                <span class="text-sm">GitHub</span>
+                <span class="text-sm">{{ resumeStore.personalInfo.githubLabel || 'GitHub' }}</span>
               </a>
               <a v-if="resumeStore.personalInfo.website"
                  :href="formatUrl(resumeStore.personalInfo.website)"
                  class="flex items-center space-x-2 hover:text-primary-700">
                 <GlobeAltIcon class="w-4 h-4" />
-                <span class="text-sm">Portfolio</span>
+                <span class="text-sm">{{ resumeStore.personalInfo.websiteLabel || 'Portfolio' }}</span>
               </a>
               <a v-for="link in customLinks" :key="link.id"
                  :href="formatUrl(link.url)"

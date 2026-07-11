@@ -105,7 +105,10 @@
     <!-- Professional Links -->
     <div class="space-y-4">
       <h4 class="font-medium text-gray-900 dark:text-slate-100">Professional Links</h4>
-      
+      <p class="text-xs text-gray-500 dark:text-slate-400 -mt-2">
+        The link address is where clicks go. Add optional display text to show a friendly label instead (e.g. "My LinkedIn") while it still links to the address.
+      </p>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">LinkedIn</label>
@@ -116,6 +119,12 @@
                  :aria-invalid="!!linkedinHint"
                  placeholder="linkedin.com/in/johndoe">
           <p v-if="linkedinHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ linkedinHint }}</p>
+          <input type="text"
+                 v-model="resumeStore.personalInfo.linkedinLabel"
+                 @input="updatePersonalInfo('linkedinLabel', $event.target.value)"
+                 class="input-field mt-2 text-sm"
+                 aria-label="LinkedIn display text"
+                 placeholder="Display text (optional), e.g. My LinkedIn">
         </div>
 
         <div>
@@ -127,6 +136,12 @@
                  :aria-invalid="!!githubHint"
                  placeholder="github.com/johndoe">
           <p v-if="githubHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ githubHint }}</p>
+          <input type="text"
+                 v-model="resumeStore.personalInfo.githubLabel"
+                 @input="updatePersonalInfo('githubLabel', $event.target.value)"
+                 class="input-field mt-2 text-sm"
+                 aria-label="GitHub display text"
+                 placeholder="Display text (optional), e.g. My GitHub">
         </div>
       </div>
 
@@ -139,6 +154,12 @@
                :aria-invalid="!!websiteHint"
                placeholder="johndoe.dev">
         <p v-if="websiteHint" class="text-xs text-amber-600 dark:text-amber-400 mt-1">{{ websiteHint }}</p>
+        <input type="text"
+               v-model="resumeStore.personalInfo.websiteLabel"
+               @input="updatePersonalInfo('websiteLabel', $event.target.value)"
+               class="input-field mt-2 text-sm"
+               aria-label="Website display text"
+               placeholder="Display text (optional), e.g. My Portfolio">
       </div>
 
       <!-- Custom links (user-defined label + URL) -->
@@ -299,8 +320,11 @@ export default {
         this.resumeStore.updatePersonalInfo('phone', '')
         this.resumeStore.updatePersonalInfo('address', '')
         this.resumeStore.updatePersonalInfo('linkedin', '')
+        this.resumeStore.updatePersonalInfo('linkedinLabel', '')
         this.resumeStore.updatePersonalInfo('github', '')
+        this.resumeStore.updatePersonalInfo('githubLabel', '')
         this.resumeStore.updatePersonalInfo('website', '')
+        this.resumeStore.updatePersonalInfo('websiteLabel', '')
         this.resumeStore.updatePersonalInfo('summary', '')
         this.resumeStore.updatePersonalInfo('headerTagline', '')
         this.resumeStore.updatePersonalInfo('profileImage', '/profile_pic.png')

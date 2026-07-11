@@ -172,11 +172,11 @@ export default {
     contactItems() {
       const p = this.personalInfo
       const out = []
-      if (p.website) out.push({ text: p.website, icon: 'website' })
+      if (p.website) out.push({ text: p.websiteLabel || p.website, icon: 'website' })
       if (p.email) out.push({ text: p.email, icon: 'email' })
       if (p.phone) out.push({ text: p.phone, icon: 'phone' })
-      if (p.github) out.push({ text: p.github, icon: 'github' })
-      if (p.linkedin) out.push({ text: p.linkedin, icon: 'linkedin' })
+      if (p.github) out.push({ text: p.githubLabel || p.github, icon: 'github' })
+      if (p.linkedin) out.push({ text: p.linkedinLabel || p.linkedin, icon: 'linkedin' })
       if (p.scholar) out.push({ text: p.scholar, icon: 'website' })
       return out
     },
