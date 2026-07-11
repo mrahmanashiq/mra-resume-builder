@@ -54,10 +54,10 @@
               </div>
             </div>
 
-            <!-- Custom links -->
-            <div v-if="customLinkEntries.length"
+            <!-- Professional + custom links -->
+            <div v-if="headerLinks.length"
                  class="mt-3 space-y-1 text-sm text-center md:text-right">
-              <a v-for="(link, i) in customLinkEntries" :key="i"
+              <a v-for="(link, i) in headerLinks" :key="i"
                  :href="link.href" target="_blank" rel="noopener"
                  class="block text-gray-500 hover:text-gray-700 underline font-light"><LinkIcon v-if="resumeStore.settings.showLinkIcons" :name="link.icon" class="mr-1" />{{ link.label }}</a>
             </div>
@@ -238,7 +238,6 @@
 
 <script>
 import LinkIcon from '../LinkIcon.vue'
-import { iconKeyFor } from '../../utils/linkIcons'
 import { useResumeTemplate } from '../../composables/useResumeTemplate'
 
 export default {
@@ -246,14 +245,6 @@ export default {
   components: { LinkIcon },
   setup() {
     return useResumeTemplate()
-  },
-  computed: {
-    // Minimalist shows only custom links (as {label, href, icon}).
-    customLinkEntries() {
-      return (this.resumeStore.customLinks || [])
-        .filter(l => l && l.label && l.url)
-        .map(l => ({ label: l.label, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) }))
-    }
   }
 }
 </script>
