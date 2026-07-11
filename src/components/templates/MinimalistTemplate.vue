@@ -44,13 +44,13 @@
             <!-- Contact Information -->
             <div class="space-y-2 text-gray-600 text-sm text-center md:text-right">
               <div v-if="resumeStore.personalInfo.email">
-                {{ resumeStore.personalInfo.email }}
+                <LinkIcon v-if="resumeStore.settings.showLinkIcons" name="email" class="mr-1" />{{ resumeStore.personalInfo.email }}
               </div>
               <div v-if="resumeStore.personalInfo.phone">
-                {{ resumeStore.personalInfo.phone }}
+                <LinkIcon v-if="resumeStore.settings.showLinkIcons" name="phone" class="mr-1" />{{ resumeStore.personalInfo.phone }}
               </div>
               <div v-if="resumeStore.personalInfo.address">
-                {{ resumeStore.personalInfo.address }}
+                <LinkIcon v-if="resumeStore.settings.showLinkIcons" name="location" class="mr-1" />{{ resumeStore.personalInfo.address }}
               </div>
             </div>
 
@@ -59,7 +59,7 @@
                  class="mt-3 space-y-1 text-sm text-center md:text-right">
               <a v-for="(link, i) in customLinkEntries" :key="i"
                  :href="link.href" target="_blank" rel="noopener"
-                 class="block text-gray-500 hover:text-gray-700 underline font-light">{{ link.label }}</a>
+                 class="block text-gray-500 hover:text-gray-700 underline font-light"><LinkIcon v-if="resumeStore.settings.showLinkIcons" :name="link.icon" class="mr-1" />{{ link.label }}</a>
             </div>
           </div>
         </div>
@@ -232,9 +232,12 @@
 <script>
 import { useResumeStore } from '../../stores/resume'
 import { format, parseISO } from 'date-fns'
+import LinkIcon from '../LinkIcon.vue'
+import { iconKeyFor } from '../../utils/linkIcons'
 
 export default {
   name: 'MinimalistTemplate',
+  components: { LinkIcon },
   setup() {
     const resumeStore = useResumeStore()
     return { resumeStore }
@@ -252,7 +255,7 @@ export default {
     customLinkEntries() {
       return (this.resumeStore.customLinks || [])
         .filter(l => l && l.label && l.url)
-        .map(l => ({ label: l.label, href: this.formatUrl(l.url) }))
+        .map(l => ({ label: l.label, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) }))
     }
   },
   methods: {

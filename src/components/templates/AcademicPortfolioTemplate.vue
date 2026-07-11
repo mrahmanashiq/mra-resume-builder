@@ -13,12 +13,12 @@
     <section class="ap-section print-avoid-break">
       <div class="ap-label">Personal Information</div>
       <div class="ap-content">
-        <div v-if="personalInfo.email" class="ap-info">Email: {{ personalInfo.email }}</div>
-        <div v-if="personalInfo.website" class="ap-info">Website: {{ personalInfo.website }}</div>
-        <div v-if="personalInfo.github" class="ap-info">GitHub: {{ personalInfo.github }}</div>
-        <div v-if="personalInfo.scholar" class="ap-info">Scholar: {{ personalInfo.scholar }}</div>
+        <div v-if="personalInfo.email" class="ap-info"><LinkIcon v-if="settings.showLinkIcons" name="email" class="ap-entry-icon" />Email: {{ personalInfo.email }}</div>
+        <div v-if="personalInfo.website" class="ap-info"><LinkIcon v-if="settings.showLinkIcons" name="website" class="ap-entry-icon" />Website: {{ personalInfo.website }}</div>
+        <div v-if="personalInfo.github" class="ap-info"><LinkIcon v-if="settings.showLinkIcons" name="github" class="ap-entry-icon" />GitHub: {{ personalInfo.github }}</div>
+        <div v-if="personalInfo.scholar" class="ap-info"><LinkIcon v-if="settings.showLinkIcons" name="website" class="ap-entry-icon" />Scholar: {{ personalInfo.scholar }}</div>
         <div v-for="(link, i) in customLinkEntries" :key="i" class="ap-info">
-          <a :href="link.href" target="_blank" rel="noopener" class="ap-clink">{{ link.label }}</a>
+          <LinkIcon v-if="settings.showLinkIcons" :name="link.icon" class="ap-entry-icon" /><a :href="link.href" target="_blank" rel="noopener" class="ap-clink">{{ link.label }}</a>
         </div>
       </div>
     </section>
@@ -160,9 +160,12 @@
 import { useResumeStore } from '../../stores/resume'
 import { storeToRefs } from 'pinia'
 import { format, parseISO } from 'date-fns'
+import LinkIcon from '../LinkIcon.vue'
+import { iconKeyFor } from '../../utils/linkIcons'
 
 export default {
   name: 'AcademicPortfolioTemplate',
+  components: { LinkIcon },
   setup() {
     const resumeStore = useResumeStore()
     const {
@@ -190,7 +193,7 @@ export default {
     customLinkEntries() {
       return (this.resumeStore.customLinks || [])
         .filter(l => l && l.label && l.url)
-        .map(l => ({ label: l.label, href: this.formatUrl(l.url) }))
+        .map(l => ({ label: l.label, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) }))
     }
   },
   methods: {
@@ -284,6 +287,10 @@ export default {
 .ap-clink {
   color: var(--primary);
   text-decoration: none;
+}
+
+.ap-entry-icon {
+  margin-right: 0.3em;
 }
 
 .ap-interests-label {

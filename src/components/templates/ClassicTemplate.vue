@@ -51,7 +51,7 @@
              class="flex flex-wrap justify-center gap-x-6 gap-y-1 mt-4 text-sm text-gray-700">
           <a v-for="(link, i) in customLinkEntries" :key="i"
              :href="link.href" target="_blank" rel="noopener"
-             class="underline hover:text-gray-900">{{ link.label }}</a>
+             class="underline hover:text-gray-900 inline-flex items-center"><LinkIcon v-if="resumeStore.settings.showLinkIcons" :name="link.icon" class="mr-1" />{{ link.label }}</a>
         </div>
       </div>
     </header>
@@ -231,18 +231,21 @@
 <script>
 import { useResumeStore } from '../../stores/resume'
 import { format, parseISO } from 'date-fns'
-import { 
-  EnvelopeIcon, 
-  PhoneIcon, 
+import {
+  EnvelopeIcon,
+  PhoneIcon,
   MapPinIcon
 } from '@heroicons/vue/24/outline'
+import LinkIcon from '../LinkIcon.vue'
+import { iconKeyFor } from '../../utils/linkIcons'
 
 export default {
   name: 'ClassicTemplate',
   components: {
     EnvelopeIcon,
     PhoneIcon,
-    MapPinIcon
+    MapPinIcon,
+    LinkIcon
   },
   setup() {
     const resumeStore = useResumeStore()
@@ -261,7 +264,7 @@ export default {
     customLinkEntries() {
       return (this.resumeStore.customLinks || [])
         .filter(l => l && l.label && l.url)
-        .map(l => ({ label: l.label, href: this.formatUrl(l.url) }))
+        .map(l => ({ label: l.label, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) }))
     }
   },
   methods: {

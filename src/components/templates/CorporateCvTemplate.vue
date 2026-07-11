@@ -7,13 +7,17 @@
         <div v-if="personalInfo.title" class="cv-role">{{ personalInfo.title }}</div>
         <div v-if="personalInfo.headerTagline" class="cv-tagline">{{ personalInfo.headerTagline }}</div>
         <div class="cv-contact">
-          <div v-if="personalInfo.phone">{{ personalInfo.phone }}</div>
-          <div v-if="personalInfo.email">{{ personalInfo.email }}</div>
-          <div v-if="personalInfo.address">{{ personalInfo.address }}</div>
-          <div v-if="linkLine">{{ linkLine }}</div>
+          <div v-if="personalInfo.phone"><LinkIcon v-if="settings.showLinkIcons" name="phone" class="cv-entry-icon" />{{ personalInfo.phone }}</div>
+          <div v-if="personalInfo.email"><LinkIcon v-if="settings.showLinkIcons" name="email" class="cv-entry-icon" />{{ personalInfo.email }}</div>
+          <div v-if="personalInfo.address"><LinkIcon v-if="settings.showLinkIcons" name="location" class="cv-entry-icon" />{{ personalInfo.address }}</div>
+          <div v-if="linkItems.length">
+            <template v-for="(link, i) in linkItems" :key="'ll' + i">
+              <span v-if="i > 0"> | </span><LinkIcon v-if="settings.showLinkIcons" :name="link.icon" class="cv-entry-icon" />{{ link.text }}
+            </template>
+          </div>
           <div v-if="customLinkEntries.length" class="cv-clinks">
             <template v-for="(link, i) in customLinkEntries" :key="i">
-              <span v-if="i > 0"> | </span><a :href="link.href" target="_blank" rel="noopener" class="cv-clink">{{ link.label }}</a>
+              <span v-if="i > 0"> | </span><LinkIcon v-if="settings.showLinkIcons" :name="link.icon" class="cv-entry-icon" /><a :href="link.href" target="_blank" rel="noopener" class="cv-clink">{{ link.label }}</a>
             </template>
           </div>
         </div>
@@ -193,9 +197,12 @@
 import { useResumeStore } from '../../stores/resume'
 import { storeToRefs } from 'pinia'
 import { format, parseISO } from 'date-fns'
+import LinkIcon from '../LinkIcon.vue'
+import { iconKeyFor } from '../../utils/linkIcons'
 
 export default {
   name: 'CorporateCvTemplate',
+  components: { LinkIcon },
   setup() {
     const resumeStore = useResumeStore()
     const {
@@ -227,14 +234,18 @@ export default {
     extracurricularList() {
       return (this.extracurricular || []).filter(e => e.text && e.text.trim())
     },
-    linkLine() {
+    linkItems() {
       const p = this.personalInfo
-      return [p.linkedin, p.github, p.website].filter(Boolean).join('  |  ')
+      const out = []
+      if (p.linkedin) out.push({ text: p.linkedin, icon: 'linkedin' })
+      if (p.github) out.push({ text: p.github, icon: 'github' })
+      if (p.website) out.push({ text: p.website, icon: 'website' })
+      return out
     },
     customLinkEntries() {
       return (this.resumeStore.customLinks || [])
         .filter(l => l && l.label && l.url)
-        .map(l => ({ label: l.label, href: this.formatUrl(l.url) }))
+        .map(l => ({ label: l.label, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) }))
     },
     personalRows() {
       const d = this.personalDetails || {}
@@ -353,6 +364,10 @@ export default {
 .cv-clink {
   color: #ffffff;
   text-decoration: underline;
+}
+
+.cv-entry-icon {
+  margin-right: 0.3em;
 }
 
 .cv-photo {

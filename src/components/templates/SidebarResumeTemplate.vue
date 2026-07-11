@@ -12,14 +12,14 @@
 
       <div class="sb-block">
         <h2 class="sb-heading">Contact</h2>
-        <div v-if="personalInfo.email" class="sb-line">{{ personalInfo.email }}</div>
-        <div v-if="personalInfo.phone" class="sb-line">{{ personalInfo.phone }}</div>
-        <div v-if="personalInfo.address" class="sb-line">{{ personalInfo.address }}</div>
-        <div v-if="personalInfo.linkedin" class="sb-line">{{ personalInfo.linkedin }}</div>
-        <div v-if="personalInfo.github" class="sb-line">{{ personalInfo.github }}</div>
-        <div v-if="personalInfo.website" class="sb-line">{{ personalInfo.website }}</div>
+        <div v-if="personalInfo.email" class="sb-line"><LinkIcon v-if="settings.showLinkIcons" name="email" class="sb-entry-icon" />{{ personalInfo.email }}</div>
+        <div v-if="personalInfo.phone" class="sb-line"><LinkIcon v-if="settings.showLinkIcons" name="phone" class="sb-entry-icon" />{{ personalInfo.phone }}</div>
+        <div v-if="personalInfo.address" class="sb-line"><LinkIcon v-if="settings.showLinkIcons" name="location" class="sb-entry-icon" />{{ personalInfo.address }}</div>
+        <div v-if="personalInfo.linkedin" class="sb-line"><LinkIcon v-if="settings.showLinkIcons" name="linkedin" class="sb-entry-icon" />{{ personalInfo.linkedin }}</div>
+        <div v-if="personalInfo.github" class="sb-line"><LinkIcon v-if="settings.showLinkIcons" name="github" class="sb-entry-icon" />{{ personalInfo.github }}</div>
+        <div v-if="personalInfo.website" class="sb-line"><LinkIcon v-if="settings.showLinkIcons" name="website" class="sb-entry-icon" />{{ personalInfo.website }}</div>
         <div v-for="(link, i) in customLinkEntries" :key="i" class="sb-line">
-          <a :href="link.href" target="_blank" rel="noopener" class="sb-link">{{ link.label }}</a>
+          <LinkIcon v-if="settings.showLinkIcons" :name="link.icon" class="sb-entry-icon" /><a :href="link.href" target="_blank" rel="noopener" class="sb-link">{{ link.label }}</a>
         </div>
       </div>
 
@@ -106,9 +106,12 @@
 import { useResumeStore } from '../../stores/resume'
 import { storeToRefs } from 'pinia'
 import { format, parseISO } from 'date-fns'
+import LinkIcon from '../LinkIcon.vue'
+import { iconKeyFor } from '../../utils/linkIcons'
 
 export default {
   name: 'SidebarResumeTemplate',
+  components: { LinkIcon },
   setup() {
     const resumeStore = useResumeStore()
     const { personalInfo, skills, experience, education, projects, certifications, languages, settings } =
@@ -132,7 +135,7 @@ export default {
     customLinkEntries() {
       return (this.resumeStore.customLinks || [])
         .filter(l => l && l.label && l.url)
-        .map(l => ({ label: l.label, href: this.formatUrl(l.url) }))
+        .map(l => ({ label: l.label, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) }))
     }
   },
   methods: {
@@ -254,6 +257,10 @@ export default {
   color: var(--primary);
   text-decoration: none;
   word-break: break-word;
+}
+
+.sb-entry-icon {
+  margin-right: 0.3em;
 }
 
 .sb-subcat {

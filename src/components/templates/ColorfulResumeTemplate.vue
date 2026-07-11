@@ -8,10 +8,10 @@
         <div v-if="personalInfo.headerTagline" class="cm-tagline">{{ personalInfo.headerTagline }}</div>
         <div class="cm-contact">
           <span v-for="(item, i) in contactItems" :key="i">
-            <span v-if="i > 0" class="cm-sep">·</span>{{ item }}
+            <span v-if="i > 0" class="cm-sep">·</span><LinkIcon v-if="settings.showLinkIcons" :name="item.icon" class="cm-entry-icon" />{{ item.text }}
           </span>
           <template v-for="(link, i) in customLinkEntries" :key="'cl' + i">
-            <span v-if="contactItems.length || i > 0" class="cm-sep">·</span><a :href="link.href" target="_blank" rel="noopener" class="cm-clink">{{ link.label }}</a>
+            <span v-if="contactItems.length || i > 0" class="cm-sep">·</span><LinkIcon v-if="settings.showLinkIcons" :name="link.icon" class="cm-entry-icon" /><a :href="link.href" target="_blank" rel="noopener" class="cm-clink">{{ link.label }}</a>
           </template>
         </div>
       </div>
@@ -115,9 +115,12 @@
 import { useResumeStore } from '../../stores/resume'
 import { storeToRefs } from 'pinia'
 import { format, parseISO } from 'date-fns'
+import LinkIcon from '../LinkIcon.vue'
+import { iconKeyFor } from '../../utils/linkIcons'
 
 export default {
   name: 'ColorfulResumeTemplate',
+  components: { LinkIcon },
   setup() {
     const resumeStore = useResumeStore()
     const { personalInfo, skills, experience, education, projects, certifications, languages, settings } =
@@ -142,12 +145,19 @@ export default {
     },
     contactItems() {
       const p = this.personalInfo
-      return [p.email, p.phone, p.address, p.linkedin, p.github, p.website].filter(Boolean)
+      const out = []
+      if (p.email) out.push({ text: p.email, icon: 'email' })
+      if (p.phone) out.push({ text: p.phone, icon: 'phone' })
+      if (p.address) out.push({ text: p.address, icon: 'location' })
+      if (p.linkedin) out.push({ text: p.linkedin, icon: 'linkedin' })
+      if (p.github) out.push({ text: p.github, icon: 'github' })
+      if (p.website) out.push({ text: p.website, icon: 'website' })
+      return out
     },
     customLinkEntries() {
       return (this.resumeStore.customLinks || [])
         .filter(l => l && l.label && l.url)
-        .map(l => ({ label: l.label, href: this.formatUrl(l.url) }))
+        .map(l => ({ label: l.label, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) }))
     }
   },
   methods: {
@@ -231,6 +241,10 @@ export default {
 .cm-clink {
   color: #ffffff;
   text-decoration: underline;
+}
+
+.cm-entry-icon {
+  margin-right: 0.3em;
 }
 
 .cm-contact {

@@ -54,7 +54,7 @@
             <!-- Links (fixed + custom) -->
             <div v-if="headerLinks.length" class="flex flex-wrap justify-center md:justify-start gap-x-4 gap-y-1 mt-2 text-white opacity-90 text-sm">
               <a v-for="(l, i) in headerLinks" :key="i" :href="l.href" target="_blank" rel="noopener"
-                 class="underline hover:opacity-100">{{ l.label }}</a>
+                 class="underline hover:opacity-100 inline-flex items-center"><LinkIcon v-if="resumeStore.settings.showLinkIcons" :name="l.icon" class="mr-1" />{{ l.label }}</a>
             </div>
           </div>
         </div>
@@ -225,18 +225,21 @@
 <script>
 import { useResumeStore } from '../../stores/resume'
 import { format, parseISO } from 'date-fns'
-import { 
-  EnvelopeIcon, 
-  PhoneIcon, 
+import {
+  EnvelopeIcon,
+  PhoneIcon,
   MapPinIcon
 } from '@heroicons/vue/24/outline'
+import LinkIcon from '../LinkIcon.vue'
+import { iconKeyFor } from '../../utils/linkIcons'
 
 export default {
   name: 'ModernTemplate',
   components: {
     EnvelopeIcon,
     PhoneIcon,
-    MapPinIcon
+    MapPinIcon,
+    LinkIcon
   },
   setup() {
     const resumeStore = useResumeStore()
@@ -255,11 +258,11 @@ export default {
     headerLinks() {
       const p = this.resumeStore.personalInfo
       const out = []
-      if (p.linkedin) out.push({ label: 'LinkedIn', href: this.formatUrl(p.linkedin) })
-      if (p.github) out.push({ label: 'GitHub', href: this.formatUrl(p.github) })
-      if (p.website) out.push({ label: 'Portfolio', href: this.formatUrl(p.website) })
+      if (p.linkedin) out.push({ label: 'LinkedIn', href: this.formatUrl(p.linkedin), icon: 'linkedin' })
+      if (p.github) out.push({ label: 'GitHub', href: this.formatUrl(p.github), icon: 'github' })
+      if (p.website) out.push({ label: 'Portfolio', href: this.formatUrl(p.website), icon: 'website' })
       for (const l of this.resumeStore.customLinks || []) {
-        if (l && l.label && l.url) out.push({ label: l.label, href: this.formatUrl(l.url) })
+        if (l && l.label && l.url) out.push({ label: l.label, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) })
       }
       return out
     }

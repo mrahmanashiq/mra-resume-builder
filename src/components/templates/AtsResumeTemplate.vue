@@ -7,12 +7,12 @@
       <div v-if="personalInfo.headerTagline" class="ats-tagline">{{ personalInfo.headerTagline }}</div>
       <div class="ats-contact">
         <span v-for="(item, i) in contactItems" :key="'c' + i">
-          <span v-if="i > 0" class="ats-sep">|</span>{{ item }}
+          <span v-if="i > 0" class="ats-sep">|</span><LinkIcon v-if="settings.showLinkIcons" :name="item.icon" class="ats-entry-icon" />{{ item.text }}
         </span>
       </div>
       <div v-if="links.length" class="ats-contact ats-links">
         <span v-for="(link, i) in links" :key="'l' + i">
-          <span v-if="i > 0" class="ats-sep">|</span>{{ link.label }}: {{ link.value }}
+          <span v-if="i > 0" class="ats-sep">|</span><LinkIcon v-if="settings.showLinkIcons" :name="link.icon" class="ats-entry-icon" />{{ link.label }}: {{ link.value }}
         </span>
       </div>
     </header>
@@ -110,9 +110,12 @@
 import { useResumeStore } from '../../stores/resume'
 import { storeToRefs } from 'pinia'
 import { format, parseISO } from 'date-fns'
+import LinkIcon from '../LinkIcon.vue'
+import { iconKeyFor } from '../../utils/linkIcons'
 
 export default {
   name: 'AtsResumeTemplate',
+  components: { LinkIcon },
   setup() {
     const resumeStore = useResumeStore()
     const { personalInfo, skills, experience, education, projects, certifications, languages, settings } =
@@ -135,16 +138,20 @@ export default {
     },
     contactItems() {
       const p = this.personalInfo
-      return [p.email, p.phone, p.address].filter(Boolean)
+      const out = []
+      if (p.email) out.push({ text: p.email, icon: 'email' })
+      if (p.phone) out.push({ text: p.phone, icon: 'phone' })
+      if (p.address) out.push({ text: p.address, icon: 'location' })
+      return out
     },
     links() {
       const p = this.personalInfo
       const out = []
-      if (p.linkedin) out.push({ label: 'LinkedIn', value: p.linkedin })
-      if (p.github) out.push({ label: 'GitHub', value: p.github })
-      if (p.website) out.push({ label: 'Portfolio', value: p.website })
+      if (p.linkedin) out.push({ label: 'LinkedIn', value: p.linkedin, icon: 'linkedin' })
+      if (p.github) out.push({ label: 'GitHub', value: p.github, icon: 'github' })
+      if (p.website) out.push({ label: 'Portfolio', value: p.website, icon: 'website' })
       for (const l of this.resumeStore.customLinks || []) {
-        if (l && l.label && l.url) out.push({ label: l.label, value: l.url })
+        if (l && l.label && l.url) out.push({ label: l.label, value: l.url, icon: iconKeyFor(l.label, l.url) })
       }
       return out
     }
@@ -232,6 +239,10 @@ export default {
 .ats-links {
   margin-top: 3px;
   color: var(--primary);
+}
+
+.ats-entry-icon {
+  margin-right: 0.3em;
 }
 
 .ats-sep {

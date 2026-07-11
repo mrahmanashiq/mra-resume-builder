@@ -9,10 +9,10 @@
       </div>
       <div class="rc-contact">
         <span v-for="(item, i) in contactItems" :key="i">
-          <span v-if="i > 0" class="rc-dot">·</span>{{ item }}
+          <span v-if="i > 0" class="rc-dot">·</span><LinkIcon v-if="settings.showLinkIcons" :name="item.icon" class="rc-entry-icon" />{{ item.text }}
         </span>
         <template v-for="(link, i) in customLinkEntries" :key="'cl' + i">
-          <span v-if="contactItems.length || i > 0" class="rc-dot">·</span><a :href="link.href" target="_blank" rel="noopener" class="rc-clink">{{ link.label }}</a>
+          <span v-if="contactItems.length || i > 0" class="rc-dot">·</span><LinkIcon v-if="settings.showLinkIcons" :name="link.icon" class="rc-entry-icon" /><a :href="link.href" target="_blank" rel="noopener" class="rc-clink">{{ link.label }}</a>
         </template>
       </div>
     </header>
@@ -145,9 +145,12 @@
 import { useResumeStore } from '../../stores/resume'
 import { storeToRefs } from 'pinia'
 import { format, parseISO } from 'date-fns'
+import LinkIcon from '../LinkIcon.vue'
+import { iconKeyFor } from '../../utils/linkIcons'
 
 export default {
   name: 'ResearcherCvTemplate',
+  components: { LinkIcon },
   setup() {
     const resumeStore = useResumeStore()
     const {
@@ -174,12 +177,19 @@ export default {
     },
     contactItems() {
       const p = this.personalInfo
-      return [p.website, p.email, p.phone, p.github, p.linkedin, p.scholar].filter(Boolean)
+      const out = []
+      if (p.website) out.push({ text: p.website, icon: 'website' })
+      if (p.email) out.push({ text: p.email, icon: 'email' })
+      if (p.phone) out.push({ text: p.phone, icon: 'phone' })
+      if (p.github) out.push({ text: p.github, icon: 'github' })
+      if (p.linkedin) out.push({ text: p.linkedin, icon: 'linkedin' })
+      if (p.scholar) out.push({ text: p.scholar, icon: 'website' })
+      return out
     },
     customLinkEntries() {
       return (this.resumeStore.customLinks || [])
         .filter(l => l && l.label && l.url)
-        .map(l => ({ label: l.label, href: this.formatUrl(l.url) }))
+        .map(l => ({ label: l.label, href: this.formatUrl(l.url), icon: iconKeyFor(l.label, l.url) }))
     }
   },
   methods: {
@@ -272,6 +282,10 @@ export default {
 .rc-clink {
   color: var(--primary);
   text-decoration: none;
+}
+
+.rc-entry-icon {
+  margin-right: 0.3em;
 }
 
 .rc-contact {
