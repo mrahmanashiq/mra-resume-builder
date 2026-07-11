@@ -42,7 +42,7 @@
             <span class="cv-entry-title">{{ exp.title }}</span>
             <span class="cv-entry-date">{{ dateRange(exp.startDate, exp.endDate, exp.current) }}</span>
           </div>
-          <div class="cv-entry-org">{{ exp.company }}<span v-if="exp.location" class="cv-muted"> · {{ exp.location }}</span></div>
+          <div class="cv-entry-org"><a v-if="exp.url" :href="formatUrl(exp.url)" class="doc-link" target="_blank" rel="noopener">{{ exp.company }}</a><template v-else>{{ exp.company }}</template><span v-if="exp.location" class="cv-muted"> · {{ exp.location }}</span></div>
           <p v-if="exp.description" class="cv-desc">{{ exp.description }}</p>
           <ul v-if="hasAchievements(exp)" class="cv-bullets">
             <li v-for="(a, i) in exp.achievements.filter(x => x && x.trim())" :key="i">
@@ -77,7 +77,7 @@
           <tbody>
             <tr v-for="edu in education" :key="edu.id">
               <td>{{ edu.degree }}</td>
-              <td>{{ edu.institution }}</td>
+              <td><a v-if="edu.url" :href="formatUrl(edu.url)" class="doc-link" target="_blank" rel="noopener">{{ edu.institution }}</a><template v-else>{{ edu.institution }}</template></td>
               <td>{{ edu.gpa || '-' }}</td>
               <td>{{ yearOf(edu.endDate) || yearOf(edu.startDate) }}</td>
             </tr>

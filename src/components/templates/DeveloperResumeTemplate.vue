@@ -36,7 +36,7 @@
       <div v-for="exp in resumeStore.sortedExperience" :key="exp.id" class="dev-entry print-avoid-break">
         <div class="dev-entry-row">
           <span class="dev-entry-head">
-            <span class="dev-entry-title">{{ exp.title }}</span><span v-if="exp.company" class="dev-entry-org"> - {{ exp.company }}</span><span v-if="exp.location" class="dev-entry-loc"> ({{ exp.location }})</span>
+            <span class="dev-entry-title">{{ exp.title }}</span><span v-if="exp.company" class="dev-entry-org"> - <a v-if="exp.url" :href="formatUrl(exp.url)" class="doc-link" target="_blank" rel="noopener">{{ exp.company }}</a><template v-else>{{ exp.company }}</template></span><span v-if="exp.location" class="dev-entry-loc"> ({{ exp.location }})</span>
           </span>
           <span class="dev-entry-date">{{ dateRange(exp.startDate, exp.endDate, exp.current) }}</span>
         </div>
@@ -69,7 +69,7 @@
       <div v-for="edu in education" :key="edu.id" class="dev-entry">
         <div class="dev-entry-row">
           <span class="dev-entry-head">
-            <span class="dev-entry-title">{{ edu.degree }}</span><span v-if="edu.institution" class="dev-entry-org"> - {{ edu.institution }}</span>
+            <span class="dev-entry-title">{{ edu.degree }}</span><span v-if="edu.institution" class="dev-entry-org"> - <a v-if="edu.url" :href="formatUrl(edu.url)" class="doc-link" target="_blank" rel="noopener">{{ edu.institution }}</a><template v-else>{{ edu.institution }}</template></span>
           </span>
           <span class="dev-entry-date">{{ dateRange(edu.startDate, edu.endDate) }}</span>
         </div>

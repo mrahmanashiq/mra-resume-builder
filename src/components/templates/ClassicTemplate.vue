@@ -80,7 +80,7 @@
             <div class="text-center mb-4">
               <h4 class="text-xl font-serif font-bold text-gray-900">{{ exp.title }}</h4>
               <div class="text-lg text-gray-700 font-semibold mt-1">
-                {{ exp.company }}
+                <a v-if="exp.url" :href="formatUrl(exp.url)" class="doc-link" target="_blank" rel="noopener">{{ exp.company }}</a><template v-else>{{ exp.company }}</template>
                 <span v-if="exp.location" class="text-gray-600"> • {{ exp.location }}</span>
               </div>
               <div class="text-gray-600 mt-1 font-medium">
@@ -120,7 +120,7 @@
                    :key="edu.id"
                    class="text-center">
                 <h4 class="font-serif font-bold text-gray-900">{{ edu.degree }}</h4>
-                <div class="text-gray-700 font-semibold">{{ edu.institution }}</div>
+                <div class="text-gray-700 font-semibold"><a v-if="edu.url" :href="formatUrl(edu.url)" class="doc-link" target="_blank" rel="noopener">{{ edu.institution }}</a><template v-else>{{ edu.institution }}</template></div>
                 <div class="text-gray-600 text-sm">
                   <span v-if="edu.location">{{ edu.location }} • </span>
                   {{ dateRange(edu.startDate, edu.endDate) }}

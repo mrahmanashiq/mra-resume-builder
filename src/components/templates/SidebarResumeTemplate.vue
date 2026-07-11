@@ -37,7 +37,7 @@
         <h2 class="sb-heading">Education</h2>
         <div v-for="edu in education" :key="edu.id" class="sb-edu">
           <div class="sb-edu-degree">{{ edu.degree }}</div>
-          <div class="sb-edu-org">{{ edu.institution }}</div>
+          <div class="sb-edu-org"><a v-if="edu.url" :href="formatUrl(edu.url)" class="doc-link" target="_blank" rel="noopener">{{ edu.institution }}</a><template v-else>{{ edu.institution }}</template></div>
           <div class="sb-edu-meta">
             {{ dateRange(edu.startDate, edu.endDate) }}<span v-if="edu.gpa"> · GPA {{ edu.gpa }}</span>
           </div>
@@ -74,7 +74,7 @@
             <span class="sb-entry-title">{{ exp.title }}</span>
             <span class="sb-entry-date">{{ dateRange(exp.startDate, exp.endDate, exp.current) }}</span>
           </div>
-          <div class="sb-entry-org">{{ exp.company }}<span v-if="exp.location" class="sb-muted"> · {{ exp.location }}</span></div>
+          <div class="sb-entry-org"><a v-if="exp.url" :href="formatUrl(exp.url)" class="doc-link" target="_blank" rel="noopener">{{ exp.company }}</a><template v-else>{{ exp.company }}</template><span v-if="exp.location" class="sb-muted"> · {{ exp.location }}</span></div>
           <p v-if="exp.description" class="sb-desc">{{ exp.description }}</p>
           <ul v-if="hasAchievements(exp)" class="sb-bullets">
             <li v-for="(a, i) in exp.achievements.filter(x => x && x.trim())" :key="i">

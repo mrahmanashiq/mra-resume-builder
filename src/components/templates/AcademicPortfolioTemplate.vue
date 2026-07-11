@@ -29,7 +29,7 @@
       <div class="ap-content">
         <div v-for="exp in resumeStore.sortedExperience" :key="exp.id" class="ap-entry print-avoid-break">
           <div class="ap-row">
-            <span class="ap-strong">{{ exp.company || exp.title }}</span>
+            <span class="ap-strong"><a v-if="exp.url" :href="formatUrl(exp.url)" class="doc-link" target="_blank" rel="noopener">{{ exp.company || exp.title }}</a><template v-else>{{ exp.company || exp.title }}</template></span>
             <span class="ap-date">{{ dateRange(exp.startDate, exp.endDate, exp.current) }}</span>
           </div>
           <div class="ap-italic">{{ exp.title }}<span v-if="exp.location" class="ap-muted"> - {{ exp.location }}</span></div>
@@ -44,7 +44,7 @@
       <div class="ap-content">
         <div v-for="edu in education" :key="edu.id" class="ap-entry print-avoid-break">
           <div class="ap-row">
-            <span class="ap-strong">{{ edu.institution }}</span>
+            <span class="ap-strong"><a v-if="edu.url" :href="formatUrl(edu.url)" class="doc-link" target="_blank" rel="noopener">{{ edu.institution }}</a><template v-else>{{ edu.institution }}</template></span>
             <span class="ap-date">{{ dateRange(edu.startDate, edu.endDate) }}</span>
           </div>
           <div class="ap-italic">{{ edu.degree }}<span v-if="edu.gpa" class="ap-muted"> - GPA: {{ edu.gpa }}</span></div>

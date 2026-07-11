@@ -35,7 +35,7 @@
             <span class="cm-entry-title">{{ exp.title }}</span>
             <span class="cm-entry-date">{{ dateRange(exp.startDate, exp.endDate, exp.current) }}</span>
           </div>
-          <div class="cm-entry-org">{{ exp.company }}<span v-if="exp.location" class="cm-muted"> · {{ exp.location }}</span></div>
+          <div class="cm-entry-org"><a v-if="exp.url" :href="formatUrl(exp.url)" class="doc-link" target="_blank" rel="noopener">{{ exp.company }}</a><template v-else>{{ exp.company }}</template><span v-if="exp.location" class="cm-muted"> · {{ exp.location }}</span></div>
           <p v-if="exp.description" class="cm-desc">{{ exp.description }}</p>
           <ul v-if="hasAchievements(exp)" class="cm-bullets">
             <li v-for="(a, i) in exp.achievements.filter(x => x && x.trim())" :key="i">
@@ -86,7 +86,7 @@
             <span class="cm-entry-title">{{ edu.degree }}</span>
             <span class="cm-entry-date">{{ dateRange(edu.startDate, edu.endDate) }}</span>
           </div>
-          <div class="cm-entry-org">{{ edu.institution }}<span v-if="edu.location" class="cm-muted"> · {{ edu.location }}</span><span v-if="edu.gpa" class="cm-muted"> · GPA {{ edu.gpa }}</span></div>
+          <div class="cm-entry-org"><a v-if="edu.url" :href="formatUrl(edu.url)" class="doc-link" target="_blank" rel="noopener">{{ edu.institution }}</a><template v-else>{{ edu.institution }}</template><span v-if="edu.location" class="cm-muted"> · {{ edu.location }}</span><span v-if="edu.gpa" class="cm-muted"> · GPA {{ edu.gpa }}</span></div>
           <p v-if="edu.description" class="cm-desc">{{ edu.description }}</p>
         </div>
       </section>

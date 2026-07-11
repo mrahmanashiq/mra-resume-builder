@@ -93,7 +93,8 @@ export function buildResumeContent(store) {
         right: dateRange(e.startDate, e.endDate, e.current),
         subtitle: [e.company, e.location].filter(Boolean).join(' · '),
         lines: [e.description].filter(Boolean),
-        bullets: cleanBullets(e.achievements)
+        bullets: cleanBullets(e.achievements),
+        links: [e.url ? { label: 'Website', href: urlHref(e.url) } : null].filter(Boolean)
       }))
     }),
     education: () => ({
@@ -108,7 +109,8 @@ export function buildResumeContent(store) {
           e.advisor ? `Advisor: ${e.advisor}` : null,
           e.description
         ].filter(Boolean),
-        bullets: []
+        bullets: [],
+        links: [e.url ? { label: 'Website', href: urlHref(e.url) } : null].filter(Boolean)
       }))
     }),
     publications: () => ({

@@ -116,7 +116,7 @@
                   <div>
                     <h4 class="text-lg font-semibold text-gray-900">{{ exp.title }}</h4>
                     <div class="text-primary-600 font-medium">
-                      {{ exp.company }}
+                      <a v-if="exp.url" :href="formatUrl(exp.url)" class="doc-link" target="_blank" rel="noopener">{{ exp.company }}</a><template v-else>{{ exp.company }}</template>
                       <span v-if="exp.location" class="text-gray-600"> • {{ exp.location }}</span>
                     </div>
                   </div>
@@ -217,7 +217,7 @@
               <div v-for="edu in resumeStore.education" 
                    :key="edu.id">
                 <h4 class="font-semibold text-gray-900">{{ edu.degree }}</h4>
-                <div class="text-primary-600 font-medium">{{ edu.institution }}</div>
+                <div class="text-primary-600 font-medium"><a v-if="edu.url" :href="formatUrl(edu.url)" class="doc-link" target="_blank" rel="noopener">{{ edu.institution }}</a><template v-else>{{ edu.institution }}</template></div>
                 <div class="text-gray-600 text-sm">
                   <span v-if="edu.location">{{ edu.location }} • </span>
                   {{ formatDateRange(edu.startDate, edu.endDate) }}

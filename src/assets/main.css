@@ -179,6 +179,17 @@ html.dark .legal-prose .note { color: #94a3b8; }
   }
 }
 
+/* Inline document links: a text label (company name, institution name, ...) that
+   carries a real hyperlink. Kept visually neutral so it never disrupts a
+   template's look; the link still exports as clickable in Word / text-PDF. */
+.doc-link {
+  color: inherit;
+  text-decoration: none;
+}
+.doc-link:hover {
+  text-decoration: underline;
+}
+
 /* Legacy styles for compatibility */
 .container {
     margin: 40px auto;

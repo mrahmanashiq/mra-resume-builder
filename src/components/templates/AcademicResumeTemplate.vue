@@ -32,7 +32,7 @@
       <div v-for="exp in resumeStore.sortedExperience" :key="exp.id" class="ac-entry print-avoid-break">
         <div class="ac-date">{{ dateRange(exp.startDate, exp.endDate, exp.current) }}</div>
         <div class="ac-body">
-          <div class="ac-entry-title"><span class="ac-marker"></span>{{ exp.title }}<span class="ac-org">, {{ exp.company }}</span><span v-if="exp.location" class="ac-loc"> - {{ exp.location }}</span></div>
+          <div class="ac-entry-title"><span class="ac-marker"></span>{{ exp.title }}<span class="ac-org">, <a v-if="exp.url" :href="formatUrl(exp.url)" class="doc-link" target="_blank" rel="noopener">{{ exp.company }}</a><template v-else>{{ exp.company }}</template></span><span v-if="exp.location" class="ac-loc"> - {{ exp.location }}</span></div>
           <p v-if="exp.description" class="ac-desc">{{ exp.description }}</p>
           <ul v-if="hasAchievements(exp)" class="ac-bullets">
             <li v-for="(a, i) in exp.achievements.filter(x => x && x.trim())" :key="i">
@@ -49,7 +49,7 @@
       <div v-for="edu in education" :key="edu.id" class="ac-entry print-avoid-break">
         <div class="ac-date">{{ dateRange(edu.startDate, edu.endDate) }}</div>
         <div class="ac-body">
-          <div class="ac-entry-title"><span class="ac-marker"></span>{{ edu.degree }}<span class="ac-org">, {{ edu.institution }}</span></div>
+          <div class="ac-entry-title"><span class="ac-marker"></span>{{ edu.degree }}<span class="ac-org">, <a v-if="edu.url" :href="formatUrl(edu.url)" class="doc-link" target="_blank" rel="noopener">{{ edu.institution }}</a><template v-else>{{ edu.institution }}</template></span></div>
           <div v-if="edu.location || edu.gpa" class="ac-loc">
             <span v-if="edu.location">{{ edu.location }}</span><span v-if="edu.gpa"><span v-if="edu.location"> · </span>GPA: {{ edu.gpa }}</span>
           </div>

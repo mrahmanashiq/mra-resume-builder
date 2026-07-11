@@ -32,7 +32,7 @@
           <span class="ats-entry-date">{{ dateRange(exp.startDate, exp.endDate, exp.current) }}</span>
         </div>
         <div class="ats-entry-sub">
-          <span class="ats-entry-org">{{ exp.company }}</span><span v-if="exp.location"> · {{ exp.location }}</span>
+          <span class="ats-entry-org"><a v-if="exp.url" :href="formatUrl(exp.url)" class="doc-link" target="_blank" rel="noopener">{{ exp.company }}</a><template v-else>{{ exp.company }}</template></span><span v-if="exp.location"> · {{ exp.location }}</span>
         </div>
         <p v-if="exp.description" class="ats-desc">{{ exp.description }}</p>
         <ul v-if="hasAchievements(exp)" class="ats-bullets">
@@ -69,7 +69,7 @@
           <span class="ats-entry-date">{{ dateRange(edu.startDate, edu.endDate) }}</span>
         </div>
         <div class="ats-entry-sub">
-          <span class="ats-entry-org">{{ edu.institution }}</span><span v-if="edu.location"> · {{ edu.location }}</span><span v-if="edu.gpa"> · GPA: {{ edu.gpa }}</span>
+          <span class="ats-entry-org"><a v-if="edu.url" :href="formatUrl(edu.url)" class="doc-link" target="_blank" rel="noopener">{{ edu.institution }}</a><template v-else>{{ edu.institution }}</template></span><span v-if="edu.location"> · {{ edu.location }}</span><span v-if="edu.gpa"> · GPA: {{ edu.gpa }}</span>
         </div>
         <p v-if="edu.description" class="ats-desc">{{ edu.description }}</p>
       </div>
