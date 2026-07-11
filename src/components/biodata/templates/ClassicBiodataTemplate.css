@@ -280,9 +280,6 @@
     margin: 0;
   }
 
-  .print-avoid-break {
-    page-break-inside: avoid;
-  }
 }
 
 @media (max-width: 768px) {

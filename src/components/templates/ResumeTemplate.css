@@ -72,10 +72,7 @@
     max-width: none;
     margin: 0;
   }
-  
-  .print-avoid-break {
-    page-break-inside: avoid;
-  }
+  
   
   .print-break {
     page-break-before: always;
