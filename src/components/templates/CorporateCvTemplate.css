@@ -1,7 +1,7 @@
 .cv-resume {
-  --primary: #1e3a5f;
-  --text: #1f2937;
-  --background: #ffffff;
+  --primary: var(--c-navy);
+  --text: var(--c-gray-800);
+  --background: var(--c-white);
 
   max-width: 210mm;
   margin: 0 auto;
@@ -15,7 +15,7 @@
 /* Header band */
 .cv-header {
   background: var(--primary);
-  color: #ffffff;
+  color: var(--c-white);
   padding: 26px 36px;
   display: flex;
   justify-content: space-between;
@@ -50,7 +50,7 @@
 }
 
 .cv-clink {
-  color: #ffffff;
+  color: var(--c-white);
   text-decoration: underline;
 }
 
@@ -123,7 +123,7 @@
 }
 
 .cv-muted {
-  color: #6b7280;
+  color: var(--c-gray-500);
   font-weight: 400;
 }
 
@@ -164,7 +164,7 @@
 
 .cv-table th {
   background: #eef2f8;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--c-slate-300);
   padding: 6px 8px;
   text-align: left;
   font-weight: 700;
@@ -200,7 +200,7 @@
 
 .cv-pd-key {
   font-weight: 600;
-  color: #374151;
+  color: var(--c-gray-700);
 }
 
 /* References */
@@ -211,7 +211,7 @@
 }
 
 .cv-ref {
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--c-gray-200);
   border-radius: 4px;
   padding: 10px 12px;
   font-size: 0.92em;
@@ -225,7 +225,7 @@
 /* Declaration */
 .cv-declaration {
   font-size: 0.92em;
-  color: #374151;
+  color: var(--c-gray-700);
   margin-bottom: 14px;
 }
 

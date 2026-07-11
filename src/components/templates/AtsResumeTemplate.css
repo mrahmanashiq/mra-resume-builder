@@ -1,7 +1,7 @@
 .ats-resume {
-  --primary: #1f2937;
-  --text: #1f2937;
-  --background: #ffffff;
+  --primary: var(--c-gray-800);
+  --text: var(--c-gray-800);
+  --background: var(--c-white);
 
   max-width: 210mm;
   min-height: 297mm;
@@ -41,14 +41,14 @@
 
 .ats-tagline {
   font-size: 0.9em;
-  color: #4b5563;
+  color: var(--c-gray-600);
   margin-top: 3px;
 }
 
 .ats-contact {
   margin-top: 8px;
   font-size: 0.9em;
-  color: #374151;
+  color: var(--c-gray-700);
 }
 
 .ats-links {
@@ -62,7 +62,7 @@
 
 .ats-sep {
   margin: 0 8px;
-  color: #9ca3af;
+  color: var(--c-gray-400);
 }
 
 /* Sections */
@@ -76,7 +76,7 @@
   text-transform: uppercase;
   letter-spacing: 1.5px;
   color: var(--primary);
-  border-bottom: 1px solid #d1d5db;
+  border-bottom: 1px solid var(--c-gray-300);
   padding-bottom: 3px;
   margin-bottom: 9px;
 }
@@ -105,7 +105,7 @@
 }
 
 .ats-entry-date {
-  color: #6b7280;
+  color: var(--c-gray-500);
   font-size: 0.9em;
   white-space: nowrap;
   flex-shrink: 0;
@@ -113,7 +113,7 @@
 
 .ats-entry-sub {
   font-style: italic;
-  color: #374151;
+  color: var(--c-gray-700);
   margin-top: 1px;
 }
 
@@ -147,7 +147,7 @@
 
 .ats-tech {
   font-size: 0.9em;
-  color: #4b5563;
+  color: var(--c-gray-600);
   margin-top: 2px;
 }
 

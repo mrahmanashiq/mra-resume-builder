@@ -2,8 +2,8 @@
   width: 100%;
   max-width: 794px; /* ~A4 at 96dpi */
   min-height: 1000px;
-  background: #ffffff;
-  color: #1f2937;
+  background: var(--c-white);
+  color: var(--c-gray-800);
   box-shadow: 0 10px 30px -12px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(15, 23, 42, 0.05);
   padding: 56px 64px;
   font-family: Georgia, 'Times New Roman', serif;
@@ -11,7 +11,7 @@
   line-height: 1.6;
 }
 .letter-name { font-size: 20px; font-weight: 700; }
-.letter-contact { color: #4b5563; font-size: 13px; }
+.letter-contact { color: var(--c-gray-600); font-size: 13px; }
 .letter-date { margin-top: 28px; }
 .letter-recipient { margin-top: 20px; }
 .letter-recipient p { margin: 0; }

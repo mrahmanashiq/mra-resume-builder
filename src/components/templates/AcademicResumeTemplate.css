@@ -1,7 +1,7 @@
 .ac-resume {
   --primary: #4d5c2e;
-  --text: #1f2937;
-  --background: #ffffff;
+  --text: var(--c-gray-800);
+  --background: var(--c-white);
 
   font-family: Georgia, 'Times New Roman', Cambria, serif;
   max-width: 210mm;
@@ -44,14 +44,14 @@
 
 .ac-tagline {
   font-size: 0.9em;
-  color: #4b5563;
+  color: var(--c-gray-600);
   margin-top: 3px;
 }
 
 .ac-contact {
   margin-top: 8px;
   font-size: 0.88em;
-  color: #374151;
+  color: var(--c-gray-700);
 }
 
 .ac-clink {
@@ -65,7 +65,7 @@
 
 .ac-sep {
   margin: 0 7px;
-  color: #9ca3af;
+  color: var(--c-gray-400);
 }
 
 .ac-photo {
@@ -74,7 +74,7 @@
   flex-shrink: 0;
   background-size: cover;
   background-position: center;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--c-gray-300);
   border-radius: 4px;
 }
 
@@ -109,7 +109,7 @@
 .ac-date {
   font-size: 0.85em;
   font-style: italic;
-  color: #6b7280;
+  color: var(--c-gray-500);
   padding-top: 1px;
 }
 
@@ -133,7 +133,7 @@
 
 .ac-loc {
   font-style: italic;
-  color: #6b7280;
+  color: var(--c-gray-500);
   font-size: 0.9em;
 }
 
@@ -160,7 +160,7 @@
 
 .ac-tech {
   font-size: 0.9em;
-  color: #4b5563;
+  color: var(--c-gray-600);
   margin-top: 2px;
 }
 

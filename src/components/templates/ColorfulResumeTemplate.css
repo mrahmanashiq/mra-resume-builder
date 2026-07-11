@@ -1,9 +1,9 @@
 .cm-resume {
-  --primary: #2563eb;
+  --primary: var(--c-blue-600);
   --secondary: #14b8a6;
   --accent: #f59e0b;
-  --text: #1f2937;
-  --background: #ffffff;
+  --text: var(--c-gray-800);
+  --background: var(--c-white);
 
   max-width: 210mm;
   min-height: 297mm;
@@ -18,7 +18,7 @@
 /* Header band */
 .cm-header {
   background: var(--primary);
-  color: #ffffff;
+  color: var(--c-white);
   padding: 30px 40px;
   display: flex;
   justify-content: space-between;
@@ -46,7 +46,7 @@
 }
 
 .cm-clink {
-  color: #ffffff;
+  color: var(--c-white);
   text-decoration: underline;
 }
 
@@ -118,7 +118,7 @@
 }
 
 .cm-entry-date {
-  color: #6b7280;
+  color: var(--c-gray-500);
   font-size: 0.88em;
   white-space: nowrap;
   flex-shrink: 0;
@@ -131,7 +131,7 @@
 }
 
 .cm-muted {
-  color: #6b7280;
+  color: var(--c-gray-500);
   font-weight: 400;
 }
 
@@ -198,7 +198,7 @@
 
 .cm-bar-track {
   height: 6px;
-  background: #e5e7eb;
+  background: var(--c-gray-200);
   border-radius: 3px;
   overflow: hidden;
 }

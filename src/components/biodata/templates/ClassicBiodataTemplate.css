@@ -2,8 +2,8 @@
   --primary: #a61c3c;
   --secondary: #7a142c;
   --accent: #d4a017;
-  --text: #1f2937;
-  --background: #ffffff;
+  --text: var(--c-gray-800);
+  --background: var(--c-white);
 
   max-width: 210mm;
   min-height: 297mm;
@@ -37,7 +37,7 @@
 }
 
 .classic-bismillah {
-  color: #6b7280;
+  color: var(--c-gray-500);
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 10px;
@@ -122,11 +122,11 @@
 .c-key {
   text-align: right;
   font-weight: 600;
-  color: #4b5563;
+  color: var(--c-gray-600);
 }
 
 .c-colon {
-  color: #9ca3af;
+  color: var(--c-gray-400);
 }
 
 .c-val {
@@ -145,7 +145,7 @@
 /* Education */
 .edu-item {
   padding: 6px 0;
-  border-bottom: 1px dashed #d1d5db;
+  border-bottom: 1px dashed var(--c-gray-300);
 }
 
 .edu-item:last-child {
@@ -165,7 +165,7 @@
 }
 
 .edu-year {
-  color: #6b7280;
+  color: var(--c-gray-500);
   font-size: 0.9em;
   flex-shrink: 0;
 }
@@ -175,11 +175,11 @@
 }
 
 .edu-institute {
-  color: #4b5563;
+  color: var(--c-gray-600);
 }
 
 .edu-result {
-  color: #6b7280;
+  color: var(--c-gray-500);
   font-size: 0.9em;
   flex-shrink: 0;
 }
@@ -201,15 +201,15 @@
 }
 
 .exp-sep {
-  color: #9ca3af;
+  color: var(--c-gray-400);
 }
 
 .exp-position {
-  color: #4b5563;
+  color: var(--c-gray-600);
 }
 
 .exp-meta {
-  color: #6b7280;
+  color: var(--c-gray-500);
   font-size: 0.9em;
   margin-top: 1px;
 }
@@ -226,7 +226,7 @@
   color: var(--primary);
   margin-bottom: 8px;
   padding-bottom: 3px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--c-gray-200);
 }
 
 .c-subhead.center {
@@ -252,11 +252,11 @@
 }
 
 .family-meta {
-  color: #4b5563;
+  color: var(--c-gray-600);
 }
 
 .sibling-none {
-  color: #4b5563;
+  color: var(--c-gray-600);
   text-align: center;
 }
 

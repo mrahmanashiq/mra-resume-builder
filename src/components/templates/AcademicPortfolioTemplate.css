@@ -1,7 +1,7 @@
 .ap-cv {
-  --primary: #1d4ed8;
+  --primary: var(--c-blue-700);
   --text: #1a1a1a;
-  --background: #ffffff;
+  --background: var(--c-white);
 
   font-family: 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', serif;
   max-width: 210mm;
@@ -68,7 +68,7 @@
   font-variant: small-caps;
   letter-spacing: 0.04em;
   font-size: 0.86em;
-  color: #6b7280;
+  color: var(--c-gray-500);
   padding-top: 2px;
   line-height: 1.3;
 }
@@ -105,25 +105,25 @@
 }
 
 .ap-muted {
-  color: #6b7280;
+  color: var(--c-gray-500);
   font-style: normal;
 }
 
 .ap-date {
   flex-shrink: 0;
   font-size: 0.85em;
-  color: #4b5563;
+  color: var(--c-gray-600);
   white-space: nowrap;
 }
 
 .ap-meta {
   font-size: 0.88em;
-  color: #4b5563;
+  color: var(--c-gray-600);
 }
 
 .ap-desc {
   font-size: 0.9em;
-  color: #374151;
+  color: var(--c-gray-700);
   margin-top: 2px;
 }
 
@@ -139,7 +139,7 @@
 }
 
 .ap-num {
-  color: #6b7280;
+  color: var(--c-gray-500);
   flex-shrink: 0;
 }
 
@@ -154,7 +154,7 @@
 .ap-pub-authors {
   font-size: 0.92em;
   font-style: italic;
-  color: #374151;
+  color: var(--c-gray-700);
 }
 
 .ap-self {
@@ -165,7 +165,7 @@
 
 .ap-pub-venue {
   font-size: 0.9em;
-  color: #4b5563;
+  color: var(--c-gray-600);
   overflow-wrap: anywhere;
 }
 
@@ -182,7 +182,7 @@
 
 .ap-tldr {
   font-size: 0.88em;
-  color: #374151;
+  color: var(--c-gray-700);
   margin-top: 2px;
 }
 

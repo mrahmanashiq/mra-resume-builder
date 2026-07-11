@@ -16,7 +16,7 @@
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.01em;
-  color: #1d4ed8;
+  color: var(--c-blue-700);
   white-space: nowrap;
 }
 

@@ -1,9 +1,9 @@
 .resume-template {
-  --primary: #3b82f6;
+  --primary: var(--c-blue-500);
   --secondary: #14b8a6;
   --accent: #f59e0b;
-  --text: #1f2937;
-  --background: #ffffff;
+  --text: var(--c-gray-800);
+  --background: var(--c-white);
   
   max-width: 210mm;
   min-height: 297mm;

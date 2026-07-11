@@ -20,7 +20,7 @@
   top: 0;
   height: 100%;
   width: 40%;
-  background: linear-gradient(90deg, transparent, #3b82f6, #6366f1, transparent);
+  background: linear-gradient(90deg, transparent, var(--c-blue-500), #6366f1, transparent);
   animation: route-progress-slide 0.9s infinite linear;
 }
 @keyframes route-progress-slide {
@@ -40,7 +40,7 @@
   height: 34px;
   border-radius: 9999px;
   border: 3px solid rgba(37, 99, 235, 0.2);
-  border-top-color: #2563eb;
+  border-top-color: var(--c-blue-600);
   animation: route-spin 0.7s linear infinite;
 }
 @keyframes route-spin {

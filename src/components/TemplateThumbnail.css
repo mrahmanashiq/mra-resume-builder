@@ -3,7 +3,7 @@
   width: 100%;
   aspect-ratio: 210 / 297;
   overflow: hidden;
-  background: #ffffff;
+  background: var(--c-white);
 }
 
 .tp-scale {

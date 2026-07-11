@@ -10,8 +10,8 @@
   gap: 0.5rem;
   text-align: left;
   cursor: pointer;
-  background: #fff;
-  color: #111827;
+  background: var(--c-white);
+  color: var(--c-gray-900);
 }
 
 .dp-trigger.dp-open {
@@ -21,7 +21,7 @@
 }
 
 .dp-placeholder .dp-label {
-  color: #9ca3af;
+  color: var(--c-gray-400);
 }
 
 .dp-label {
@@ -36,7 +36,7 @@
   width: 1.1rem;
   height: 1.1rem;
   flex-shrink: 0;
-  color: #6b7280;
+  color: var(--c-gray-500);
 }
 
 .dp-disabled {
@@ -51,8 +51,8 @@
 .dp-panel {
   z-index: 60;
   padding: 0.6rem;
-  background: #fff;
-  border: 1px solid #e5e7eb;
+  background: var(--c-white);
+  border: 1px solid var(--c-gray-200);
   border-radius: 0.7rem;
   box-shadow: 0 14px 32px -10px rgba(15, 23, 42, 0.3), 0 0 0 1px rgba(15, 23, 42, 0.03);
   user-select: none;
@@ -68,14 +68,14 @@
 .dp-title {
   font-weight: 600;
   font-size: 0.92rem;
-  color: #111827;
+  color: var(--c-gray-900);
   padding: 0.25rem 0.5rem;
   border-radius: 0.4rem;
   cursor: pointer;
 }
 
 .dp-title:hover {
-  background: #f1f5f9;
+  background: var(--c-slate-100);
 }
 
 .dp-nav {
@@ -85,12 +85,12 @@
   width: 1.9rem;
   height: 1.9rem;
   border-radius: 0.45rem;
-  color: #4b5563;
+  color: var(--c-gray-600);
   cursor: pointer;
 }
 
 .dp-nav:hover {
-  background: #f1f5f9;
+  background: var(--c-slate-100);
 }
 
 .dp-nav-icon {
@@ -108,7 +108,7 @@
   text-align: center;
   font-size: 0.72rem;
   font-weight: 600;
-  color: #9ca3af;
+  color: var(--c-gray-400);
   padding: 0.2rem 0;
 }
 
@@ -133,7 +133,7 @@
   height: 2rem;
   border-radius: 0.45rem;
   font-size: 0.85rem;
-  color: #1f2937;
+  color: var(--c-gray-800);
   cursor: pointer;
   background: transparent;
 }
@@ -144,16 +144,16 @@
 }
 
 .dp-cell:hover {
-  background: #f1f5f9;
+  background: var(--c-slate-100);
 }
 
 .dp-muted {
-  color: #cbd5e1;
+  color: var(--c-slate-300);
 }
 
 .dp-today {
-  box-shadow: inset 0 0 0 1px #3b82f6;
-  color: #1d4ed8;
+  box-shadow: inset 0 0 0 1px var(--c-blue-500);
+  color: var(--c-blue-700);
   font-weight: 600;
 }
 
@@ -163,8 +163,8 @@
 
 .dp-selected,
 .dp-selected:hover {
-  background: #2563eb;
-  color: #fff;
+  background: var(--c-blue-600);
+  color: var(--c-white);
   font-weight: 600;
   box-shadow: none;
 }
@@ -175,13 +175,13 @@
   justify-content: space-between;
   margin-top: 0.5rem;
   padding-top: 0.5rem;
-  border-top: 1px solid #f1f5f9;
+  border-top: 1px solid var(--c-slate-100);
 }
 
 .dp-link {
   font-size: 0.82rem;
   font-weight: 500;
-  color: #2563eb;
+  color: var(--c-blue-600);
   padding: 0.2rem 0.4rem;
   border-radius: 0.35rem;
   cursor: pointer;
@@ -193,62 +193,62 @@
 
 /* Dark mode (html.dark ancestor; teleported panel keeps this component's scope id) */
 html.dark .dp-trigger {
-  background: #1e293b;
-  color: #e2e8f0;
+  background: var(--c-slate-800);
+  color: var(--c-slate-200);
 }
 html.dark .dp-placeholder .dp-label {
-  color: #94a3b8;
+  color: var(--c-slate-400);
 }
 html.dark .dp-icon {
-  color: #94a3b8;
+  color: var(--c-slate-400);
 }
 html.dark .dp-panel {
-  background: #1e293b;
-  border-color: #334155;
+  background: var(--c-slate-800);
+  border-color: var(--c-slate-700);
   box-shadow: 0 16px 34px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.04);
 }
 html.dark .dp-title {
-  color: #e2e8f0;
+  color: var(--c-slate-200);
 }
 html.dark .dp-title:hover,
 html.dark .dp-nav:hover {
-  background: #334155;
+  background: var(--c-slate-700);
 }
 html.dark .dp-nav {
-  color: #cbd5e1;
+  color: var(--c-slate-300);
 }
 html.dark .dp-weekdays span {
   color: #64748b;
 }
 html.dark .dp-cell {
-  color: #e2e8f0;
+  color: var(--c-slate-200);
 }
 html.dark .dp-cell:hover {
-  background: #334155;
+  background: var(--c-slate-700);
 }
 html.dark .dp-muted {
   color: #475569;
 }
 html.dark .dp-today {
   box-shadow: inset 0 0 0 1px #60a5fa;
-  color: #93c5fd;
+  color: var(--c-blue-300);
 }
 html.dark .dp-hl {
-  background: #1e3a5f;
+  background: var(--c-navy);
 }
 html.dark .dp-selected,
 html.dark .dp-selected:hover {
-  background: #2563eb;
-  color: #fff;
+  background: var(--c-blue-600);
+  color: var(--c-white);
 }
 html.dark .dp-foot {
-  border-top-color: #334155;
+  border-top-color: var(--c-slate-700);
 }
 html.dark .dp-link {
-  color: #93c5fd;
+  color: var(--c-blue-300);
 }
 html.dark .dp-link:hover {
-  background: #1e3a5f;
+  background: var(--c-navy);
 }
 
 .dp-pop-enter-active,

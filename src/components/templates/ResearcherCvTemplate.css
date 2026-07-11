@@ -1,7 +1,7 @@
 .rc-cv {
-  --primary: #1f2937;
+  --primary: var(--c-gray-800);
   --text: #1a1a1a;
-  --background: #ffffff;
+  --background: var(--c-white);
 
   font-family: Georgia, 'Times New Roman', Cambria, serif;
   max-width: 210mm;
@@ -60,7 +60,7 @@
 
 .rc-dot {
   margin: 0 7px;
-  color: #9ca3af;
+  color: var(--c-gray-400);
 }
 
 .rc-section {
@@ -71,7 +71,7 @@
   font-size: 1.28em;
   font-weight: 400;
   color: #111;
-  border-bottom: 1px solid #d1d5db;
+  border-bottom: 1px solid var(--c-gray-300);
   padding-bottom: 3px;
   margin-bottom: 10px;
 }
@@ -102,7 +102,7 @@
 .rc-date {
   flex-shrink: 0;
   font-size: 0.85em;
-  color: #4b5563;
+  color: var(--c-gray-600);
   white-space: nowrap;
 }
 
@@ -112,12 +112,12 @@
 
 .rc-meta {
   font-size: 0.88em;
-  color: #4b5563;
+  color: var(--c-gray-600);
 }
 
 .rc-desc {
   font-size: 0.9em;
-  color: #374151;
+  color: var(--c-gray-700);
   margin-top: 2px;
 }
 
@@ -132,7 +132,7 @@
 
 .rc-pub-authors {
   font-size: 0.92em;
-  color: #374151;
+  color: var(--c-gray-700);
 }
 
 .rc-self {
@@ -146,7 +146,7 @@
 
 .rc-venue {
   font-style: italic;
-  color: #4b5563;
+  color: var(--c-gray-600);
 }
 
 .rc-link {
@@ -172,12 +172,12 @@
 }
 
 .rc-bullet {
-  color: #6b7280;
+  color: var(--c-gray-500);
   margin-right: 8px;
 }
 
 .rc-line-sub {
-  color: #4b5563;
+  color: var(--c-gray-600);
 }
 
 .rc-skill-grid {

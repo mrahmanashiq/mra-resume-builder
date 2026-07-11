@@ -1,7 +1,7 @@
 .dev-resume {
-  --primary: #2563eb;
-  --text: #1f2937;
-  --background: #ffffff;
+  --primary: var(--c-blue-600);
+  --text: var(--c-gray-800);
+  --background: var(--c-white);
 
   max-width: 210mm;
   min-height: 297mm;
@@ -40,14 +40,14 @@
 
 .dev-tagline {
   font-size: 0.92em;
-  color: #4b5563;
+  color: var(--c-gray-600);
   margin-top: 3px;
 }
 
 .dev-contact {
   margin-top: 7px;
   font-size: 0.9em;
-  color: #374151;
+  color: var(--c-gray-700);
   line-height: 1.6;
 }
 
@@ -62,7 +62,7 @@
 
 .dev-sep {
   margin: 0 7px;
-  color: #9ca3af;
+  color: var(--c-gray-400);
 }
 
 .dev-entry-icon {
@@ -81,7 +81,7 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   color: var(--text);
-  border-bottom: 1px solid #d1d5db;
+  border-bottom: 1px solid var(--c-gray-300);
   padding-bottom: 3px;
   margin-bottom: 8px;
 }
@@ -127,12 +127,12 @@
 }
 
 .dev-entry-loc {
-  color: #6b7280;
+  color: var(--c-gray-500);
   font-weight: 400;
 }
 
 .dev-entry-date {
-  color: #6b7280;
+  color: var(--c-gray-500);
   font-size: 0.9em;
   white-space: nowrap;
   flex-shrink: 0;
@@ -140,7 +140,7 @@
 
 .dev-entry-meta {
   font-size: 0.9em;
-  color: #6b7280;
+  color: var(--c-gray-500);
   margin-top: 1px;
 }
 
@@ -184,7 +184,7 @@
 }
 
 .dev-proj-tech {
-  color: #4b5563;
+  color: var(--c-gray-600);
   font-size: 0.92em;
 }
 
