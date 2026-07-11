@@ -1,7 +1,7 @@
 <template>
   <div class="dev-resume" :style="templateStyles">
     <!-- Header: name, title, and a single links + contact row -->
-    <header class="dev-header">
+    <header class="dev-header" :style="headerStyle">
       <h1 class="dev-name">{{ resumeStore.fullName }}</h1>
       <div v-if="personalInfo.title" class="dev-title">{{ personalInfo.title }}</div>
       <div v-if="personalInfo.headerTagline" class="dev-tagline">{{ personalInfo.headerTagline }}</div>

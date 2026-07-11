@@ -1,7 +1,7 @@
 <template>
   <div class="ats-resume" :style="templateStyles">
     <!-- Header -->
-    <header class="ats-header">
+    <header class="ats-header" :style="headerStyle">
       <h1 class="ats-name">{{ resumeStore.fullName }}</h1>
       <div v-if="personalInfo.title" class="ats-title">{{ personalInfo.title }}</div>
       <div v-if="personalInfo.headerTagline" class="ats-tagline">{{ personalInfo.headerTagline }}</div>

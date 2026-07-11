@@ -1,7 +1,7 @@
 <template>
   <div class="ap-cv" :style="templateStyles">
     <!-- Header -->
-    <header class="ap-header">
+    <header class="ap-header" :style="headerStyle">
       <h1 class="ap-name">{{ resumeStore.fullName }}</h1>
       <div v-if="personalInfo.headerTagline" class="ap-tagline">{{ personalInfo.headerTagline }}</div>
       <div v-if="personalInfo.researchInterests" class="ap-interests">

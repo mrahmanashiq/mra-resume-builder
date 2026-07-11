@@ -117,6 +117,25 @@
                         resumeStore.settings.showLinkIcons ? 'translate-x-7' : 'translate-x-1']"></div>
         </button>
       </div>
+
+      <div class="mt-3 p-3 bg-gray-50 dark:bg-slate-800/60 rounded-lg">
+        <div class="flex items-center justify-between gap-3">
+          <div class="min-w-0">
+            <span class="font-medium block">Header alignment</span>
+            <span class="text-xs text-gray-500 dark:text-slate-400">Name / contact block. Applies to single-column templates.</span>
+          </div>
+          <div class="flex flex-shrink-0 rounded-lg border border-gray-300 dark:border-slate-600 overflow-hidden">
+            <button v-for="opt in headerAlignOptions" :key="opt.value"
+                    @click="setHeaderAlign(opt.value)"
+                    :class="['px-3 py-1.5 text-sm transition-colors',
+                             (resumeStore.settings.headerAlign || '') === opt.value
+                               ? 'bg-primary-600 text-white'
+                               : 'text-gray-600 hover:bg-gray-100 dark:text-slate-300 dark:hover:bg-slate-700']">
+              {{ opt.label }}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Section Management -->
@@ -304,6 +323,11 @@ export default {
         { name: 'Orange Fire', primary: '#f59e0b', secondary: '#ef4444' },
         { name: 'Gray Professional', primary: '#6b7280', secondary: '#374151' }
       ],
+      headerAlignOptions: [
+        { value: '', label: 'Default' },
+        { value: 'left', label: 'Left' },
+        { value: 'center', label: 'Center' }
+      ],
       sectionsConfig: [
         { id: 'personalInfo', name: 'Personal Info', icon: 'UserIcon' },
         { id: 'summary', name: 'Summary', icon: 'DocumentTextIcon' },
@@ -375,6 +399,10 @@ export default {
 
     toggleLinkIcons() {
       this.resumeStore.updateSettings({ showLinkIcons: !this.resumeStore.settings.showLinkIcons })
+    },
+
+    setHeaderAlign(value) {
+      this.resumeStore.updateSettings({ headerAlign: value })
     },
 
     resetSettings() {

@@ -253,6 +253,7 @@ export const useResumeStore = defineStore('resume', {
       spacing: 'normal',
       showProfileImage: true,
       showLinkIcons: false,
+      headerAlign: '', // '' = each template's own default; 'left' | 'center' override it (single-column templates)
       sectionsOrder: [
         'personalInfo',
         'summary',

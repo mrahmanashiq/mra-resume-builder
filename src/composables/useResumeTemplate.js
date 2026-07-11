@@ -32,6 +32,12 @@ export function useResumeTemplate() {
 
   const enabled = computed(() => settings.value.sectionsEnabled)
   const showLinkIcons = computed(() => settings.value.showLinkIcons)
+  // Optional header alignment override (single-column templates). Empty = the
+  // template's own designed alignment; 'left' | 'center' overrides it.
+  const headerAlign = computed(() => settings.value.headerAlign || '')
+  const headerStyle = computed(() =>
+    headerAlign.value ? { textAlign: headerAlign.value, alignItems: headerAlign.value === 'center' ? 'center' : 'flex-start' } : {}
+  )
 
   const templateStyles = computed(() => {
     const c = settings.value.colorScheme
@@ -109,7 +115,7 @@ export function useResumeTemplate() {
     personalInfo, customLinks, skills, experience, education, projects, certifications,
     languages, publications, teaching, talks, awards, service, personalDetails, training,
     accomplishments, extracurricular, references, declaration, settings,
-    enabled, showLinkIcons, templateStyles,
+    enabled, showLinkIcons, templateStyles, headerAlign, headerStyle,
     formatUrl, formatDate, dateRange, ord, hasAchievements,
     contactItems, headerLinks,
     fullName: computed(() => resumeStore.fullName),

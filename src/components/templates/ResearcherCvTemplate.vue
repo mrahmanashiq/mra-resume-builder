@@ -1,7 +1,7 @@
 <template>
   <div class="rc-cv" :style="templateStyles">
     <!-- Header -->
-    <header class="rc-header">
+    <header class="rc-header" :style="headerStyle">
       <h1 class="rc-name">{{ resumeStore.fullName }}</h1>
       <div v-if="personalInfo.headerTagline" class="rc-tagline">{{ personalInfo.headerTagline }}</div>
       <div v-if="personalInfo.researchInterests" class="rc-interests">
