@@ -21,3 +21,18 @@
     box-shadow: none;
   }
 }
+
+/* Base font-size scaling: redefine the Tailwind text utilities this template
+   uses so they scale with --fs-scale (Settings font size). Scoped via
+   <style scoped>, so only this template is affected - not the editor UI. */
+.text-xs { font-size: calc(0.75rem * var(--fs-scale)); }
+.text-sm { font-size: calc(0.875rem * var(--fs-scale)); }
+.text-base { font-size: calc(1rem * var(--fs-scale)); }
+.text-lg { font-size: calc(1.125rem * var(--fs-scale)); }
+.text-xl { font-size: calc(1.25rem * var(--fs-scale)); }
+.text-2xl { font-size: calc(1.5rem * var(--fs-scale)); }
+.text-4xl { font-size: calc(2.25rem * var(--fs-scale)); }
+@media (min-width: 768px) {
+  .md\:text-2xl { font-size: calc(1.5rem * var(--fs-scale)); }
+  .md\:text-5xl { font-size: calc(3rem * var(--fs-scale)); }
+}

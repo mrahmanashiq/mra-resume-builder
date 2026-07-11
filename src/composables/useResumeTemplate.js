@@ -35,13 +35,19 @@ export function useResumeTemplate() {
 
   const templateStyles = computed(() => {
     const c = settings.value.colorScheme
+    const base = settings.value.fontSize
     return {
       '--primary': c.primary,
       '--secondary': c.secondary,
       '--accent': c.accent,
       '--text': c.text,
       '--background': c.background,
-      fontSize: `${settings.value.fontSize}px`,
+      // One base size scales the whole document. `em`/inherited text scales via
+      // the root font-size; absolute (rem/px) sizes in template CSS multiply by
+      // --fs-scale (base / 14 default). calc()+var() resolve to concrete px, so
+      // html2canvas captures the scaled sizes correctly in PDF export.
+      '--fs-scale': base / 14,
+      fontSize: `${base}px`,
       fontFamily: settings.value.font
     }
   })

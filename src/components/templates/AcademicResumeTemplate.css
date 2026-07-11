@@ -30,13 +30,13 @@
 }
 
 .ac-name {
-  font-size: 2rem;
+  font-size: calc(2rem * var(--fs-scale));
   font-weight: 700;
   line-height: 1.1;
 }
 
 .ac-title {
-  font-size: 1.05rem;
+  font-size: calc(1.05rem * var(--fs-scale));
   font-style: italic;
   color: var(--primary);
   margin-top: 2px;
@@ -212,7 +212,7 @@
     box-shadow: none;
   }
   .ac-name {
-    font-size: 1.6rem;
+    font-size: calc(1.6rem * var(--fs-scale));
   }
   .ac-entry {
     grid-template-columns: 74px 1fr;

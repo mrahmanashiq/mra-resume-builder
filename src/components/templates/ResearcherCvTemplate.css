@@ -24,7 +24,7 @@
 }
 
 .rc-name {
-  font-size: 2.1rem;
+  font-size: calc(2.1rem * var(--fs-scale));
   font-weight: 400;
   letter-spacing: 0.01em;
   line-height: 1.1;
@@ -226,7 +226,7 @@
     box-shadow: none;
   }
   .rc-name {
-    font-size: 1.7rem;
+    font-size: calc(1.7rem * var(--fs-scale));
   }
   .rc-ref-grid {
     grid-template-columns: 1fr;

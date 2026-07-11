@@ -165,6 +165,7 @@ export default {
         '--primary': c.primary,
         '--text': c.text,
         '--background': c.background,
+        '--fs-scale': this.settings.fontSize / 14,
         fontSize: `${this.settings.fontSize}px`
       }
     },

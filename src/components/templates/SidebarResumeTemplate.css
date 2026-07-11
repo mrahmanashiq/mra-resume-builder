@@ -38,7 +38,7 @@
 }
 
 .sb-name {
-  font-size: 1.5rem;
+  font-size: calc(1.5rem * var(--fs-scale));
   font-weight: 800;
   line-height: 1.15;
   color: var(--text);
