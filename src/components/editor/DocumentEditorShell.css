@@ -1,0 +1,77 @@
+/* Auto-save status dot */
+.save-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.save-dot-saved {
+  background: #22c55e;
+  animation: saveBreath 2.4s ease-in-out infinite;
+}
+.save-dot-saving {
+  background: #f59e0b;
+  box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5);
+  animation: saveBlink 0.85s ease-in-out infinite;
+}
+@keyframes saveBreath {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+@keyframes saveBlink {
+  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.5); }
+  50% { opacity: 0.5; transform: scale(0.8); box-shadow: 0 0 0 4px rgba(245, 158, 11, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .save-dot-saved,
+  .save-dot-saving {
+    animation: none;
+  }
+}
+
+/* Mobile section tabs: horizontal scroll without a visible scrollbar */
+.mobile-tabs > div {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.mobile-tabs > div::-webkit-scrollbar {
+  display: none;
+}
+.mobile-tab {
+  min-height: 44px;
+}
+
+/* Keep content clear of the fixed mobile action bar (only below lg) */
+@media (max-width: 1023px) {
+  .mobile-pb {
+    padding-bottom: 6rem !important;
+  }
+}
+
+/* Respect iOS home-indicator safe area on the action bar */
+.mobile-actionbar {
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+}
+
+.mobile-sheet {
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+}
+
+@media print {
+  header,
+  aside,
+  .no-print {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+    background: white !important;
+  }
+
+  .document-preview {
+    box-shadow: none !important;
+    border: none !important;
+  }
+}

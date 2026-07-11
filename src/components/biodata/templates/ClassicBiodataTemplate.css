@@ -1,0 +1,316 @@
+.biodata-template.classic {
+  --primary: #a61c3c;
+  --secondary: #7a142c;
+  --accent: #d4a017;
+  --text: #1f2937;
+  --background: #ffffff;
+
+  max-width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 16px;
+  background: var(--background);
+  color: var(--text);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
+/* Double frame */
+.classic-outer {
+  border: 3px solid var(--primary);
+  padding: 6px;
+  min-height: calc(297mm - 32px);
+  box-sizing: border-box;
+}
+
+.classic-inner {
+  border: 1px solid var(--accent);
+  padding: 30px 36px 40px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Header */
+.classic-header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.classic-bismillah {
+  color: #6b7280;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.bismillah-arabic {
+  font-size: 1.5rem;
+  direction: rtl;
+  color: var(--primary);
+}
+
+.classic-rule {
+  height: 2px;
+  background: var(--primary);
+  width: 70%;
+  margin: 6px auto;
+}
+
+.classic-title {
+  color: var(--primary);
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin: 6px 0;
+}
+
+/* Photo */
+.classic-photo-wrap {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.classic-photo {
+  display: inline-block;
+  max-width: 160px;
+  max-height: 210px;
+  width: auto;
+  height: auto;
+  border: 1px solid var(--primary);
+  padding: 4px;
+  border-radius: 3px;
+}
+
+/* Sections */
+.classic-section {
+  margin-bottom: 22px;
+}
+
+.sec-title {
+  text-align: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--primary);
+  font-size: 1.05em;
+  padding-bottom: 6px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid var(--accent);
+}
+
+.sec-body {
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* Centered "label : value" grid */
+.c-info {
+  display: grid;
+  grid-template-columns: 170px 12px 1fr;
+  row-gap: 9px;
+  column-gap: 6px;
+}
+
+.c-info-sm {
+  display: grid;
+  grid-template-columns: 90px 10px 1fr;
+  row-gap: 7px;
+  column-gap: 5px;
+}
+
+.c-key {
+  text-align: right;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.c-colon {
+  color: #9ca3af;
+}
+
+.c-val {
+  color: var(--text);
+}
+
+.c-strong {
+  font-weight: 700;
+}
+
+.income-row,
+.home-district {
+  margin-top: 14px;
+}
+
+/* Education */
+.edu-item {
+  padding: 6px 0;
+  border-bottom: 1px dashed #d1d5db;
+}
+
+.edu-item:last-child {
+  border-bottom: none;
+}
+
+.edu-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.edu-degree {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.edu-year {
+  color: #6b7280;
+  font-size: 0.9em;
+  flex-shrink: 0;
+}
+
+.edu-row-sub {
+  margin-top: 2px;
+}
+
+.edu-institute {
+  color: #4b5563;
+}
+
+.edu-result {
+  color: #6b7280;
+  font-size: 0.9em;
+  flex-shrink: 0;
+}
+
+/* Professional */
+.exp-item {
+  padding: 5px 0;
+}
+
+.exp-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.exp-company {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.exp-sep {
+  color: #9ca3af;
+}
+
+.exp-position {
+  color: #4b5563;
+}
+
+.exp-meta {
+  color: #6b7280;
+  font-size: 0.9em;
+  margin-top: 1px;
+}
+
+/* Family */
+.c-parents {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.c-subhead {
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 8px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.c-subhead.center {
+  text-align: center;
+}
+
+.family-block {
+  margin-top: 18px;
+}
+
+.family-list {
+  list-style: none;
+  padding-left: 4px;
+}
+
+.fam-bullet {
+  color: var(--primary);
+  margin-right: 7px;
+}
+
+.family-name {
+  font-weight: 700;
+}
+
+.family-meta {
+  color: #4b5563;
+}
+
+.sibling-none {
+  color: #4b5563;
+  text-align: center;
+}
+
+.uncles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 18px;
+}
+
+.pref-text {
+  line-height: 1.6;
+  text-align: center;
+  margin-top: 4px;
+}
+
+@media print {
+  .biodata-template.classic {
+    box-shadow: none;
+    max-width: none;
+    margin: 0;
+  }
+
+  .print-avoid-break {
+    page-break-inside: avoid;
+  }
+}
+
+@media (max-width: 768px) {
+  .biodata-template.classic {
+    max-width: 100%;
+    padding: 8px;
+    box-shadow: none;
+  }
+
+  .classic-inner {
+    padding: 20px 16px 24px;
+  }
+
+  .classic-title {
+    font-size: 1.35rem;
+    letter-spacing: 2px;
+  }
+
+  .c-info {
+    grid-template-columns: 120px 10px 1fr;
+  }
+
+  .c-parents {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .uncles-grid {
+    grid-template-columns: 1fr;
+  }
+}

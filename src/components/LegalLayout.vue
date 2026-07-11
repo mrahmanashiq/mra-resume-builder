@@ -34,9 +34,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.legal-h1 {
-  font-family: 'Sora', 'Inter', system-ui, -apple-system, sans-serif;
-  letter-spacing: -0.02em;
-}
-</style>
+<style scoped src="./LegalLayout.css"></style>

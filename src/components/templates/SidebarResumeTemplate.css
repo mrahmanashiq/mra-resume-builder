@@ -1,0 +1,268 @@
+.sb-resume {
+  --primary: #2563eb;
+  --text: #1f2937;
+  --background: #ffffff;
+  --side-bg: #f4f5f7;
+
+  display: flex;
+  max-width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  background: var(--background);
+  color: var(--text);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  line-height: 1.4;
+}
+
+/* Sidebar */
+.sb-side {
+  width: 34%;
+  flex-shrink: 0;
+  background: var(--side-bg);
+  padding: 30px 22px;
+  box-sizing: border-box;
+  /* Sidebar blocks are ordered via CSS `order`; identity blocks keep order 0. */
+  display: flex;
+  flex-direction: column;
+}
+
+.sb-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  margin: 0 auto 18px;
+  border: 3px solid var(--primary);
+}
+
+.sb-name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text);
+}
+
+.sb-role {
+  color: var(--primary);
+  font-weight: 600;
+  margin-top: 2px;
+  margin-bottom: 6px;
+}
+
+.sb-tagline {
+  font-size: 0.85em;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.sb-block {
+  margin-top: 20px;
+}
+
+.sb-heading {
+  font-size: 0.85em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--primary);
+  border-bottom: 1.5px solid var(--primary);
+  padding-bottom: 3px;
+  margin-bottom: 8px;
+}
+
+.sb-line {
+  font-size: 0.9em;
+  word-break: break-word;
+  margin-bottom: 3px;
+}
+
+.sb-muted {
+  color: #6b7280;
+}
+
+.sb-link {
+  color: var(--primary);
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.sb-entry-icon {
+  margin-right: 0.3em;
+}
+
+.sb-subcat {
+  font-size: 0.78em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6b7280;
+  margin: 6px 0 4px;
+}
+
+.sb-chips,
+.sb-tech-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.sb-chip {
+  display: inline-block;
+  font-size: 0.8em;
+  padding: 2px 8px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  color: var(--text);
+}
+
+.sb-chip-main {
+  background: #f3f4f6;
+}
+
+.sb-edu {
+  margin-bottom: 10px;
+}
+
+.sb-edu-degree {
+  font-weight: 700;
+  font-size: 0.92em;
+}
+
+.sb-edu-org {
+  color: var(--primary);
+  font-size: 0.88em;
+}
+
+.sb-edu-meta {
+  color: #6b7280;
+  font-size: 0.82em;
+}
+
+.sb-cert {
+  margin-bottom: 8px;
+  font-size: 0.9em;
+}
+
+.sb-cert-name {
+  font-weight: 600;
+}
+
+/* Main */
+.sb-main {
+  flex: 1;
+  min-width: 0;
+  padding: 30px 28px;
+  box-sizing: border-box;
+  /* Sections are ordered via CSS `order` from settings.sectionsOrder. */
+  display: flex;
+  flex-direction: column;
+}
+
+.sb-section {
+  margin-bottom: 18px;
+}
+
+.sb-main-heading {
+  font-size: 1.05em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 4px;
+  margin-bottom: 10px;
+}
+
+.sb-summary {
+  line-height: 1.55;
+}
+
+.sb-entry {
+  margin-bottom: 13px;
+}
+
+.sb-entry-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.sb-entry-title {
+  font-weight: 700;
+}
+
+.sb-entry-date {
+  color: #6b7280;
+  font-size: 0.88em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.sb-entry-org {
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 0.95em;
+}
+
+.sb-desc {
+  margin-top: 3px;
+}
+
+.sb-bullets {
+  list-style: none;
+  margin-top: 4px;
+}
+
+.sb-bullets li {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 2px;
+  line-height: 1.4;
+}
+
+.sb-bullet {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.sb-link-line {
+  font-size: 0.85em;
+  color: var(--primary);
+  margin-top: 2px;
+}
+
+/* export nudge for ruled headings */
+.pdf-export .sb-heading,
+.pdf-export .sb-main-heading {
+  padding-bottom: 7px;
+}
+
+@media print {
+  .sb-resume {
+    box-shadow: none;
+    max-width: none;
+    margin: 0;
+  }
+  .print-avoid-break {
+    page-break-inside: avoid;
+  }
+}
+
+@media (max-width: 768px) {
+  .sb-resume {
+    flex-direction: column;
+    max-width: 100%;
+    box-shadow: none;
+  }
+  .sb-side {
+    width: 100%;
+    padding: 22px 18px;
+  }
+  .sb-main {
+    padding: 22px 18px;
+  }
+}

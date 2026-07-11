@@ -1,0 +1,239 @@
+/* Display face for landing headings, used with restraint */
+.hero-title,
+.section-title {
+  font-family: 'Sora', 'Inter', system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.02em;
+}
+.hero-title { line-height: 1.08; }
+
+.hero-accent {
+  background: linear-gradient(90deg, #2563eb 0%, #6366f1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- Hero background: soft blooms + faint dot grid ---------- */
+.hero-section {
+  background: linear-gradient(180deg, #f6f8fc 0%, #ffffff 62%);
+}
+:global(html.dark) .hero-section {
+  background: linear-gradient(180deg, #0f172a 0%, #0b1220 62%);
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at center, rgba(37, 99, 235, 0.10) 1px, transparent 1.4px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(ellipse 78% 62% at 52% 26%, #000 42%, transparent 100%);
+  mask-image: radial-gradient(ellipse 78% 62% at 52% 26%, #000 42%, transparent 100%);
+  opacity: 0.55;
+}
+.hero-bloom {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(72px);
+}
+.hero-bloom-1 {
+  width: 460px;
+  height: 460px;
+  top: -140px;
+  right: -90px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.34), transparent 70%);
+}
+.hero-bloom-2 {
+  width: 400px;
+  height: 400px;
+  bottom: -160px;
+  left: -110px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.26), transparent 70%);
+}
+
+/* ---------- Hero trust row ---------- */
+.hero-check {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+/* ---------- Hero live-preview card ---------- */
+.hero-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  animation: heroRise 0.9s 0.3s both cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero-card-tilt {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  transform: rotate(-3deg);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero-visual:hover .hero-card-tilt {
+  transform: rotate(0deg);
+}
+.hero-card {
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 30px 60px -18px rgba(15, 23, 42, 0.38), 0 0 0 1px rgba(15, 23, 42, 0.05);
+}
+.hero-chip {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 9999px;
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 12px 26px -10px rgba(15, 23, 42, 0.28);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #0f172a;
+  white-space: nowrap;
+}
+.hero-chip .dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+}
+.hero-chip-1 { top: 6%; left: -8%; }
+.hero-chip-2 { top: 44%; right: -10%; }
+.hero-chip-3 { bottom: 8%; left: -4%; }
+
+/* ---------- Hero copy load-in sequence ---------- */
+.hero-copy .hero-badge { animation: heroRise 0.6s 0.05s both cubic-bezier(0.22, 1, 0.36, 1); }
+.hero-copy .hero-title { animation: heroRise 0.7s 0.12s both cubic-bezier(0.22, 1, 0.36, 1); }
+.hero-copy .hero-sub { animation: heroRise 0.7s 0.20s both cubic-bezier(0.22, 1, 0.36, 1); }
+.hero-copy > div { animation: heroRise 0.7s 0.28s both cubic-bezier(0.22, 1, 0.36, 1); }
+.hero-copy .hero-trust { animation: heroRise 0.7s 0.36s both cubic-bezier(0.22, 1, 0.36, 1); }
+
+@keyframes heroRise {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Scroll reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+/* staggered entry within card grids */
+.reveal-grid > .reveal:nth-child(1) { transition-delay: 0.04s; }
+.reveal-grid > .reveal:nth-child(2) { transition-delay: 0.12s; }
+.reveal-grid > .reveal:nth-child(3) { transition-delay: 0.20s; }
+.reveal-grid > .reveal:nth-child(4) { transition-delay: 0.28s; }
+.reveal-grid > .reveal:nth-child(5) { transition-delay: 0.36s; }
+.reveal-grid > .reveal:nth-child(6) { transition-delay: 0.44s; }
+
+/* ---------- Hover lift ---------- */
+.hover-lift {
+  transition: opacity 0.6s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-6px);
+}
+.reveal-grid > .hover-lift:hover {
+  transition-delay: 0s;
+}
+
+/* ---------- CTA glow ---------- */
+.cta-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 120% at 50% -10%, rgba(255, 255, 255, 0.18), transparent 70%);
+  pointer-events: none;
+}
+
+/* ---------- Privacy & open source ---------- */
+/* Base (light). Dark-mode overrides live in main.css as global html.dark rules,
+   matching the hero-section precedent (scoped :global(html.dark) does not win here). */
+.privacy-section {
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+/* Faint shield-tinted bloom, echoing the hero blooms but calmer */
+.privacy-bg {
+  position: absolute;
+  top: -120px;
+  right: -80px;
+  width: 420px;
+  height: 420px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.14), transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.privacy-eyebrow {
+  font-family: 'Sora', 'Inter', system-ui, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #059669;
+}
+
+.privacy-card {
+  background: #fff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 0 12px 30px -22px rgba(15, 23, 42, 0.35);
+  transition: opacity 0.6s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+}
+.privacy-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px -20px rgba(15, 23, 42, 0.4);
+}
+.privacy-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  margin-bottom: 0.85rem;
+  color: #059669;
+  background: rgba(16, 185, 129, 0.12);
+}
+
+/* Chips are decorative; drop them on small screens to keep the card clean */
+@media (max-width: 640px) {
+  .hero-chip { display: none; }
+  .hero-card-tilt { max-width: 300px; transform: rotate(0deg); }
+}
+
+/* ---------- Respect reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .home .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .home .hero-copy .hero-badge,
+  .home .hero-copy .hero-title,
+  .home .hero-copy .hero-sub,
+  .home .hero-copy > div,
+  .home .hero-copy .hero-trust,
+  .home .hero-visual {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .home .hero-card-tilt { transform: rotate(-3deg) !important; }
+  .home .hover-lift:hover { transform: none !important; }
+  .home .animate-ping { animation: none !important; }
+}

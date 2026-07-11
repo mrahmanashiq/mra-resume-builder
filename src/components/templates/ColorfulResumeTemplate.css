@@ -1,0 +1,269 @@
+.cm-resume {
+  --primary: #2563eb;
+  --secondary: #14b8a6;
+  --accent: #f59e0b;
+  --text: #1f2937;
+  --background: #ffffff;
+
+  max-width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  background: var(--background);
+  color: var(--text);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  line-height: 1.4;
+}
+
+/* Header band */
+.cm-header {
+  background: var(--primary);
+  color: #ffffff;
+  padding: 30px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.cm-name {
+  font-size: 2.1rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.cm-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  opacity: 0.92;
+  margin-top: 2px;
+}
+
+.cm-tagline {
+  font-size: 0.9em;
+  opacity: 0.9;
+  margin-top: 3px;
+}
+
+.cm-clink {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.cm-entry-icon {
+  margin-right: 0.3em;
+}
+
+.cm-contact {
+  margin-top: 10px;
+  font-size: 0.88em;
+  opacity: 0.92;
+}
+
+.cm-sep {
+  margin: 0 7px;
+  opacity: 0.6;
+}
+
+.cm-photo {
+  width: 104px;
+  height: 104px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+}
+
+/* Body */
+.cm-body {
+  padding: 26px 40px 40px;
+  /* Sections are ordered via CSS `order` from settings.sectionsOrder. */
+  display: flex;
+  flex-direction: column;
+}
+
+.cm-section {
+  margin-bottom: 18px;
+}
+
+.cm-heading {
+  font-size: 1em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--primary);
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 4px;
+  margin-bottom: 10px;
+}
+
+.cm-summary {
+  line-height: 1.55;
+}
+
+.cm-entry {
+  margin-bottom: 12px;
+}
+
+.cm-entry-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.cm-entry-title {
+  font-weight: 700;
+}
+
+.cm-entry-date {
+  color: #6b7280;
+  font-size: 0.88em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.cm-entry-org {
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 0.95em;
+}
+
+.cm-muted {
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.cm-desc {
+  margin-top: 3px;
+}
+
+.cm-bullets {
+  list-style: none;
+  margin-top: 4px;
+}
+
+.cm-bullets li {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 2px;
+  line-height: 1.4;
+}
+
+.cm-bullet {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.cm-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.cm-chip {
+  font-size: 0.8em;
+  padding: 2px 9px;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  border-radius: 11px;
+}
+
+.cm-link {
+  font-size: 0.85em;
+  color: var(--primary);
+  margin-top: 2px;
+  overflow-wrap: anywhere;
+}
+
+.cm-contact {
+  overflow-wrap: anywhere;
+}
+
+.cm-skill-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 24px;
+}
+
+.cm-skill-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.9em;
+  margin-bottom: 3px;
+}
+
+.cm-bar-track {
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.cm-bar-fill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 3px;
+}
+
+.cm-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.cm-mini {
+  margin-bottom: 8px;
+  font-size: 0.92em;
+}
+
+.cm-mini-name {
+  font-weight: 600;
+}
+
+.cm-lang-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 3px;
+  font-size: 0.92em;
+}
+
+.pdf-export .cm-heading {
+  padding-bottom: 7px;
+}
+
+@media print {
+  .cm-resume {
+    box-shadow: none;
+    max-width: none;
+    margin: 0;
+  }
+  .print-avoid-break {
+    page-break-inside: avoid;
+  }
+}
+
+@media (max-width: 768px) {
+  .cm-resume {
+    max-width: 100%;
+    box-shadow: none;
+  }
+  .cm-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px 18px;
+  }
+  .cm-body {
+    padding: 20px 18px 28px;
+  }
+  .cm-name {
+    font-size: 1.7rem;
+  }
+  .cm-skill-cols,
+  .cm-two-col {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,406 @@
+.biodata-template {
+  --primary: #a61c3c;
+  --secondary: #7a142c;
+  --accent: #d4a017;
+  --text: #1f2937;
+  --background: #ffffff;
+
+  position: relative;
+  max-width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 24px 40px 40px;
+  background: var(--background);
+  color: var(--text);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.biodata-title-wrap {
+  text-align: center;
+  border-bottom: 3px solid var(--primary);
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+}
+
+.biodata-bismillah {
+  color: #6b7280;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.bismillah-arabic {
+  font-size: 1.5rem;
+  direction: rtl;
+  color: var(--primary);
+}
+
+.biodata-title {
+  color: var(--primary);
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.biodata-body {
+  position: relative;
+}
+
+.biodata-side {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  z-index: 1;
+}
+
+.biodata-photo-wrap {
+  width: 100%;
+  margin: 0;
+}
+
+.biodata-photo {
+  display: block;
+  /* The uploaded image is already cropped to the desired frame, so show it at its
+     natural aspect (scaled to the column). Plain <img> scaling renders identically
+     in the browser and html2canvas/PDF (unlike object-fit). */
+  max-width: 100%;
+  max-height: 300px;
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+  border: 2px solid var(--primary);
+  border-radius: 6px;
+}
+
+.contact-card {
+  width: 100%;
+  border: 2px solid var(--primary);
+  border-radius: 6px;
+  padding: 10px 12px;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.contact-card-title {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.contact-card-line {
+  display: flex;
+  flex-direction: column;
+  margin-top: 6px;
+  word-break: break-word;
+}
+
+.contact-card-key {
+  font-weight: 600;
+  color: #6b7280;
+  font-size: 0.72em;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.contact-card-val {
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.9em;
+}
+
+.contact-card-phone {
+  color: var(--primary);
+  letter-spacing: 0.5px;
+}
+
+.pad-for-side {
+  padding-right: 200px;
+}
+
+.biodata-section {
+  margin-bottom: 22px;
+}
+
+.section-bar {
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 700;
+  line-height: 1;
+  padding: 11px 48px 11px 18px;
+  border-radius: 6px 24px 24px 6px;
+  margin-bottom: 16px;
+  display: inline-block;
+  min-width: 260px;
+}
+
+/* During PDF export only: html2canvas draws text lower than the browser, so
+   shift the padding to keep text vertically centered in the PDF. */
+.pdf-export .section-bar {
+  padding-top: 4px;
+  padding-bottom: 17px;
+}
+
+.pdf-export .edu-table th,
+.pdf-export .edu-table td {
+  padding-top: 0;
+  padding-bottom: 16px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  row-gap: 10px;
+  column-gap: 12px;
+  padding-left: 8px;
+}
+
+.two-col-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* narrower label column when a section sits in a half-width column */
+.info-grid.compact-grid {
+  grid-template-columns: 130px 1fr;
+}
+
+.info-label {
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.info-value {
+  color: var(--text);
+}
+
+.info-strong {
+  font-weight: 700;
+}
+
+.exp-list {
+  list-style: none;
+  padding-left: 8px;
+}
+
+.exp-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 3px 0;
+  line-height: 1.45;
+}
+
+.exp-main {
+  min-width: 0;
+}
+
+.exp-company {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.exp-sep {
+  color: #9ca3af;
+}
+
+.exp-position {
+  color: #4b5563;
+}
+
+.exp-meta {
+  color: #6b7280;
+  font-size: 0.9em;
+  text-align: right;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.income-row {
+  margin-top: 12px;
+}
+
+.family-gap {
+  margin-top: 16px;
+}
+
+.parents-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding-left: 8px;
+}
+
+.parent-heading {
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.parent-grid {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  row-gap: 8px;
+  column-gap: 10px;
+}
+
+.edu-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.edu-table th {
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 700;
+}
+
+.edu-table td {
+  border: 1px solid #d1d5db;
+  padding: 8px 10px;
+}
+
+.family-block {
+  margin-top: 16px;
+  padding-left: 8px;
+}
+
+.family-heading {
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.family-list {
+  list-style: none;
+  padding-left: 8px;
+}
+
+.fam-bullet {
+  color: var(--primary);
+  margin-right: 7px;
+}
+
+.family-name {
+  font-weight: 700;
+}
+
+.family-meta {
+  color: #4b5563;
+}
+
+.sibling-none {
+  color: #4b5563;
+  padding-left: 8px;
+}
+
+.uncles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+  padding-left: 8px;
+}
+
+.pref-text {
+  padding-left: 8px;
+  line-height: 1.6;
+}
+
+@media print {
+  .biodata-template {
+    box-shadow: none;
+    max-width: none;
+    margin: 0;
+  }
+
+  .print-avoid-break {
+    page-break-inside: avoid;
+  }
+}
+
+@media (max-width: 768px) {
+  .biodata-template {
+    max-width: 100%;
+    padding: 20px;
+    box-shadow: none;
+  }
+
+  .biodata-side {
+    position: static;
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .contact-card {
+    width: auto;
+    min-width: 180px;
+  }
+
+  .biodata-photo-wrap {
+    width: auto;
+  }
+
+  .biodata-photo {
+    max-width: 200px;
+    max-height: 240px;
+  }
+
+  .pad-for-side {
+    padding-right: 0;
+  }
+
+  .info-grid {
+    grid-template-columns: 140px 1fr;
+  }
+
+  .parents-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .two-col-sections {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .info-grid.compact-grid {
+    grid-template-columns: 140px 1fr;
+  }
+
+  .uncles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .exp-line {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .exp-meta {
+    text-align: left;
+    white-space: normal;
+  }
+}

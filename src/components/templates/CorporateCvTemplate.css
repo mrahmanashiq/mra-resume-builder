@@ -1,0 +1,285 @@
+.cv-resume {
+  --primary: #1e3a5f;
+  --text: #1f2937;
+  --background: #ffffff;
+
+  max-width: 210mm;
+  margin: 0 auto;
+  background: var(--background);
+  color: var(--text);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  line-height: 1.45;
+}
+
+/* Header band */
+.cv-header {
+  background: var(--primary);
+  color: #ffffff;
+  padding: 26px 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.cv-name {
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.cv-role {
+  font-size: 1.02rem;
+  font-weight: 500;
+  opacity: 0.9;
+  margin: 2px 0 8px;
+}
+
+.cv-tagline {
+  font-size: 0.85em;
+  opacity: 0.9;
+  margin-bottom: 8px;
+}
+
+.cv-contact {
+  font-size: 0.85em;
+  opacity: 0.95;
+  line-height: 1.55;
+}
+
+.cv-clink {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.cv-entry-icon {
+  margin-right: 0.3em;
+}
+
+.cv-photo {
+  width: 108px;
+  height: 128px;
+  flex-shrink: 0;
+  background-size: cover;
+  background-position: center;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+}
+
+/* Body */
+.cv-body {
+  padding: 24px 36px 40px;
+  /* Sections are ordered via CSS `order` from settings.sectionsOrder. */
+  display: flex;
+  flex-direction: column;
+}
+
+.cv-section {
+  margin-bottom: 18px;
+}
+
+.cv-heading {
+  font-size: 1.02em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 3px;
+  margin-bottom: 10px;
+}
+
+.cv-text {
+  line-height: 1.55;
+}
+
+.cv-entry {
+  margin-bottom: 11px;
+}
+
+.cv-entry-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.cv-entry-title {
+  font-weight: 700;
+}
+
+.cv-entry-date {
+  color: var(--primary);
+  font-size: 0.9em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.cv-entry-org {
+  color: var(--primary);
+  font-weight: 600;
+  font-size: 0.95em;
+}
+
+.cv-muted {
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.cv-desc {
+  margin-top: 3px;
+}
+
+.cv-tech {
+  font-size: 0.9em;
+  margin-top: 2px;
+}
+
+.cv-bullets,
+.cv-list {
+  list-style: none;
+  margin-top: 4px;
+}
+
+.cv-bullets li,
+.cv-list li {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 2px;
+  line-height: 1.4;
+}
+
+.cv-bullet {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+/* Tables */
+.cv-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.cv-table th {
+  background: #eef2f8;
+  border: 1px solid #cbd5e1;
+  padding: 6px 8px;
+  text-align: left;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.cv-table td {
+  border: 1px solid #d7dee8;
+  padding: 6px 8px;
+  vertical-align: top;
+}
+
+/* Key skills as a two-column bullet grid */
+.cv-skill-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 24px;
+}
+
+.cv-skill-grid li {
+  display: flex;
+  gap: 8px;
+}
+
+/* Personal details */
+.cv-pd-grid {
+  display: grid;
+  grid-template-columns: 150px 1fr 150px 1fr;
+  row-gap: 6px;
+  column-gap: 10px;
+}
+
+.cv-pd-key {
+  font-weight: 600;
+  color: #374151;
+}
+
+/* References */
+.cv-ref-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.cv-ref {
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-size: 0.92em;
+}
+
+.cv-ref-name {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* Declaration */
+.cv-declaration {
+  font-size: 0.92em;
+  color: #374151;
+  margin-bottom: 14px;
+}
+
+.cv-sign-name {
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* html2canvas draws text lower than the browser: compensate ruled headings + table cells during export */
+.pdf-export .cv-heading {
+  padding-bottom: 7px;
+}
+
+.pdf-export .cv-table th,
+.pdf-export .cv-table td {
+  padding-top: 2px;
+  padding-bottom: 11px;
+}
+
+@media print {
+  .cv-resume {
+    box-shadow: none;
+    max-width: none;
+    margin: 0;
+  }
+  .print-avoid-break {
+    page-break-inside: avoid;
+  }
+}
+
+@media (max-width: 768px) {
+  .cv-resume {
+    max-width: 100%;
+    box-shadow: none;
+  }
+  .cv-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 22px 18px;
+  }
+  .cv-body {
+    padding: 20px 16px 28px;
+  }
+  .cv-name {
+    font-size: 1.5rem;
+  }
+  .cv-skill-grid,
+  .cv-ref-grid {
+    grid-template-columns: 1fr;
+  }
+  .cv-pd-grid {
+    grid-template-columns: 130px 1fr;
+  }
+  .cv-table {
+    font-size: 0.82em;
+  }
+}

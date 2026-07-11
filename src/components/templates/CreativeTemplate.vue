@@ -316,31 +316,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.creative-template {
-  max-width: 210mm;
-  min-height: 297mm;
-  margin: 0 auto;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-}
-
-@media print {
-  .creative-template {
-    box-shadow: none;
-    max-width: none;
-    margin: 0;
-  }
-}
-
-@media (max-width: 768px) {
-  .creative-template {
-    max-width: 100%;
-    margin: 0;
-    box-shadow: none;
-  }
-  
-  .creative-template .grid {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
+<style scoped src="./CreativeTemplate.css"></style>

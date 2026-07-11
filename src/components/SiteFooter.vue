@@ -83,28 +83,10 @@ export default {
       githubUrl: 'https://github.com/mrahmanashiq/mra-resume-builder',
       authorName: 'Mizanur Rahman Ashiq',
       authorUrl: 'https://mrahmanashiq.vercel.app',
-      // Current year, so the copyright updates automatically.
       year: new Date().getFullYear()
     }
   }
 }
 </script>
 
-<style scoped>
-.footer-h {
-  color: #9ca3af;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-bottom: 0.9rem;
-}
-.footer-link {
-  color: #d1d5db;
-  font-size: 0.9rem;
-  transition: color 0.15s ease;
-}
-.footer-link:hover {
-  color: #ffffff;
-}
-</style>
+<style scoped src="./SiteFooter.css"></style>

@@ -1,0 +1,225 @@
+.ap-cv {
+  --primary: #1d4ed8;
+  --text: #1a1a1a;
+  --background: #ffffff;
+
+  font-family: 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', serif;
+  max-width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 44px 50px;
+  background: var(--background);
+  color: var(--text);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  line-height: 1.4;
+  /* Sections are ordered via CSS `order` from settings.sectionsOrder. */
+  display: flex;
+  flex-direction: column;
+}
+
+.ap-header {
+  order: -1;
+  border-bottom: 1.5px solid #111;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.ap-name {
+  font-size: 2.2rem;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.ap-tagline {
+  margin-top: 6px;
+  font-size: 0.9em;
+  color: #333;
+}
+
+.ap-interests {
+  margin-top: 6px;
+  font-size: 0.9em;
+  color: #333;
+}
+
+.ap-clink {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.ap-entry-icon {
+  margin-right: 0.3em;
+}
+
+.ap-interests-label {
+  font-weight: 700;
+}
+
+/* Section = left-margin small-caps label + content column */
+.ap-section {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+
+.ap-label {
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  font-size: 0.86em;
+  color: #6b7280;
+  padding-top: 2px;
+  line-height: 1.3;
+}
+
+.ap-content {
+  min-width: 0;
+}
+
+.ap-entry,
+.ap-pub {
+  margin-bottom: 10px;
+}
+
+.ap-entry:last-child,
+.ap-pub:last-child {
+  margin-bottom: 0;
+}
+
+.ap-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.ap-strong {
+  font-weight: 700;
+}
+
+.ap-italic {
+  font-style: italic;
+  font-size: 0.95em;
+  color: #333;
+}
+
+.ap-muted {
+  color: #6b7280;
+  font-style: normal;
+}
+
+.ap-date {
+  flex-shrink: 0;
+  font-size: 0.85em;
+  color: #4b5563;
+  white-space: nowrap;
+}
+
+.ap-meta {
+  font-size: 0.88em;
+  color: #4b5563;
+}
+
+.ap-desc {
+  font-size: 0.9em;
+  color: #374151;
+  margin-top: 2px;
+}
+
+.ap-info {
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+}
+
+/* Publications */
+.ap-pub-head {
+  display: flex;
+  gap: 8px;
+}
+
+.ap-num {
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.ap-pub-body {
+  min-width: 0;
+}
+
+.ap-pub-title {
+  font-weight: 700;
+}
+
+.ap-pub-authors {
+  font-size: 0.92em;
+  font-style: italic;
+  color: #374151;
+}
+
+.ap-self {
+  font-weight: 700;
+  font-style: normal;
+  color: #111;
+}
+
+.ap-pub-venue {
+  font-size: 0.9em;
+  color: #4b5563;
+  overflow-wrap: anywhere;
+}
+
+.ap-award {
+  color: var(--primary);
+  font-weight: 700;
+  margin-left: 6px;
+}
+
+.ap-link {
+  color: var(--primary);
+  margin-left: 6px;
+}
+
+.ap-tldr {
+  font-size: 0.88em;
+  color: #374151;
+  margin-top: 2px;
+}
+
+.ap-tldr-label {
+  font-weight: 700;
+}
+
+/* html2canvas compensation */
+.pdf-export .ap-label {
+  padding-top: 4px;
+}
+
+@media print {
+  .ap-cv {
+    box-shadow: none;
+    max-width: none;
+    margin: 0;
+  }
+  .print-avoid-break {
+    page-break-inside: avoid;
+  }
+}
+
+@media (max-width: 768px) {
+  .ap-cv {
+    max-width: 100%;
+    padding: 24px 18px;
+    box-shadow: none;
+  }
+  .ap-name {
+    font-size: 1.7rem;
+  }
+  .ap-section {
+    grid-template-columns: 96px 1fr;
+    gap: 12px;
+  }
+  .ap-label {
+    font-size: 0.78em;
+  }
+}

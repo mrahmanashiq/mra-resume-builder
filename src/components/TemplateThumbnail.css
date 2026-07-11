@@ -1,0 +1,17 @@
+.tp-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 210 / 297;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.tp-scale {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 794px;
+  transform-origin: top left;
+  /* Let clicks fall through to the card's hover overlay */
+  pointer-events: none;
+}

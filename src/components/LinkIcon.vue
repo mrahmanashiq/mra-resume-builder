@@ -25,12 +25,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.link-icon {
-  width: 1em;
-  height: 1em;
-  display: inline-block;
-  vertical-align: -0.125em;
-  flex-shrink: 0;
-}
-</style>
+<style scoped src="./LinkIcon.css"></style>

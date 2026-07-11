@@ -95,20 +95,4 @@ export default {
 }
 </script>
 
-<style scoped>
-.badge-rec {
-  flex-shrink: 0;
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  padding: 1px 6px;
-  border-radius: 4px;
-  background: #dbeafe;
-  color: #1d4ed8;
-}
-:global(html.dark) .badge-rec {
-  background: rgba(37, 99, 235, 0.35);
-  color: #bfdbfe;
-}
-</style>
+<style scoped src="./DownloadPanel.css"></style>
