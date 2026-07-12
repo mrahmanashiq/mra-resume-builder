@@ -40,14 +40,14 @@
 }
 
 .ats-tagline {
-  font-size: 0.9em;
+  font-size: calc(0.9em * var(--fs-detail, 1) / var(--fs-body, 1));
   color: var(--c-gray-600);
   margin-top: 3px;
 }
 
 .ats-contact {
   margin-top: 8px;
-  font-size: 0.9em;
+  font-size: calc(0.9em * var(--fs-detail, 1) / var(--fs-body, 1));
   color: var(--c-gray-700);
 }
 
@@ -71,7 +71,7 @@
 }
 
 .ats-heading {
-  font-size: 0.98em;
+  font-size: calc(0.98em * var(--fs-heading, 1) / var(--fs-body, 1));
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.5px;
@@ -106,7 +106,7 @@
 
 .ats-entry-date {
   color: var(--c-gray-500);
-  font-size: 0.9em;
+  font-size: calc(0.9em * var(--fs-detail, 1) / var(--fs-body, 1));
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -146,14 +146,14 @@
 }
 
 .ats-tech {
-  font-size: 0.9em;
+  font-size: calc(0.9em * var(--fs-detail, 1) / var(--fs-body, 1));
   color: var(--c-gray-600);
   margin-top: 2px;
 }
 
 .ats-link-line {
   display: block;
-  font-size: 0.85em;
+  font-size: calc(0.85em * var(--fs-detail, 1) / var(--fs-body, 1));
   color: var(--primary);
   text-decoration: none;
   margin-top: 1px;
