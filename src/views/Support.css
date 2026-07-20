@@ -1,0 +1,15 @@
+/* Card wrapper around the donation widget on the /support page. The widget
+   itself (amounts + QR) is styled in DonationOptions.css. */
+
+.support-widget {
+  margin: 1.75rem 0 2.5rem;
+  padding: 1.75rem 1.5rem;
+  border: 1px solid var(--c-gray-200);
+  border-radius: 0.9rem;
+  background: var(--c-white);
+}
+
+html.dark .support-widget {
+  border-color: var(--c-slate-700);
+  background: var(--c-slate-800);
+}

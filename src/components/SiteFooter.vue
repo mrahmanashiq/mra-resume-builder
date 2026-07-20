@@ -40,6 +40,7 @@
           <h3 class="footer-h">Project</h3>
           <ul class="space-y-2.5">
             <li><router-link class="footer-link" to="/privacy">Privacy</router-link></li>
+            <li><router-link class="footer-link" to="/support">Support</router-link></li>
             <li><a class="footer-link" :href="githubUrl" target="_blank" rel="noopener">GitHub</a></li>
             <li><a class="footer-link" :href="githubUrl + '/issues'" target="_blank" rel="noopener">Report an issue</a></li>
             <li><a class="footer-link" :href="githubUrl + '/blob/master/LICENSE'" target="_blank" rel="noopener">MIT License</a></li>

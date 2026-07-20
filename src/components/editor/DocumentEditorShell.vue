@@ -294,6 +294,10 @@
     <!-- Share: link + QR -->
     <ShareModal v-if="showShareModal" :store="store" :type="config.type" :label="config.documentLabel"
                 @close="showShareModal = false" />
+
+    <!-- Optional donation prompt shown before a download. Only "Skip and
+         download" starts the download; the X closes without downloading. -->
+    <DonationModal v-if="showDonationModal" @close="cancelDonation" @download="confirmDownload" />
   </div>
 </template>
 
@@ -301,10 +305,12 @@
 import { useToast } from 'vue-toastification'
 import { useDocumentExport } from '../../composables/useDocumentExport'
 import { useHistory } from '../../composables/useHistory'
+import { shouldShowDonationPrompt, markDonationPromptShown } from '../../utils/donationPrompt'
 import AppLogo from '../AppLogo.vue'
 import AtsMatchModal from './AtsMatchModal.vue'
 import ResumeTipsModal from './ResumeTipsModal.vue'
 import ShareModal from './ShareModal.vue'
+import DonationModal from '../DonationModal.vue'
 import DocumentSwitcher from './DocumentSwitcher.vue'
 import DownloadPanel from './DownloadPanel.vue'
 import PageGuides from './PageGuides.vue'
@@ -341,6 +347,7 @@ export default {
     AtsMatchModal,
     ResumeTipsModal,
     ShareModal,
+    DonationModal,
     DocumentSwitcher,
     DownloadPanel,
     PageGuides,
@@ -385,6 +392,8 @@ export default {
       showAtsModal: false,
       showTipsModal: false,
       showShareModal: false,
+      showDonationModal: false,
+      pendingDownloadFormat: null,
       showGuides: true,
       saveStatus: 'saved',
       formats: DOWNLOAD_FORMATS,
@@ -472,10 +481,21 @@ export default {
       }
     },
 
-    // Canva-style download panel: one handler for the selected format.
+    // Canva-style download panel: one handler for the selected format. The
+    // download is deferred behind an optional "support this project" prompt -
+    // the file downloads as soon as the user skips (or after they donate).
     handlePanelDownload(format) {
       this.showExportMenu = false
       this.showMobileExport = false
+      if (shouldShowDonationPrompt()) {
+        this.pendingDownloadFormat = format
+        this.showDonationModal = true
+      } else {
+        this.runDownload(format)
+      }
+    },
+
+    runDownload(format) {
       const actions = {
         'text-pdf': () => this.exporter.downloadTextPDF(),
         pdf: () => this.exporter.downloadPDF(),
@@ -486,6 +506,22 @@ export default {
       }
       const run = actions[format]
       if (run) run()
+    },
+
+    // "Skip and download" is the only path that downloads: dismiss, then run it.
+    confirmDownload() {
+      this.showDonationModal = false
+      markDonationPromptShown()
+      const format = this.pendingDownloadFormat
+      this.pendingDownloadFormat = null
+      if (format) this.runDownload(format)
+    },
+
+    // X / close: dismiss the prompt without downloading.
+    cancelDonation() {
+      this.showDonationModal = false
+      markDonationPromptShown()
+      this.pendingDownloadFormat = null
     },
 
     handlePrint() {
@@ -549,6 +585,9 @@ export default {
     handleShortcuts(event) {
       // Escape closes any open menu or modal.
       if (event.key === 'Escape') {
+        // The donation prompt ignores Escape by design; it is dismissed only
+        // via its own buttons (Skip and download, or the X to close).
+        if (this.showDonationModal) return
         this.closeAllOverlays()
         return
       }

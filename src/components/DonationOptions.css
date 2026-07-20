@@ -1,0 +1,134 @@
+/* Shared donation widget: amount selector + Binance Pay QR + open button.
+   Used by the /support page and the pre-download DonationModal. */
+
+/* Amount selector */
+.amount-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.amount-btn {
+  min-width: 5rem;
+  padding: 0.55rem 1.1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--c-gray-700);
+  background: var(--c-white);
+  border: 1.5px solid var(--c-gray-300);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background-color 0.15s;
+}
+
+.amount-btn:hover {
+  border-color: var(--c-blue-500);
+  color: var(--c-blue-600);
+}
+
+.amount-btn--active {
+  color: var(--c-blue-700);
+  border-color: var(--c-blue-600);
+  background: rgba(37, 99, 235, 0.08);
+}
+
+html.dark .amount-btn {
+  color: var(--c-slate-200);
+  background: transparent;
+  border-color: var(--c-slate-700);
+}
+
+html.dark .amount-btn:hover {
+  border-color: var(--c-blue-500);
+  color: var(--c-blue-300);
+}
+
+html.dark .amount-btn--active {
+  color: var(--c-blue-300);
+  border-color: var(--c-blue-500);
+  background: rgba(59, 130, 246, 0.16);
+}
+
+/* QR + open button */
+.qr-panel {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.qr-frame {
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-img {
+  width: 220px;
+  height: 220px;
+  border-radius: 0.75rem;
+  border: 1px solid var(--c-gray-200);
+  background: var(--c-white);
+}
+
+.qr-fallback {
+  max-width: 20rem;
+  margin: 0 auto;
+  font-size: 0.9rem;
+  color: var(--c-gray-500);
+}
+
+html.dark .qr-fallback {
+  color: var(--c-slate-400);
+}
+
+.qr-loading .spinner {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  border: 3px solid var(--c-gray-200);
+  border-top-color: var(--c-blue-600);
+  animation: donation-spin 0.8s linear infinite;
+}
+
+html.dark .qr-loading .spinner {
+  border-color: var(--c-slate-700);
+  border-top-color: var(--c-blue-500);
+}
+
+@keyframes donation-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.qr-hint {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--c-gray-600);
+}
+
+html.dark .qr-hint {
+  color: var(--c-slate-300);
+}
+
+/* The "Open in Binance app" button uses Tailwind utilities for its inline-flex
+   layout (see the anchor in DonationOptions.vue) so it never depends on scoped
+   CSS ordering. The Binance logo is sized via its width/height attributes. */
+
+.qr-secure {
+  margin-top: 0.85rem;
+  font-size: 0.8rem;
+  color: var(--c-gray-500);
+}
+
+html.dark .qr-secure {
+  color: var(--c-slate-400);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qr-loading .spinner {
+    animation: none;
+  }
+}
