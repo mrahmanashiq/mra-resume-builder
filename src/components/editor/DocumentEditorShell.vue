@@ -54,7 +54,12 @@
               <div v-if="showExportMenu"
                    class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-10 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-100">
                 <!-- Format picker + single Download button -->
-                <DownloadPanel :supports-text="supportsTextExport" @download="handlePanelDownload" />
+                <DownloadPanel
+                  :supports-text="supportsTextExport"
+                  :selected-id="selectedDownloadFormat"
+                  @update:selected-id="selectedDownloadFormat = $event"
+                  @download="handlePanelDownload"
+                />
 
                 <template v-if="supportsTextExport">
                   <hr class="my-1 dark:border-slate-700">
@@ -394,6 +399,7 @@ export default {
       showShareModal: false,
       showDonationModal: false,
       pendingDownloadFormat: null,
+      selectedDownloadFormat: 'pdf',
       showGuides: true,
       saveStatus: 'saved',
       formats: DOWNLOAD_FORMATS,
