@@ -134,7 +134,10 @@ export default {
         '--text': c.text,
         '--background': c.background,
         '--fs-scale': this.settings.fontSize / 14,
-        fontSize: `${this.settings.fontSize}px`
+        '--fs-heading': this.settings.headingScale || 1,
+        '--fs-body': this.settings.bodyScale || 1,
+        '--fs-detail': this.settings.detailScale || 1,
+        fontSize: `${this.settings.fontSize * (this.settings.bodyScale || 1)}px`
       }
     },
     contactItems() {

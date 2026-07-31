@@ -258,6 +258,12 @@ export const useResumeStore = defineStore('resume', {
       },
       font: 'Inter',
       fontSize: 14,
+      // Relative type-scale nudges applied on top of fontSize (1 = no change).
+      // headingScale -> name + section/entry headings; bodyScale -> summary,
+      // descriptions, bullets; detailScale -> tags, dates, small meta.
+      headingScale: 1,
+      bodyScale: 1,
+      detailScale: 1,
       spacing: 'normal',
       showProfileImage: true,
       showLinkIcons: false,

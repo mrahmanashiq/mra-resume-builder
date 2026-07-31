@@ -93,6 +93,10 @@
         </div>
       </main>
     </div>
+
+    <!-- Optional donation prompt shown before a download. Only "Skip and
+         download" starts the download; the X closes without downloading. -->
+    <DonationModal v-if="showDonationModal" @close="cancelDonation" @download="confirmDownload" />
   </div>
 </template>
 
@@ -103,14 +107,19 @@ import { useCoverLetterStore } from '../stores/coverLetter'
 import { useResumeStore } from '../stores/resume'
 import { exportToPDF } from '../utils/pdfExport'
 import { generateCoverLetter } from '../utils/coverLetterGen'
+import { shouldShowDonationPrompt, markDonationPromptShown } from '../utils/donationPrompt'
 import AppLogo from '../components/AppLogo.vue'
 import DocumentSwitcher from '../components/editor/DocumentSwitcher.vue'
+import DonationModal from '../components/DonationModal.vue'
 
 export default {
   name: 'CoverLetterEditor',
-  components: { AppLogo, DocumentSwitcher, EyeIcon, PrinterIcon, CloudArrowDownIcon, SparklesIcon },
+  components: { AppLogo, DocumentSwitcher, DonationModal, EyeIcon, PrinterIcon, CloudArrowDownIcon, SparklesIcon },
   setup() {
     return { store: useCoverLetterStore(), toast: useToast() }
+  },
+  data() {
+    return { showDonationModal: false }
   },
   computed: {
     senderContact() {
@@ -148,7 +157,26 @@ export default {
     printDoc() {
       window.print()
     },
-    async downloadPdf() {
+    // Show the optional donation prompt first; the PDF downloads on skip.
+    downloadPdf() {
+      if (shouldShowDonationPrompt()) {
+        this.showDonationModal = true
+      } else {
+        this.runDownloadPdf()
+      }
+    },
+    // "Skip and download" is the only path that downloads.
+    confirmDownload() {
+      this.showDonationModal = false
+      markDonationPromptShown()
+      this.runDownloadPdf()
+    },
+    // X / close: dismiss without downloading.
+    cancelDonation() {
+      this.showDonationModal = false
+      markDonationPromptShown()
+    },
+    async runDownloadPdf() {
       const base = (this.store.sender.name || 'Cover_Letter').trim().replace(/\s+/g, '_')
       try {
         this.toast.info('Generating PDF... Please wait')

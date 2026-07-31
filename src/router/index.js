@@ -12,6 +12,7 @@ const CoverLetterEditor = () => import('../views/CoverLetterEditor.vue')
 const ShareViewer = () => import('../views/ShareViewer.vue')
 const Privacy = () => import('../views/Privacy.vue')
 const Terms = () => import('../views/Terms.vue')
+const Support = () => import('../views/Support.vue')
 const LandingPage = () => import('../views/landing/LandingPage.vue')
 const NotFound = () => import('../views/NotFound.vue')
 
@@ -131,6 +132,18 @@ const router = createRouter({
           title: 'Terms of use - Resume Builder',
           description:
             'Resume Builder terms of use: a free, open source tool provided as is. You own everything you create, and your data stays in your browser.'
+        }
+      }
+    },
+    {
+      path: '/support',
+      name: 'support',
+      component: Support,
+      meta: {
+        seo: {
+          title: 'Support this project - Resume Builder',
+          description:
+            'Resume Builder is free and open source. If it helped you, support its development with an optional donation via Binance Pay.'
         }
       }
     },

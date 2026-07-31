@@ -121,9 +121,9 @@
                 
                 <div v-if="project.technologies && project.technologies.length" 
                      class="flex flex-wrap gap-2 mb-4">
-                  <span v-for="tech in project.technologies" 
+                  <span v-for="tech in project.technologies"
                         :key="tech"
-                        class="px-3 py-1 bg-purple-100 text-purple-800 text-sm rounded-full">
+                        class="px-3 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">
                     {{ tech }}
                   </span>
                 </div>
@@ -131,13 +131,13 @@
                 <a v-if="project.url"
                    :href="formatUrl(project.url)"
                    target="_blank" rel="noopener"
-                   class="text-purple-600 hover:text-purple-700 font-medium">
+                   class="text-purple-600 hover:text-purple-700 font-medium text-sm">
                   Code
                 </a>
                 <a v-if="project.liveUrl"
                    :href="formatUrl(project.liveUrl)"
                    target="_blank" rel="noopener"
-                   class="text-purple-600 hover:text-purple-700 font-medium ml-4">
+                   class="text-purple-600 hover:text-purple-700 font-medium text-sm ml-4">
                   Live
                 </a>
               </div>

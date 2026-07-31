@@ -68,14 +68,13 @@ export default {
   name: 'DownloadPanel',
   components: { DocumentArrowDownIcon, DocumentTextIcon, Bars3Icon, PhotoIcon, ChevronDownIcon, CheckIcon },
   props: {
-    supportsText: { type: Boolean, default: false }
+    supportsText: { type: Boolean, default: false },
+    selectedId: { type: String, default: 'pdf' }
   },
-  emits: ['download'],
+  emits: ['download', 'update:selected-id'],
   data() {
     return {
-      expanded: false,
-      // Default to the recommended format for each type (both are 'pdf').
-      selectedId: 'pdf'
+      expanded: false
     }
   },
   computed: {
@@ -88,8 +87,7 @@ export default {
   },
   methods: {
     select(id) {
-      this.selectedId = id
-      this.expanded = false
+      this.$emit('update:selected-id', id)
     }
   }
 }
